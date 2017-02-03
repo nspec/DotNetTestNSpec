@@ -21,7 +21,7 @@ To check for potential breaking changes, see [BREAKING-CHANGES.md](./BREAKING-CH
 
 ## Contributing
 
-See [NSpec](https://github.com/nspec/NSpec) project, at [contributing](https://github.com/nspec/NSpec/blob/master/CONTRIBUTING.md) doc page.
+See [contributing](CONTRIBUTING.md) doc page.
 
 ## License
 
