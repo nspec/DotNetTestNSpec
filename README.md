@@ -1,5 +1,7 @@
 # DotNetTestNSpec
 
+[![NuGet Version and Downloads count](https://buildstats.info/nuget/dotnet-test-nspec)](https://www.nuget.org/packages/dotnet-test-nspec) [![Build status](https://ci.appveyor.com/api/projects/status/avtd9ca8mcuj4u6x/branch/master?svg=true)](https://ci.appveyor.com/project/BrainCrumbz/dotnettestnspec/branch/master)
+
 DotNetTestNSpec is a NSpec runner for .NET Core command line interface.
 
 It runs NSpec tests from console in .NET Core projects targeting both .NET Core and .NET Framework, taking advantage of *dotnet test* command line interface.
