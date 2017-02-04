@@ -6,6 +6,19 @@ namespace DotNetTestNSpec
     {
         public static int Main(string[] args)
         {
+#if true
+            // TODO remove when feature is implemented
+
+            Console.WriteLine("Input arguments: begin");
+
+            foreach (string arg in args)
+            {
+                Console.WriteLine(arg);
+            }
+
+            Console.WriteLine("Input arguments: end.");
+#endif
+
             var consoleRunner = new ConsoleRunner();
 
             try
