@@ -4,7 +4,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using System;
 
-namespace DotNetTestNSpecSpecs.Parsing
+namespace DotNetTestNSpec.Tests.Parsing
 {
     public class describe_ArgumnetParser
     {

@@ -14,9 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E7166D60-7B5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{D48D7FE3-6141-483D-8C4A-5E10AA81A636}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "DotnetTestNSpec", "src\DotNetTestNSpec\DotnetTestNSpec.xproj", "{53AEE478-DE4B-47B6-ADCF-DF34E4621340}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "DotNetTestNSpec", "src\DotNetTestNSpec\DotNetTestNSpec.xproj", "{53AEE478-DE4B-47B6-ADCF-DF34E4621340}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "DotnetTestNSpecSpecs", "test\DotNetTestNSpecSpecs\DotnetTestNSpecSpecs.xproj", "{6A28B43E-3FA2-461D-BDC9-A61E6FBEC709}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "DotNetTestNSpec.Tests", "test\DotNetTestNSpec.Tests\DotNetTestNSpec.Tests.xproj", "{6A28B43E-3FA2-461D-BDC9-A61E6FBEC709}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

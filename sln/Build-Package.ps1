@@ -66,14 +66,14 @@ function BuildVersioningOptions() {
 # Clean
 @(
 	"sln\src\DotNetTestNSpec", `
-	"sln\test\DotNetTestNSpecSpecs"
+	"sln\test\DotNetTestNSpec.Tests"
 
 ) | ForEach-Object { CleanProject $_ }
 
 # Initialize
 @(
 	"sln\src\DotNetTestNSpec", `
-	"sln\test\DotNetTestNSpecSpecs"
+	"sln\test\DotNetTestNSpec.Tests"
 
 ) | ForEach-Object { Exec { & "dotnet" restore $_ } }
 
@@ -81,14 +81,14 @@ function BuildVersioningOptions() {
 # Build
 @(
 	"sln\src\DotNetTestNSpec", `
-	"sln\test\DotNetTestNSpecSpecs"
+	"sln\test\DotNetTestNSpec.Tests"
 
 ) | ForEach-Object { Exec { & "dotnet" build -c Release $_ } }
 
 
 # Test
 @(
-	"sln\test\DotNetTestNSpecSpecs"
+	"sln\test\DotNetTestNSpec.Tests"
 
 ) | ForEach-Object { Exec { & "dotnet" test -c Release $_ } }
 

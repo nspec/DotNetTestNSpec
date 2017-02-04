@@ -1,13 +1,13 @@
 # Contributing
 
-The DotNetTestNSpec test suite is written in NUnit. The test project is DotNetTestNSpecSpecs.
+The DotNetTestNSpec test suite is written in NUnit. The test project is DotNetTestNSpec.Tests.
 
 To build and run tests from command line, use .NET Core `dotnet` command line interface
 
 ```dos
 cd path\to\DotNetTestNSpec\sln
 dotnet restore
-cd test\DotNetTestNSpecSpecs
+cd test\DotNetTestNSpec.Tests
 dotnet test
 ```
 
