@@ -1,21 +1,20 @@
-﻿using DotNetTestNSpec;
-using DotNetTestNSpec.Parsing;
+﻿using DotNetTestNSpec.Parsing;
 using FluentAssertions;
 using NUnit.Framework;
 using System;
 
 namespace DotNetTestNSpec.Tests.Parsing
 {
-    public class describe_ArgumnetParser
+    public abstract class describe_DotNetArgumentParser
     {
-        protected CommandLineOptions actual = null;
+        protected DotNetCommandLineOptions actual = null;
 
         protected const string projectValue = @"Path\To\Some\Project";
     }
 
     [TestFixture]
-    [Category("ArgumentParser")]
-    public class when_only_dotnet_test_args_found : describe_ArgumnetParser
+    [Category("DotNetArgumentParser")]
+    public class when_only_dotnet_test_args_found : describe_DotNetArgumentParser
     {
         [SetUp]
         public void setup()
@@ -27,7 +26,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                 "--port", "456",
             };
 
-            var parser = new ArgumentParser();
+            var parser = new DotNetArgumentParser();
 
             actual = parser.Parse(args);
         }
@@ -35,7 +34,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_dotnet_test_args_only()
         {
-            var expected = new CommandLineOptions()
+            var expected = new DotNetCommandLineOptions()
             {
                 Project = projectValue,
                 ParentProcessId = 123,
@@ -49,8 +48,8 @@ namespace DotNetTestNSpec.Tests.Parsing
     }
 
     [TestFixture]
-    [Category("ArgumentParser")]
-    public class when_dotnet_test_project_arg_missing : describe_ArgumnetParser
+    [Category("DotNetArgumentParser")]
+    public class when_dotnet_test_project_arg_missing : describe_DotNetArgumentParser
     {
         [SetUp]
         public void setup()
@@ -61,7 +60,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                 "--port", "456",
             };
 
-            var parser = new ArgumentParser();
+            var parser = new DotNetArgumentParser();
 
             actual = parser.Parse(args);
         }
@@ -69,7 +68,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_args_with_null_project()
         {
-            var expected = new CommandLineOptions()
+            var expected = new DotNetCommandLineOptions()
             {
                 Project = null,
                 ParentProcessId = 123,
@@ -83,8 +82,8 @@ namespace DotNetTestNSpec.Tests.Parsing
     }
 
     [TestFixture]
-    [Category("ArgumentParser")]
-    public class when_some_dotnet_test_arg_missing : describe_ArgumnetParser
+    [Category("DotNetArgumentParser")]
+    public class when_some_dotnet_test_arg_missing : describe_DotNetArgumentParser
     {
         [SetUp]
         public void setup()
@@ -95,7 +94,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                 "--parentProcessId", "123",
             };
 
-            var parser = new ArgumentParser();
+            var parser = new DotNetArgumentParser();
 
             actual = parser.Parse(args);
         }
@@ -103,7 +102,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_found_args_only()
         {
-            var expected = new CommandLineOptions()
+            var expected = new DotNetCommandLineOptions()
             {
                 Project = projectValue,
                 ParentProcessId = 123,
@@ -117,10 +116,10 @@ namespace DotNetTestNSpec.Tests.Parsing
     }
 
     [TestFixture]
-    [Category("ArgumentParser")]
-    public class when_dotnet_test_arg_value_missing : describe_ArgumnetParser
+    [Category("DotNetArgumentParser")]
+    public class when_dotnet_test_arg_value_missing : describe_DotNetArgumentParser
     {
-        ArgumentParser parser = null;
+        DotNetArgumentParser parser = null;
         string[] args = null;
 
         [SetUp]
@@ -133,7 +132,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                 "--port",
             };
 
-            parser = new ArgumentParser();
+            parser = new DotNetArgumentParser();
         }
 
         [Test]
@@ -144,8 +143,8 @@ namespace DotNetTestNSpec.Tests.Parsing
     }
 
     [TestFixture]
-    [Category("ArgumentParser")]
-    public class when_dotnet_test_and_nspec_args_found : describe_ArgumnetParser
+    [Category("DotNetArgumentParser")]
+    public class when_dotnet_test_and_nspec_args_found : describe_DotNetArgumentParser
     {
         [SetUp]
         public void setup()
@@ -161,7 +160,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                 "tag1,tag2,tag3",
             };
 
-            var parser = new ArgumentParser();
+            var parser = new DotNetArgumentParser();
 
             actual = parser.Parse(args);
         }
@@ -169,7 +168,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_dotnet_test_and_nspec_args()
         {
-            var expected = new CommandLineOptions()
+            var expected = new DotNetCommandLineOptions()
             {
                 Project = projectValue,
                 ParentProcessId = 123,
@@ -188,8 +187,8 @@ namespace DotNetTestNSpec.Tests.Parsing
     }
 
     [TestFixture]
-    [Category("ArgumentParser")]
-    public class when_no_nspec_args_found_after_separator : describe_ArgumnetParser
+    [Category("DotNetArgumentParser")]
+    public class when_no_nspec_args_found_after_separator : describe_DotNetArgumentParser
     {
         [SetUp]
         public void setup()
@@ -202,7 +201,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                 "--",
             };
 
-            var parser = new ArgumentParser();
+            var parser = new DotNetArgumentParser();
 
             actual = parser.Parse(args);
         }
@@ -210,7 +209,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_dotnet_test_args_only()
         {
-            var expected = new CommandLineOptions()
+            var expected = new DotNetCommandLineOptions()
             {
                 Project = projectValue,
                 ParentProcessId = 123,
@@ -224,8 +223,8 @@ namespace DotNetTestNSpec.Tests.Parsing
     }
 
     [TestFixture]
-    [Category("ArgumentParser")]
-    public class when_unknown_args_found_before_separator : describe_ArgumnetParser
+    [Category("DotNetArgumentParser")]
+    public class when_unknown_args_found_before_separator : describe_DotNetArgumentParser
     {
         [SetUp]
         public void setup()
@@ -239,7 +238,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                 "unknown2",
             };
 
-            var parser = new ArgumentParser();
+            var parser = new DotNetArgumentParser();
 
             actual = parser.Parse(args);
         }
@@ -247,7 +246,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_dotnet_test_and_unknown_args()
         {
-            var expected = new CommandLineOptions()
+            var expected = new DotNetCommandLineOptions()
             {
                 Project = projectValue,
                 ParentProcessId = 123,

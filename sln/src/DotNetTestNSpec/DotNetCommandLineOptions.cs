@@ -1,6 +1,6 @@
 ﻿namespace DotNetTestNSpec
 {
-    public class CommandLineOptions
+    public class DotNetCommandLineOptions
     {
         public string Project { get; set; }
 

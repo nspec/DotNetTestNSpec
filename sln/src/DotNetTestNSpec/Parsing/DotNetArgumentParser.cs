@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace DotNetTestNSpec.Parsing
 {
-    public class ArgumentParser
+    public class DotNetArgumentParser
     {
-        public ArgumentParser()
+        public DotNetArgumentParser()
         {
             knownArgKeys = new[]
             {
@@ -15,12 +15,12 @@ namespace DotNetTestNSpec.Parsing
             };
         }
 
-        public CommandLineOptions Parse(string[] args)
+        public DotNetCommandLineOptions Parse(string[] args)
         {
             IEnumerable<string> dotNetTestArgs = args.TakeWhile(arg => arg != "--");
             IEnumerable<string> nSpecArgs = args.Skip(dotNetTestArgs.Count() + 1);
 
-            var options = new CommandLineOptions();
+            var options = new DotNetCommandLineOptions();
 
             // check for first argument (the project), before remaining dotnet-test options
 

@@ -14,27 +14,27 @@ namespace DotNetTestNSpec
 
             Console.WriteLine(testRunnerAssembly.GetPrintInfo());
 
-            var argumentParser = new ArgumentParser();
+            var dotNetArgumentParser = new DotNetArgumentParser();
 
-            CommandLineOptions options = argumentParser.Parse(args);
+            DotNetCommandLineOptions dotNetOptions = dotNetArgumentParser.Parse(args);
 
-            if (options.Project == null)
+            if (dotNetOptions.Project == null)
             {
                 throw new DotNetTestNSpecException("Command line arguments must include path of test project assembly");
             }
 
             var nspecArgumentParser = new NSpecArgumentParser();
 
-            NSpecCommandLineOptions nspecOptions = nspecArgumentParser.Parse(options.NSpecArgs);
+            NSpecCommandLineOptions nspecOptions = nspecArgumentParser.Parse(dotNetOptions.NSpecArgs);
 
-            var nspecLibraryAssembly = GetNSpecLibraryAssembly(options.Project);
+            var nspecLibraryAssembly = GetNSpecLibraryAssembly(dotNetOptions.Project);
 
             Console.WriteLine(nspecLibraryAssembly.GetPrintInfo());
 
             var controllerProxy = new ControllerProxy(nspecLibraryAssembly);
 
             int nrOfFailures = controllerProxy.Run(
-                testAssemblyPath: options.Project,
+                testAssemblyPath: dotNetOptions.Project,
                 tags: nspecOptions.Tags,
                 formatterClassName: nspecOptions.FormatterName,
                 formatterOptions: nspecOptions.FormatterOptions,
