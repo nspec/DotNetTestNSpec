@@ -14,31 +14,27 @@ namespace DotNetTestNSpec
 
             Console.WriteLine(testRunnerAssembly.GetPrintInfo());
 
-            var dotNetArgumentParser = new DotNetArgumentParser();
+            var argumentParser = new ArgumentParser();
 
-            DotNetCommandLineOptions dotNetOptions = dotNetArgumentParser.Parse(args);
+            CommandLineOptions commandLineOptions = argumentParser.Parse(args);
 
-            if (dotNetOptions.Project == null)
+            if (commandLineOptions.DotNet.Project == null)
             {
                 throw new DotNetTestNSpecException("Command line arguments must include path of test project assembly");
             }
 
-            var nspecArgumentParser = new NSpecArgumentParser();
-
-            NSpecCommandLineOptions nspecOptions = nspecArgumentParser.Parse(dotNetOptions.NSpecArgs);
-
-            var nspecLibraryAssembly = GetNSpecLibraryAssembly(dotNetOptions.Project);
+            var nspecLibraryAssembly = GetNSpecLibraryAssembly(commandLineOptions.DotNet.Project);
 
             Console.WriteLine(nspecLibraryAssembly.GetPrintInfo());
 
             var controllerProxy = new ControllerProxy(nspecLibraryAssembly);
 
             int nrOfFailures = controllerProxy.Run(
-                testAssemblyPath: dotNetOptions.Project,
-                tags: nspecOptions.Tags,
-                formatterClassName: nspecOptions.FormatterName,
-                formatterOptions: nspecOptions.FormatterOptions,
-                failFast: nspecOptions.FailFast);
+                testAssemblyPath: commandLineOptions.DotNet.Project,
+                tags: commandLineOptions.NSpec.Tags,
+                formatterClassName: commandLineOptions.NSpec.FormatterName,
+                formatterOptions: commandLineOptions.NSpec.FormatterOptions,
+                failFast: commandLineOptions.NSpec.FailFast);
 
             return nrOfFailures;
         }

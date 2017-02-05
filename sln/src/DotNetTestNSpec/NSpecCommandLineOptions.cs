@@ -2,18 +2,8 @@
 
 namespace DotNetTestNSpec
 {
-    public class NSpecCommandLineOptions
+    public class NSpecCommandLineOptions : CommandLineOptions.NSpecPart
     {
-        public string ClassName { get; set; }
-
-        public string Tags { get; set; }
-
-        public bool FailFast { get; set; }
-
-        public string FormatterName { get; set; }
-
-        public Dictionary<string, string> FormatterOptions { get; set; }
-
         public string[] UnknownArgs { get; set; }
 
         public override string ToString()
