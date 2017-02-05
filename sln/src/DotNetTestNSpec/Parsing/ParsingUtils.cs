@@ -9,29 +9,16 @@ namespace DotNetTestNSpec.Parsing
         public static IEnumerable<string> SetTextForOptionalArg(
             IEnumerable<string> args, string argKey, Action<string> setValue)
         {
-            var argTail = args.SkipWhile(arg => arg != argKey);
-            IEnumerable<string> unusedArgs;
-
-            if (argTail.Any())
+            return ProcessArgument(args, argKey, argTail =>
             {
-                argTail = argTail.Skip(1);  // skip key
-
                 string text = argTail.FirstOrDefault();
 
                 setValue(text);
 
                 argTail = argTail.Skip(1);  // skip value, if any
 
-                unusedArgs = args
-                    .TakeWhile(arg => arg != argKey)
-                    .Concat(argTail);
-            }
-            else
-            {
-                unusedArgs = args;
-            }
-
-            return unusedArgs;
+                return argTail;
+            });
         }
 
         public static IEnumerable<string> SetIntForOptionalArg(
@@ -52,20 +39,34 @@ namespace DotNetTestNSpec.Parsing
         }
 
         public static IEnumerable<string> SetBoolForSwitchArg(
-            IEnumerable<string> args, string argKey, Action setValue)
+            IEnumerable<string> args, string argKey, Action setTrue)
         {
-            var argTail = args.SkipWhile(arg => arg != argKey);
+            return ProcessArgument(args, argKey, argTail =>
+            {
+                setTrue();
+
+                return argTail;
+            });
+        }
+
+        static IEnumerable<string> ProcessArgument(
+            IEnumerable<string> args, string argKey, Func<IEnumerable<string>, IEnumerable<string>> processTail)
+        {
             IEnumerable<string> unusedArgs;
+
+            var argTail = args.SkipWhile(arg => arg != argKey);
 
             if (argTail.Any())
             {
                 argTail = argTail.Skip(1);  // skip key
 
-                setValue();
+                var headArgs = args
+                    .TakeWhile(arg => arg != argKey);
 
-                unusedArgs = args
-                    .TakeWhile(arg => arg != argKey)
-                    .Concat(argTail);
+                var unprocessedArgs = processTail(argTail);
+
+                unusedArgs = headArgs
+                    .Concat(unprocessedArgs);
             }
             else
             {
