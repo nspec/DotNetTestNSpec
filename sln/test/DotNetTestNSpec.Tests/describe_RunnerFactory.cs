@@ -1,4 +1,6 @@
-﻿using DotNetTestNSpec.Parsing;
+﻿using DotNetTestNSpec.ConsoleTime;
+using DotNetTestNSpec.DesignTime;
+using DotNetTestNSpec.Parsing;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;

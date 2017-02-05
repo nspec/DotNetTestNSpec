@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DotNetTestNSpec
+namespace DotNetTestNSpec.DesignTime
 {
     public class DesignTimeRunner : ITestRunner
     {

@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace DotNetTestNSpec
+namespace DotNetTestNSpec.ConsoleTime
 {
     public class ConsoleRunner : ITestRunner
     {
