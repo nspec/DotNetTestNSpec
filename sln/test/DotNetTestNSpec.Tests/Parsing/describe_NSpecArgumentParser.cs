@@ -1,12 +1,11 @@
-﻿using DotNetTestNSpec;
-using DotNetTestNSpec.Parsing;
+﻿using DotNetTestNSpec.Parsing;
 using FluentAssertions;
 using NUnit.Framework;
 using System.Collections.Generic;
 
 namespace DotNetTestNSpec.Tests.Parsing
 {
-    public class describe_NSpecArgumentParser
+    public abstract class describe_NSpecArgumentParser
     {
         protected NSpecCommandLineOptions actual = null;
 

@@ -22,6 +22,7 @@ namespace DotNetTestNSpec.Tests.Parsing
             string[] args =
             {
                 projectValue,
+                "--designtime",
                 "--parentProcessId", "123",
                 "--port", "456",
             };
@@ -37,6 +38,7 @@ namespace DotNetTestNSpec.Tests.Parsing
             var expected = new DotNetCommandLineOptions()
             {
                 Project = projectValue,
+                DesignTime = true,
                 ParentProcessId = 123,
                 Port = 456,
                 NSpecArgs = new string[0],
@@ -71,6 +73,42 @@ namespace DotNetTestNSpec.Tests.Parsing
             var expected = new DotNetCommandLineOptions()
             {
                 Project = null,
+                ParentProcessId = 123,
+                Port = 456,
+                NSpecArgs = new string[0],
+                UnknownArgs = new string[0],
+            };
+
+            actual.ShouldBeEquivalentTo(expected);
+        }
+    }
+
+    [TestFixture]
+    [Category("DotNetArgumentParser")]
+    public class when_dotnet_test_design_time_arg_missing : describe_DotNetArgumentParser
+    {
+        [SetUp]
+        public void setup()
+        {
+            string[] args =
+            {
+                projectValue,
+                "--parentProcessId", "123",
+                "--port", "456",
+            };
+
+            var parser = new DotNetArgumentParser();
+
+            actual = parser.Parse(args);
+        }
+
+        [Test]
+        public void it_should_return_args_with_null_project()
+        {
+            var expected = new DotNetCommandLineOptions()
+            {
+                Project = projectValue,
+                DesignTime = false,
                 ParentProcessId = 123,
                 Port = 456,
                 NSpecArgs = new string[0],

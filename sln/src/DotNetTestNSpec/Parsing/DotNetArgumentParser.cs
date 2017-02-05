@@ -18,11 +18,11 @@ namespace DotNetTestNSpec.Parsing
         public DotNetCommandLineOptions Parse(string[] args)
         {
             IEnumerable<string> dotNetTestArgs = args.TakeWhile(arg => arg != "--");
-            IEnumerable<string> nSpecArgs = args.Skip(dotNetTestArgs.Count() + 1);
+            IEnumerable<string> nspecArgs = args.Skip(dotNetTestArgs.Count() + 1);
 
             var options = new DotNetCommandLineOptions();
 
-            // check for first argument (the project), before remaining dotnet-test options
+            // look for first argument (the project), before remaining dotnet-test options
 
             string firstArg = dotNetTestArgs.FirstOrDefault();
 
@@ -33,39 +33,29 @@ namespace DotNetTestNSpec.Parsing
                 dotNetTestArgs = dotNetTestArgs.Skip(1);
             }
 
-            // check for remaining dotnet-test options
+            // look for remaining dotnet-test options
 
-            var remainingArgs = SetIntForOptionalArg(dotNetTestArgs,
+            IEnumerable<string> remainingArgs;
+
+            remainingArgs = ParsingUtils.SetIntForOptionalArg(dotNetTestArgs,
                 parentProcessArgKey, value => options.ParentProcessId = value);
 
-            remainingArgs = SetIntForOptionalArg(remainingArgs,
+            remainingArgs = ParsingUtils.SetIntForOptionalArg(remainingArgs,
                 portArgKey, value => options.Port = value);
 
-            options.NSpecArgs = nSpecArgs.ToArray();
+            remainingArgs = ParsingUtils.SetBoolForSwitchArg(remainingArgs,
+                designTimeArgKey, () => options.DesignTime = true);
+
+            options.NSpecArgs = nspecArgs.ToArray();
 
             options.UnknownArgs = remainingArgs.ToArray();
 
             return options;
         }
 
-        static IEnumerable<string> SetIntForOptionalArg(IEnumerable<string> args, string argKey, Action<int> setValue)
-        {
-            return ParsingUtils.SetTextForOptionalArg(args, argKey, text =>
-            {
-                int value;
-                bool argValueFound = Int32.TryParse(text, out value);
-
-                if (!argValueFound)
-                {
-                    throw new ArgumentException($"Argument '{argKey}' must be followed by its value");
-                }
-
-                setValue(value);
-            });
-        }
-
         string[] knownArgKeys;
 
+        const string designTimeArgKey = "--designtime";
         const string parentProcessArgKey = "--parentProcessId";
         const string portArgKey = "--port";
     }
