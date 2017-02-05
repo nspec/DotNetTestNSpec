@@ -11,6 +11,7 @@
             return EnumerableUtils.ToObjectString(new string[]
             {
                 $"{nameof(Project)}: {Project}",
+                $"{nameof(DesignTime)}: {DesignTime}",
                 $"{nameof(ParentProcessId)}: {ParentProcessId}",
                 $"{nameof(Port)}: {Port}",
                 $"{nameof(NSpecArgs)}: {EnumerableUtils.ToArrayString(NSpecArgs)}",

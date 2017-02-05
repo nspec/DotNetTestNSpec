@@ -47,6 +47,8 @@ namespace DotNetTestNSpec
 
             public string Project { get; set; }
 
+            public bool DesignTime { get; set; }
+
             public int? ParentProcessId { get; set; }
 
             public int? Port { get; set; }
@@ -56,6 +58,7 @@ namespace DotNetTestNSpec
                 return EnumerableUtils.ToObjectString(new string[]
                 {
                 $"{nameof(Project)}: {Project}",
+                $"{nameof(DesignTime)}: {DesignTime}",
                 $"{nameof(ParentProcessId)}: {ParentProcessId}",
                 $"{nameof(Port)}: {Port}",
                 }, true);

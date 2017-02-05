@@ -1,27 +1,24 @@
 ﻿using DotNetTestNSpec.Compatibility;
-using DotNetTestNSpec.Parsing;
 using System;
 using System.IO;
 using System.Reflection;
 
 namespace DotNetTestNSpec
 {
-    public class ConsoleRunner
+    public class ConsoleRunner : ITestRunner
     {
-        public int Run(string[] args)
+        public ConsoleRunner(CommandLineOptions commandLineOptions)
+        {
+            this.commandLineOptions = commandLineOptions;
+        }
+
+        public int Start()
         {
             var testRunnerAssembly = typeof(Program).GetTypeInfo().Assembly;
 
             Console.WriteLine(testRunnerAssembly.GetPrintInfo());
 
-            var argumentParser = new ArgumentParser();
-
-            CommandLineOptions commandLineOptions = argumentParser.Parse(args);
-
-            if (commandLineOptions.DotNet.Project == null)
-            {
-                throw new DotNetTestNSpecException("Command line arguments must include path of test project assembly");
-            }
+            EnsureOptionsValid();
 
             var nspecLibraryAssembly = GetNSpecLibraryAssembly(commandLineOptions.DotNet.Project);
 
@@ -38,6 +35,18 @@ namespace DotNetTestNSpec
 
             return nrOfFailures;
         }
+
+        void EnsureOptionsValid()
+        {
+            if (commandLineOptions.DotNet.Project == null)
+            {
+                throw new DotNetTestNSpecException("Command line arguments must include path of test project assembly");
+            }
+        }
+
+        readonly CommandLineOptions commandLineOptions;
+
+        const string nspecFileName = "NSpec.dll";
 
         static Assembly GetNSpecLibraryAssembly(string testAssemblyPath)
         {
@@ -58,7 +67,5 @@ namespace DotNetTestNSpec
                     ex);
             }
         }
-
-        const string nspecFileName = "NSpec.dll";
     }
 }

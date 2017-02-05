@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DotNetTestNSpec.Parsing;
+using System;
 
 namespace DotNetTestNSpec
 {
@@ -19,11 +20,13 @@ namespace DotNetTestNSpec
             Console.WriteLine("Input arguments: end.");
 #endif
 
-            var consoleRunner = new ConsoleRunner();
+            var runnerFactory = new RunnerFactory(new ArgumentParser());
+
+            var runner = runnerFactory.Create(args);
 
             try
             {
-                consoleRunner.Run(args);
+                runner.Start();
 
                 return ReturnCodes.Ok;
             }

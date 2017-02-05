@@ -1,6 +1,6 @@
 ﻿namespace DotNetTestNSpec.Parsing
 {
-    public class ArgumentParser
+    public class ArgumentParser : IArgumentParser
     {
         public CommandLineOptions Parse(string[] args)
         {
