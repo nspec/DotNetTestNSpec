@@ -23,6 +23,7 @@ namespace DotNetTestNSpec.Tests.Parsing
             {
                 projectValue,
                 "--designtime",
+                "--list",
                 "--parentProcessId", "123",
                 "--port", "456",
             };
@@ -39,6 +40,7 @@ namespace DotNetTestNSpec.Tests.Parsing
             {
                 Project = projectValue,
                 DesignTime = true,
+                List = true,
                 ParentProcessId = 123,
                 Port = 456,
                 NSpecArgs = new string[0],

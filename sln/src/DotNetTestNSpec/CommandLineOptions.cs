@@ -49,6 +49,8 @@ namespace DotNetTestNSpec
 
             public bool DesignTime { get; set; }
 
+            public bool List { get; set; }
+
             public int? ParentProcessId { get; set; }
 
             public int? Port { get; set; }
@@ -59,6 +61,7 @@ namespace DotNetTestNSpec
                 {
                 $"{nameof(Project)}: {Project}",
                 $"{nameof(DesignTime)}: {DesignTime}",
+                $"{nameof(List)}: {List}",
                 $"{nameof(ParentProcessId)}: {ParentProcessId}",
                 $"{nameof(Port)}: {Port}",
                 }, true);

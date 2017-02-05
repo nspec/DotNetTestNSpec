@@ -45,6 +45,9 @@ namespace DotNetTestNSpec.Parsing
             remainingArgs = ParsingUtils.SetBoolForSwitchArg(remainingArgs,
                 designTimeArgKey, () => options.DesignTime = true);
 
+            remainingArgs = ParsingUtils.SetBoolForSwitchArg(remainingArgs,
+                listArgKey, () => options.List = true);
+
             options.NSpecArgs = nspecArgs.ToArray();
 
             options.UnknownArgs = remainingArgs.ToArray();
@@ -55,6 +58,7 @@ namespace DotNetTestNSpec.Parsing
         string[] knownArgKeys;
 
         const string designTimeArgKey = "--designtime";
+        const string listArgKey = "--list";
         const string parentProcessArgKey = "--parentProcessId";
         const string portArgKey = "--port";
     }
