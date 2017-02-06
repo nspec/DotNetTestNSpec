@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace DotNetTestNSpec
+namespace DotNetTestNSpec.Proxy
 {
     public class ControllerProxy
     {

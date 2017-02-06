@@ -1,5 +1,7 @@
-﻿using DotNetTestNSpec.Parsing;
+﻿using DotNetTestNSpec.Compatibility;
+using DotNetTestNSpec.Parsing;
 using System;
+using System.Reflection;
 
 namespace DotNetTestNSpec
 {
@@ -7,6 +9,10 @@ namespace DotNetTestNSpec
     {
         public static int Main(string[] args)
         {
+            var testRunnerAssembly = typeof(Program).GetTypeInfo().Assembly;
+
+            Console.WriteLine(testRunnerAssembly.GetPrintInfo());
+
 #if true
             // TODO remove when feature is implemented
 

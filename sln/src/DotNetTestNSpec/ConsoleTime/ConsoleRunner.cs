@@ -1,30 +1,20 @@
-﻿using DotNetTestNSpec.Compatibility;
-using System;
-using System.IO;
-using System.Reflection;
+﻿using DotNetTestNSpec.Proxy;
 
 namespace DotNetTestNSpec.ConsoleTime
 {
     public class ConsoleRunner : ITestRunner
     {
-        public ConsoleRunner(CommandLineOptions commandLineOptions)
+        public ConsoleRunner(CommandLineOptions commandLineOptions, ProxyFactory proxyFactory)
         {
             this.commandLineOptions = commandLineOptions;
+            this.proxyFactory = proxyFactory;
         }
 
         public int Start()
         {
-            var testRunnerAssembly = typeof(Program).GetTypeInfo().Assembly;
-
-            Console.WriteLine(testRunnerAssembly.GetPrintInfo());
-
             EnsureOptionsValid();
 
-            var nspecLibraryAssembly = GetNSpecLibraryAssembly(commandLineOptions.DotNet.Project);
-
-            Console.WriteLine(nspecLibraryAssembly.GetPrintInfo());
-
-            var controllerProxy = new ControllerProxy(nspecLibraryAssembly);
+            var controllerProxy = proxyFactory.Create(commandLineOptions.DotNet.Project);
 
             int nrOfFailures = controllerProxy.Run(
                 testAssemblyPath: commandLineOptions.DotNet.Project,
@@ -45,27 +35,6 @@ namespace DotNetTestNSpec.ConsoleTime
         }
 
         readonly CommandLineOptions commandLineOptions;
-
-        const string nspecFileName = "NSpec.dll";
-
-        static Assembly GetNSpecLibraryAssembly(string testAssemblyPath)
-        {
-            string outputAssemblyDirectory = Path.GetDirectoryName(testAssemblyPath);
-
-            string nspecLibraryAssemblyPath = Path.Combine(outputAssemblyDirectory, nspecFileName);
-
-            try
-            {
-                var nspecLibraryAssembly = AssemblyUtils.LoadFromPath(nspecLibraryAssemblyPath);
-
-                return nspecLibraryAssembly;
-            }
-            catch (Exception ex)
-            {
-                throw new DotNetTestNSpecException(
-                    $"Could not load referenced NSpec library assembly at '{nspecLibraryAssemblyPath}'",
-                    ex);
-            }
-        }
+        readonly ProxyFactory proxyFactory;
     }
 }
