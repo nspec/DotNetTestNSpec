@@ -2,9 +2,9 @@
 
 namespace DotNetTestNSpec.DesignTime
 {
-    public class DesignTimeRunner : ITestRunner
+    public class ExecutionRunner : ITestRunner
     {
-        public DesignTimeRunner(CommandLineOptions commandLineOptions)
+        public ExecutionRunner(CommandLineOptions commandLineOptions)
         {
             // TODO
         }

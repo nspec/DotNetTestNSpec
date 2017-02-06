@@ -1,6 +1,7 @@
 ﻿using DotNetTestNSpec.ConsoleTime;
 using DotNetTestNSpec.DesignTime;
 using DotNetTestNSpec.Parsing;
+using System;
 
 namespace DotNetTestNSpec
 {
@@ -15,9 +16,25 @@ namespace DotNetTestNSpec
         {
             var commandLineOptions = argumentParser.Parse(args);
 
-            var runner = commandLineOptions.DotNet.DesignTime
-                ? new DesignTimeRunner(commandLineOptions) as ITestRunner
-                : new ConsoleRunner(commandLineOptions) as ITestRunner;
+            ITestRunner runner;
+
+            if (!commandLineOptions.DotNet.DesignTime)
+            {
+                runner = new ConsoleRunner(commandLineOptions);
+            }
+            else if (commandLineOptions.DotNet.List)
+            {
+                runner = new DiscoveryRunner(commandLineOptions);
+            }
+            else if (commandLineOptions.DotNet.WaitCommand)
+            {
+                runner = new ExecutionRunner(commandLineOptions);
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(nameof(args), args,
+                    $"Unknown command line argument combination: cannot figure out which test runner should run");
+            }
 
             return runner;
         }

@@ -41,6 +41,9 @@ namespace DotNetTestNSpec
             public DotNetPart(DotNetPart source)
             {
                 Project = source.Project;
+                DesignTime = source.DesignTime;
+                List = source.List;
+                WaitCommand = source.WaitCommand;
                 ParentProcessId = source.ParentProcessId;
                 Port = source.Port;
             }
@@ -50,6 +53,8 @@ namespace DotNetTestNSpec
             public bool DesignTime { get; set; }
 
             public bool List { get; set; }
+
+            public bool WaitCommand { get; set; }
 
             public int? ParentProcessId { get; set; }
 
@@ -62,6 +67,7 @@ namespace DotNetTestNSpec
                 $"{nameof(Project)}: {Project}",
                 $"{nameof(DesignTime)}: {DesignTime}",
                 $"{nameof(List)}: {List}",
+                $"{nameof(WaitCommand)}: {WaitCommand}",
                 $"{nameof(ParentProcessId)}: {ParentProcessId}",
                 $"{nameof(Port)}: {Port}",
                 }, true);

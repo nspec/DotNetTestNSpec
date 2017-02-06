@@ -50,9 +50,7 @@ namespace DotNetTestNSpec.Tests
         }
     }
 
-    [TestFixture]
-    [Category("RunnerFactory")]
-    public class when_at_design_time : describe_RunnerFactory
+    public abstract class when_at_design_time : describe_RunnerFactory
     {
         public when_at_design_time()
         {
@@ -64,11 +62,37 @@ namespace DotNetTestNSpec.Tests
                 },
             };
         }
+    }
+
+    [TestFixture]
+    [Category("RunnerFactory")]
+    public class when_list_set : when_at_design_time
+    {
+        public when_list_set()
+        {
+            opts.DotNet.List = true;
+        }
 
         [Test]
-        public void it_should_return_design_time_runner()
+        public void it_should_return_discovery_runner()
         {
-            actual.Should().BeOfType(typeof(DesignTimeRunner));
+            actual.Should().BeOfType(typeof(DiscoveryRunner));
+        }
+    }
+
+    [TestFixture]
+    [Category("RunnerFactory")]
+    public class when_wait_command_set : when_at_design_time
+    {
+        public when_wait_command_set()
+        {
+            opts.DotNet.WaitCommand = true;
+        }
+
+        [Test]
+        public void it_should_return_execution_runner()
+        {
+            actual.Should().BeOfType(typeof(ExecutionRunner));
         }
     }
 }
