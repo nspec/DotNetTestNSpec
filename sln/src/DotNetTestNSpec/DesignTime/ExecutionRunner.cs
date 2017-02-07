@@ -5,7 +5,7 @@ namespace DotNetTestNSpec.DesignTime
 {
     public class ExecutionRunner : ITestRunner
     {
-        public ExecutionRunner(CommandLineOptions commandLineOptions, IControllerProxy controllerProxy)
+        public ExecutionRunner(string testAssemblyPath, IControllerProxy controllerProxy)
         {
             // TODO
         }

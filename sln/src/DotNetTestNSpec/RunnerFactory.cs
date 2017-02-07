@@ -18,26 +18,28 @@ namespace DotNetTestNSpec
         {
             var commandLineOptions = argumentParser.Parse(args);
 
-            if (commandLineOptions.DotNet.Project == null)
+            string testAssemblyPath = commandLineOptions.DotNet.Project;
+
+            if (testAssemblyPath == null)
             {
                 throw new DotNetTestNSpecException("Command line arguments must include path of test project assembly");
             }
 
-            var controllerProxy = proxyFactory.Create(commandLineOptions.DotNet.Project);
+            var controllerProxy = proxyFactory.Create(testAssemblyPath);
 
             ITestRunner runner;
 
             if (!commandLineOptions.DotNet.DesignTime)
             {
-                runner = new ConsoleRunner(commandLineOptions, controllerProxy);
+                runner = new ConsoleRunner(testAssemblyPath, commandLineOptions.NSpec, controllerProxy);
             }
             else if (commandLineOptions.DotNet.List)
             {
-                runner = new DiscoveryRunner(commandLineOptions, controllerProxy, new DiscoveryAdapter());
+                runner = new DiscoveryRunner(testAssemblyPath, controllerProxy, new DiscoveryAdapter());
             }
             else if (commandLineOptions.DotNet.WaitCommand)
             {
-                runner = new ExecutionRunner(commandLineOptions, controllerProxy);
+                runner = new ExecutionRunner(testAssemblyPath, controllerProxy);
             }
             else
             {

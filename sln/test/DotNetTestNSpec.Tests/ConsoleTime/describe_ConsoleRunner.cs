@@ -14,7 +14,6 @@ namespace DotNetTestNSpec.Tests.ConsoleTime
         protected ConsoleRunner runner;
 
         protected Mock<IControllerProxy> controllerProxy;
-        protected CommandLineOptions opts;
 
         protected readonly CommandLineOptions.NSpecPart nspecOptions = new CommandLineOptions.NSpecPart()
         {
@@ -36,7 +35,7 @@ namespace DotNetTestNSpec.Tests.ConsoleTime
         {
             controllerProxy = new Mock<IControllerProxy>();
 
-            runner = new ConsoleRunner(opts, controllerProxy.Object);
+            runner = new ConsoleRunner(testAssemblyPath, nspecOptions, controllerProxy.Object);
         }
     }
 
@@ -44,28 +43,16 @@ namespace DotNetTestNSpec.Tests.ConsoleTime
     {
         const int nrOfFailures = 123;
 
-        public when_started()
-        {
-            opts = new CommandLineOptions()
-            {
-                DotNet = new CommandLineOptions.DotNetPart()
-                {
-                    Project = testAssemblyPath,
-                },
-                NSpec = nspecOptions,
-            };
-        }
-
         public override void setup()
         {
             base.setup();
 
             controllerProxy.Setup(c => c.Run(
                 testAssemblyPath,
-                opts.NSpec.Tags,
-                opts.NSpec.FormatterName,
-                opts.NSpec.FormatterOptions,
-                opts.NSpec.FailFast)).Returns(nrOfFailures);
+                nspecOptions.Tags,
+                nspecOptions.FormatterName,
+                nspecOptions.FormatterOptions,
+                nspecOptions.FailFast)).Returns(nrOfFailures);
         }
 
         [Test]

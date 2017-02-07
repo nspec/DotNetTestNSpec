@@ -18,13 +18,6 @@ namespace DotNetTestNSpec.Tests.DesignTime
         protected Mock<IControllerProxy> controllerProxy;
         protected Mock<IDiscoveryAdapter> adapter;
 
-        protected readonly CommandLineOptions opts = new CommandLineOptions()
-        {
-            DotNet = new CommandLineOptions.DotNetPart()
-            {
-                Project = testAssemblyPath,
-            },
-        };
         protected const string testAssemblyPath = @"some\path\to\assembly";
         protected const string codeAssemblyPath = @"another\path\to\assembly";
 
@@ -34,7 +27,7 @@ namespace DotNetTestNSpec.Tests.DesignTime
             controllerProxy = new Mock<IControllerProxy>();
             adapter = new Mock<IDiscoveryAdapter>();
 
-            runner = new DiscoveryRunner(opts, controllerProxy.Object, adapter.Object);
+            runner = new DiscoveryRunner(testAssemblyPath, controllerProxy.Object, adapter.Object);
         }
     }
 

@@ -4,10 +4,10 @@ namespace DotNetTestNSpec.DesignTime
 {
     public class DiscoveryRunner : ITestRunner
     {
-        public DiscoveryRunner(CommandLineOptions commandLineOptions, IControllerProxy controllerProxy,
+        public DiscoveryRunner(string testAssemblyPath, IControllerProxy controllerProxy,
             IDiscoveryAdapter adapter)
         {
-            this.commandLineOptions = commandLineOptions;
+            this.testAssemblyPath = testAssemblyPath;
             this.controllerProxy = controllerProxy;
             this.adapter = adapter;
         }
@@ -16,7 +16,7 @@ namespace DotNetTestNSpec.DesignTime
         {
             adapter.Connect();
 
-            var discoveredExamples = controllerProxy.List(commandLineOptions.DotNet.Project);
+            var discoveredExamples = controllerProxy.List(testAssemblyPath);
 
             foreach (var example in discoveredExamples)
             {
@@ -28,7 +28,7 @@ namespace DotNetTestNSpec.DesignTime
             return dontCare;
         }
 
-        readonly CommandLineOptions commandLineOptions;
+        readonly string testAssemblyPath;
         readonly IControllerProxy controllerProxy;
         readonly IDiscoveryAdapter adapter;
 
