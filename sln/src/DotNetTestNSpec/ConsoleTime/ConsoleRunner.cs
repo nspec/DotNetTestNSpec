@@ -4,18 +4,14 @@ namespace DotNetTestNSpec.ConsoleTime
 {
     public class ConsoleRunner : ITestRunner
     {
-        public ConsoleRunner(CommandLineOptions commandLineOptions, IProxyFactory proxyFactory)
+        public ConsoleRunner(CommandLineOptions commandLineOptions, IControllerProxy controllerProxy)
         {
             this.commandLineOptions = commandLineOptions;
-            this.proxyFactory = proxyFactory;
+            this.controllerProxy = controllerProxy;
         }
 
         public int Start()
         {
-            EnsureOptionsValid();
-
-            var controllerProxy = proxyFactory.Create(commandLineOptions.DotNet.Project);
-
             int nrOfFailures = controllerProxy.Run(
                 testAssemblyPath: commandLineOptions.DotNet.Project,
                 tags: commandLineOptions.NSpec.Tags,
@@ -26,15 +22,7 @@ namespace DotNetTestNSpec.ConsoleTime
             return nrOfFailures;
         }
 
-        void EnsureOptionsValid()
-        {
-            if (commandLineOptions.DotNet.Project == null)
-            {
-                throw new DotNetTestNSpecException("Command line arguments must include path of test project assembly");
-            }
-        }
-
         readonly CommandLineOptions commandLineOptions;
-        readonly IProxyFactory proxyFactory;
+        readonly IControllerProxy controllerProxy;
     }
 }

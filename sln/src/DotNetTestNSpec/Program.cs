@@ -1,5 +1,6 @@
 ﻿using DotNetTestNSpec.Compatibility;
 using DotNetTestNSpec.Parsing;
+using DotNetTestNSpec.Proxy;
 using System;
 using System.Reflection;
 
@@ -26,7 +27,7 @@ namespace DotNetTestNSpec
             Console.WriteLine("Input arguments: end.");
 #endif
 
-            var runnerFactory = new RunnerFactory(new ArgumentParser());
+            var runnerFactory = new RunnerFactory(new ArgumentParser(), new ProxyFactory());
 
             var runner = runnerFactory.Create(args);
 

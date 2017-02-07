@@ -5,7 +5,7 @@ namespace DotNetTestNSpec.DesignTime
 {
     public class DiscoveryRunner : ITestRunner
     {
-        public DiscoveryRunner(CommandLineOptions commandLineOptions, IProxyFactory proxyFactory)
+        public DiscoveryRunner(CommandLineOptions commandLineOptions, IControllerProxy controllerProxy)
         {
             // TODO
         }

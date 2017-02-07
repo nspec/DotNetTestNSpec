@@ -32,12 +32,9 @@ namespace DotNetTestNSpec.Tests.ConsoleTime
         [SetUp]
         public void setup()
         {
-            var factory = new Mock<IProxyFactory>();
             controller = new Mock<IControllerProxy>();
 
-            factory.Setup(f => f.Create(testAssemblyPath)).Returns(controller.Object);
-
-            runner = new ConsoleRunner(opts, factory.Object);
+            runner = new ConsoleRunner(opts, controller.Object);
         }
     }
 
@@ -72,31 +69,6 @@ namespace DotNetTestNSpec.Tests.ConsoleTime
             int actual = runner.Start();
 
             actual.Should().Be(expected);
-        }
-    }
-
-    [TestFixture]
-    [Category("ConsoleRunner")]
-    public class when_started_with_null_project : describe_ConsoleRunner
-    {
-        public when_started_with_null_project()
-        {
-            opts = new CommandLineOptions()
-            {
-                DotNet = new CommandLineOptions.DotNetPart()
-                {
-                    Project = null,
-                },
-                NSpec = nspecOptions,
-            };
-        }
-
-        [Test]
-        public void it_should_throw()
-        {
-            Action act = () => runner.Start();
-
-            act.ShouldThrow<DotNetTestNSpecException>();
         }
     }
 }
