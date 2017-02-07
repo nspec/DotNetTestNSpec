@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 namespace DotNetTestNSpec.Tests.Parsing
 {
+    [TestFixture]
+    [Category("NSpecArgumentParser")]
     public abstract class describe_NSpecArgumentParser
     {
         protected NSpecCommandLineOptions actual = null;
@@ -14,8 +16,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         protected const string someFormatterName = @"someFormatterName";
     }
 
-    [TestFixture]
-    [Category("NSpecArgumentParser")]
     public class when_only_nspec_args_found : describe_NSpecArgumentParser
     {
         [SetUp]
@@ -59,8 +59,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
     }
 
-    [TestFixture]
-    [Category("NSpecArgumentParser")]
     public class when_class_name_arg_missing : describe_NSpecArgumentParser
     {
         [SetUp]
@@ -103,8 +101,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
     }
 
-    [TestFixture]
-    [Category("NSpecArgumentParser")]
     public class when_tags_arg_missing : describe_NSpecArgumentParser
     {
         [SetUp]
@@ -147,8 +143,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
     }
 
-    [TestFixture]
-    [Category("NSpecArgumentParser")]
     public class when_failfast_arg_missing : describe_NSpecArgumentParser
     {
         [SetUp]
@@ -191,8 +185,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
     }
 
-    [TestFixture]
-    [Category("NSpecArgumentParser")]
     public class when_formatter_arg_missing : describe_NSpecArgumentParser
     {
         [SetUp]
@@ -235,8 +227,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
     }
 
-    [TestFixture]
-    [Category("NSpecArgumentParser")]
     public class when_formatter_options_arg_missing : describe_NSpecArgumentParser
     {
         [SetUp]
@@ -272,8 +262,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
     }
 
-    [TestFixture]
-    [Category("NSpecArgumentParser")]
     public class when_unknown_args_found_after_classname : describe_NSpecArgumentParser
     {
         [SetUp]

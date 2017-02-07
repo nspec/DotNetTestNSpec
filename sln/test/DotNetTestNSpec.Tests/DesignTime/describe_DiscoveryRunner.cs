@@ -9,6 +9,8 @@ using System.Linq;
 
 namespace DotNetTestNSpec.Tests.DesignTime
 {
+    [TestFixture]
+    [Category("DiscoveryRunner")]
     public abstract class describe_DiscoveryRunner
     {
         protected DiscoveryRunner runner;
@@ -36,8 +38,6 @@ namespace DotNetTestNSpec.Tests.DesignTime
         }
     }
 
-    [TestFixture]
-    [Category("DiscoveryRunner")]
     public class when_started : describe_DiscoveryRunner
     {
         List<DiscoveredExample> foundTests;

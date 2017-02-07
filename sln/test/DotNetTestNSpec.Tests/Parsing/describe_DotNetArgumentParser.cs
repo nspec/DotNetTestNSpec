@@ -5,6 +5,8 @@ using System;
 
 namespace DotNetTestNSpec.Tests.Parsing
 {
+    [TestFixture]
+    [Category("DotNetArgumentParser")]
     public abstract class describe_DotNetArgumentParser
     {
         protected DotNetCommandLineOptions actual = null;
@@ -12,8 +14,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         protected const string projectValue = @"Path\To\Some\Project";
     }
 
-    [TestFixture]
-    [Category("DotNetArgumentParser")]
     public class when_only_dotnet_test_args_found : describe_DotNetArgumentParser
     {
         [SetUp]
@@ -51,8 +51,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
     }
 
-    [TestFixture]
-    [Category("DotNetArgumentParser")]
     public class when_dotnet_test_project_arg_missing : describe_DotNetArgumentParser
     {
         [SetUp]
@@ -85,8 +83,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
     }
 
-    [TestFixture]
-    [Category("DotNetArgumentParser")]
     public class when_dotnet_test_design_time_arg_missing : describe_DotNetArgumentParser
     {
         [SetUp]
@@ -121,8 +117,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
     }
 
-    [TestFixture]
-    [Category("DotNetArgumentParser")]
     public class when_some_dotnet_test_arg_missing : describe_DotNetArgumentParser
     {
         [SetUp]
@@ -155,8 +149,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
     }
 
-    [TestFixture]
-    [Category("DotNetArgumentParser")]
     public class when_dotnet_test_arg_value_missing : describe_DotNetArgumentParser
     {
         DotNetArgumentParser parser = null;
@@ -182,8 +174,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
     }
 
-    [TestFixture]
-    [Category("DotNetArgumentParser")]
     public class when_dotnet_test_and_nspec_args_found : describe_DotNetArgumentParser
     {
         [SetUp]
@@ -226,8 +216,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
     }
 
-    [TestFixture]
-    [Category("DotNetArgumentParser")]
     public class when_no_nspec_args_found_after_separator : describe_DotNetArgumentParser
     {
         [SetUp]
@@ -262,8 +250,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
     }
 
-    [TestFixture]
-    [Category("DotNetArgumentParser")]
     public class when_unknown_args_found_before_separator : describe_DotNetArgumentParser
     {
         [SetUp]

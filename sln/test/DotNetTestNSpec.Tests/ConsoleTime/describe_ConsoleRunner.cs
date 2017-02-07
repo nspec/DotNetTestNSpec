@@ -7,6 +7,8 @@ using System.Collections.Generic;
 
 namespace DotNetTestNSpec.Tests.ConsoleTime
 {
+    [TestFixture]
+    [Category("ConsoleRunner")]
     public abstract class describe_ConsoleRunner
     {
         protected ConsoleRunner runner;
@@ -38,8 +40,6 @@ namespace DotNetTestNSpec.Tests.ConsoleTime
         }
     }
 
-    [TestFixture]
-    [Category("ConsoleRunner")]
     public class when_started : describe_ConsoleRunner
     {
         const int nrOfFailures = 123;

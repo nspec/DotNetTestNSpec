@@ -9,6 +9,8 @@ using System;
 
 namespace DotNetTestNSpec.Tests
 {
+    [TestFixture]
+    [Category("RunnerFactory")]
     public abstract class describe_RunnerFactory
     {
         protected RunnerFactory factory;
@@ -57,8 +59,6 @@ namespace DotNetTestNSpec.Tests
         }
     }
 
-    [TestFixture]
-    [Category("RunnerFactory")]
     public class when_not_at_design_time : when_project_set
     {
         public when_not_at_design_time()
@@ -81,8 +81,6 @@ namespace DotNetTestNSpec.Tests
         }
     }
 
-    [TestFixture]
-    [Category("RunnerFactory")]
     public class when_list_set : when_at_design_time
     {
         public when_list_set()
@@ -97,8 +95,6 @@ namespace DotNetTestNSpec.Tests
         }
     }
 
-    [TestFixture]
-    [Category("RunnerFactory")]
     public class when_wait_command_set : when_at_design_time
     {
         public when_wait_command_set()
@@ -113,8 +109,6 @@ namespace DotNetTestNSpec.Tests
         }
     }
 
-    [TestFixture]
-    [Category("RunnerFactory")]
     public class when_project_null : describe_RunnerFactory
     {
         public when_project_null()
