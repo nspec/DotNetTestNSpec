@@ -33,7 +33,7 @@ namespace DotNetTestNSpec
             }
             else if (commandLineOptions.DotNet.List)
             {
-                runner = new DiscoveryRunner(commandLineOptions, controllerProxy);
+                runner = new DiscoveryRunner(commandLineOptions, controllerProxy, new DiscoveryAdapter());
             }
             else if (commandLineOptions.DotNet.WaitCommand)
             {

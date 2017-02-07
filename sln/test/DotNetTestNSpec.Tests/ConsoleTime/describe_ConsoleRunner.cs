@@ -3,16 +3,16 @@ using DotNetTestNSpec.Proxy;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 
 namespace DotNetTestNSpec.Tests.ConsoleTime
 {
     public abstract class describe_ConsoleRunner
     {
-        protected Mock<IControllerProxy> controller;
-        protected CommandLineOptions opts;
         protected ConsoleRunner runner;
+
+        protected Mock<IControllerProxy> controllerProxy;
+        protected CommandLineOptions opts;
 
         protected readonly CommandLineOptions.NSpecPart nspecOptions = new CommandLineOptions.NSpecPart()
         {
@@ -30,11 +30,11 @@ namespace DotNetTestNSpec.Tests.ConsoleTime
         protected const string testAssemblyPath = @"some\path\to\assembly";
 
         [SetUp]
-        public void setup()
+        public virtual void setup()
         {
-            controller = new Mock<IControllerProxy>();
+            controllerProxy = new Mock<IControllerProxy>();
 
-            runner = new ConsoleRunner(opts, controller.Object);
+            runner = new ConsoleRunner(opts, controllerProxy.Object);
         }
     }
 
@@ -42,6 +42,8 @@ namespace DotNetTestNSpec.Tests.ConsoleTime
     [Category("ConsoleRunner")]
     public class when_started : describe_ConsoleRunner
     {
+        const int nrOfFailures = 123;
+
         public when_started()
         {
             opts = new CommandLineOptions()
@@ -54,17 +56,22 @@ namespace DotNetTestNSpec.Tests.ConsoleTime
             };
         }
 
-        [Test]
-        public void it_should_return_nr_of_failures()
+        public override void setup()
         {
-            int expected = 123;
+            base.setup();
 
-            controller.Setup(c => c.Run(
+            controllerProxy.Setup(c => c.Run(
                 testAssemblyPath,
                 opts.NSpec.Tags,
                 opts.NSpec.FormatterName,
                 opts.NSpec.FormatterOptions,
-                opts.NSpec.FailFast)).Returns(expected);
+                opts.NSpec.FailFast)).Returns(nrOfFailures);
+        }
+
+        [Test]
+        public void it_should_return_nr_of_failures()
+        {
+            int expected = nrOfFailures;
 
             int actual = runner.Start();
 

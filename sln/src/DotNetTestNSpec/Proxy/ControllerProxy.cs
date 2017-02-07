@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -27,6 +28,27 @@ namespace DotNetTestNSpec.Proxy
             return nrOfFailures;
         }
 
+        public IEnumerable<DiscoveredExample> List(string testAssemblyPath)
+        {
+            object methodResult = ExecuteMethod(controller, listMethodName,
+                testAssemblyPath);
+
+            string jsonResult = (string)methodResult;
+
+            DiscoveredExample[] examples;
+
+            try
+            {
+                examples = JsonConvert.DeserializeObject<DiscoveredExample[]>(jsonResult);
+            }
+            catch (Exception ex)
+            {
+                throw new DotNetTestNSpecException(unknownResultErrorMessage.With(listMethodName, jsonResult), ex);
+            }
+
+            return examples;
+        }
+
         static object CreateController(Assembly nspecLibraryAssembly)
         {
             try
@@ -39,7 +61,7 @@ namespace DotNetTestNSpec.Proxy
             }
             catch (Exception ex)
             {
-                throw new DotNetTestNSpecException(unknownDriverErrorMessage, ex);
+                throw new DotNetTestNSpecException(unknownDriverErrorMessage.With(controllerTypeName), ex);
             }
         }
 
@@ -51,7 +73,7 @@ namespace DotNetTestNSpec.Proxy
 
             if (methodInfo == null)
             {
-                throw new DotNetTestNSpecException(unknownDriverErrorMessage);
+                throw new DotNetTestNSpecException(unknownMethodErrorMessage.With(methodName));
             }
 
             object result = methodInfo.Invoke(controller, args);
@@ -62,7 +84,19 @@ namespace DotNetTestNSpec.Proxy
         readonly object controller;
 
         const string controllerTypeName = "NSpec.Api.Controller";
+
         const string runMethodName = "Run";
-        const string unknownDriverErrorMessage = "Could not find known driver or method in referenced NSpec library: please double check version compatibility between this runner and referenced NSpec.";
+        const string listMethodName = "List";
+
+        const string unknownDriverErrorMessage =
+            "Could not find known driver ({0}) in referenced NSpec assembly: " +
+            "please double check version compatibility between this runner and referenced NSpec library.";
+        const string unknownMethodErrorMessage =
+            "Could not find known method ({0}) in referenced NSpec assembly: " +
+            "please double check version compatibility between this runner and referenced NSpec library.";
+        const string unknownResultErrorMessage =
+            "Could not convert serialized result from known method ({0}) in referenced NSpec assembly: " +
+            "please double check version compatibility between this runner and referenced NSpec library." +
+            "Result: {1}.";
     }
 }

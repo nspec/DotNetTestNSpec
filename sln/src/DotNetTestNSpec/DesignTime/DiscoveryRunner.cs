@@ -1,18 +1,33 @@
 ﻿using DotNetTestNSpec.Proxy;
-using System;
 
 namespace DotNetTestNSpec.DesignTime
 {
     public class DiscoveryRunner : ITestRunner
     {
-        public DiscoveryRunner(CommandLineOptions commandLineOptions, IControllerProxy controllerProxy)
+        public DiscoveryRunner(CommandLineOptions commandLineOptions, IControllerProxy controllerProxy,
+            IDiscoveryAdapter adapter)
         {
-            // TODO
+            this.commandLineOptions = commandLineOptions;
+            this.controllerProxy = controllerProxy;
+            this.adapter = adapter;
         }
 
         public int Start()
         {
-            throw new NotImplementedException();
+            var discoveredExamples = controllerProxy.List(commandLineOptions.DotNet.Project);
+
+            foreach (var example in discoveredExamples)
+            {
+                adapter.TestFound(example);
+            }
+
+            return dontCare;
         }
+
+        readonly CommandLineOptions commandLineOptions;
+        readonly IControllerProxy controllerProxy;
+        readonly IDiscoveryAdapter adapter;
+
+        const int dontCare = -1;
     }
 }

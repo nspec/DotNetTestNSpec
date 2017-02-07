@@ -10,5 +10,7 @@ namespace DotNetTestNSpec.Proxy
             string formatterClassName,
             IDictionary<string, string> formatterOptions,
             bool failFast);
+
+        IEnumerable<DiscoveredExample> List(string testAssemblyPath);
     }
 }
