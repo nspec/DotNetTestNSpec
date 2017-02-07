@@ -10,7 +10,6 @@ namespace DotNetTestNSpec.Tests
     public abstract class describe_RunnerFactory
     {
         protected ITestRunner actual;
-
         protected CommandLineOptions opts;
 
         protected readonly string[] args = { "one", "two", "three" };

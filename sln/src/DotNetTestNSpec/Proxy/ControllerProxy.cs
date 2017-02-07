@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace DotNetTestNSpec.Proxy
 {
-    public class ControllerProxy
+    public class ControllerProxy : IControllerProxy
     {
         public ControllerProxy(Assembly nspecLibraryAssembly)
         {

@@ -4,7 +4,7 @@ namespace DotNetTestNSpec.ConsoleTime
 {
     public class ConsoleRunner : ITestRunner
     {
-        public ConsoleRunner(CommandLineOptions commandLineOptions, ProxyFactory proxyFactory)
+        public ConsoleRunner(CommandLineOptions commandLineOptions, IProxyFactory proxyFactory)
         {
             this.commandLineOptions = commandLineOptions;
             this.proxyFactory = proxyFactory;
@@ -35,6 +35,6 @@ namespace DotNetTestNSpec.ConsoleTime
         }
 
         readonly CommandLineOptions commandLineOptions;
-        readonly ProxyFactory proxyFactory;
+        readonly IProxyFactory proxyFactory;
     }
 }

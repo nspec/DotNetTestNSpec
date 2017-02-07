@@ -5,9 +5,9 @@ using System.Reflection;
 
 namespace DotNetTestNSpec.Proxy
 {
-    public class ProxyFactory
+    public class ProxyFactory : IProxyFactory
     {
-        public ControllerProxy Create(string testAssemblyPath)
+        public IControllerProxy Create(string testAssemblyPath)
         {
             var nspecLibraryAssembly = GetNSpecLibraryAssembly(testAssemblyPath);
 
