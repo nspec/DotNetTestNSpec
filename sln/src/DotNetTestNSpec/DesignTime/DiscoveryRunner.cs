@@ -14,12 +14,16 @@ namespace DotNetTestNSpec.DesignTime
 
         public int Start()
         {
+            adapter.Connect();
+
             var discoveredExamples = controllerProxy.List(commandLineOptions.DotNet.Project);
 
             foreach (var example in discoveredExamples)
             {
                 adapter.TestFound(example);
             }
+
+            adapter.Disconnect();
 
             return dontCare;
         }

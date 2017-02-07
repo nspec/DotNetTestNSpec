@@ -52,14 +52,12 @@ namespace DotNetTestNSpec.Tests.DesignTime
                 from i in indexes
                 select new DiscoveredExample()
                 {
-                    FullName = $"Example-{i}",
+                    FullName = $"Some-Example-{i}",
                     SourceFilePath = $@"some\path\to\code-{i}",
                     SourceLineNumber = 10 * i,
                     SourceAssembly = codeAssemblyPath,
                     Tags = new[] { $"tag-{i}A", $"tag-{i}B", $"tag-{i}C" },
                 };
-
-            foundTests = new List<DiscoveredExample>();
         }
 
         public override void setup()
@@ -73,13 +71,27 @@ namespace DotNetTestNSpec.Tests.DesignTime
                 foundTests.Add(example);
             });
 
+            foundTests = new List<DiscoveredExample>();
+
             runner.Start();
+        }
+
+        [Test]
+        public void it_should_connect_adapter()
+        {
+            adapter.Verify(a => a.Connect(), Times.Once);
         }
 
         [Test]
         public void it_should_notify_each_discovered_test()
         {
             foundTests.ShouldBeEquivalentTo(discoveredExamples);
+        }
+
+        [Test]
+        public void it_should_disconnect_adapter()
+        {
+            adapter.Verify(a => a.Disconnect(), Times.Once);
         }
     }
 }
