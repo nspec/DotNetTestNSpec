@@ -14,7 +14,7 @@ DotNetTestNSpec is written by [BrainCrumbz](http://www.braincrumbz.com). It's sh
 
 See [NSpec](https://github.com/nspec/NSpec) project, in [sln/test/Samples](https://github.com/nspec/NSpec/tree/master/sln/test/Samples):
 
-- [DotNetTestSample](./sln/test/Samples/DotNetTestSample):
+- [DotNetTestSample](https://github.com/nspec/NSpec/tree/master/sln/test/Samples/DotNetTestSample):
 an independent solution with code under test and test project, importing NSpec and showing how to run tests from *dotnet* command line interface
 
 ## Breaking changes
