@@ -79,6 +79,8 @@ namespace DotNetTestNSpec.Tests
         {
             opts.DotNet.DesignTime = true;
             opts.DotNet.Port = 123;
+
+            opts.NSpec = new CommandLineOptions.NSpecPart();
         }
     }
 

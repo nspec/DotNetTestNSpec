@@ -1,5 +1,6 @@
 ﻿using DotNetTestNSpec.ConsoleTime;
 using DotNetTestNSpec.DesignTime;
+using DotNetTestNSpec.Dev.Network;
 using DotNetTestNSpec.Network;
 using DotNetTestNSpec.Parsing;
 using DotNetTestNSpec.Proxy;
@@ -38,11 +39,14 @@ namespace DotNetTestNSpec
                 throw new DotNetTestNSpecException("Design-time command line arguments must include TCP port to connect to");
             }
 
+            var channel = commandLineOptions.NSpec.DebugChannel
+                ? new ConsoleDebugChannel() as INetworkChannel
+                : new NetworkChannel(commandLineOptions.DotNet.Port.Value);
+
             ITestRunner runner;
 
             if (commandLineOptions.DotNet.List)
             {
-                var channel = new NetworkChannel(commandLineOptions.DotNet.Port.Value);
                 var adapter = new DiscoveryAdapter(channel);
 
                 runner = new DiscoveryRunner(testAssemblyPath, adapter, controllerProxy);

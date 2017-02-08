@@ -14,6 +14,7 @@ namespace DotNetTestNSpec.Parsing
                 failFastKey,
                 formatterPrefix,
                 formatterOptionsPrefix,
+                debugChannelKey,
             };
         }
 
@@ -30,6 +31,7 @@ namespace DotNetTestNSpec.Parsing
                 FailFast = false,
                 FormatterName = null,
                 FormatterOptions = new Dictionary<string, string>(),
+                DebugChannel = false,
                 UnknownArgs = new string[0],
             };
 
