@@ -27,15 +27,16 @@ namespace DotNetTestNSpec.Tests.DesignTime
             controllerProxy = new Mock<IControllerProxy>();
             adapter = new Mock<IDiscoveryAdapter>();
 
-            runner = new DiscoveryRunner(testAssemblyPath, controllerProxy.Object, adapter.Object);
+            runner = new DiscoveryRunner(testAssemblyPath, adapter.Object, controllerProxy.Object);
         }
     }
 
     public class when_started : describe_DiscoveryRunner
     {
-        List<DiscoveredExample> foundTests;
+        List<Test> foundTests;
 
         readonly IEnumerable<DiscoveredExample> discoveredExamples;
+        readonly IEnumerable<Test> expectedTests;
 
         public when_started()
         {
@@ -45,11 +46,21 @@ namespace DotNetTestNSpec.Tests.DesignTime
                 from i in indexes
                 select new DiscoveredExample()
                 {
-                    FullName = $"Some-Example-{i}",
+                    FullName = $"nspec. A class. A context. Some Example-{i}",
                     SourceFilePath = $@"some\path\to\code-{i}",
                     SourceLineNumber = 10 * i,
                     SourceAssembly = codeAssemblyPath,
                     Tags = new[] { $"tag-{i}A", $"tag-{i}B", $"tag-{i}C" },
+                };
+
+            expectedTests =
+                from i in indexes
+                select new Test()
+                {
+                    FullyQualifiedName = $"nspec. A class. A context. Some Example-{i}",
+                    DisplayName = $"A class › A context › Some Example-{i}",
+                    CodeFilePath = $@"some\path\to\code-{i}",
+                    LineNumber = 10 * i,
                 };
         }
 
@@ -59,12 +70,12 @@ namespace DotNetTestNSpec.Tests.DesignTime
 
             controllerProxy.Setup(c => c.List(testAssemblyPath)).Returns(discoveredExamples);
 
-            adapter.Setup(a => a.TestFound(It.IsAny<DiscoveredExample>())).Callback((DiscoveredExample example) =>
+            adapter.Setup(a => a.TestFound(It.IsAny<Test>())).Callback((Test test) =>
             {
-                foundTests.Add(example);
+                foundTests.Add(test);
             });
 
-            foundTests = new List<DiscoveredExample>();
+            foundTests = new List<Test>();
 
             runner.Start();
         }
@@ -78,7 +89,7 @@ namespace DotNetTestNSpec.Tests.DesignTime
         [Test]
         public void it_should_notify_each_discovered_test()
         {
-            foundTests.ShouldBeEquivalentTo(discoveredExamples);
+            foundTests.ShouldBeEquivalentTo(expectedTests);
         }
 
         [Test]

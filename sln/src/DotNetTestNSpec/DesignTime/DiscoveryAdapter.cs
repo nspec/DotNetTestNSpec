@@ -1,5 +1,5 @@
 ﻿using System;
-using DotNetTestNSpec.Proxy;
+using Microsoft.Extensions.Testing.Abstractions;
 
 namespace DotNetTestNSpec.DesignTime
 {
@@ -10,7 +10,7 @@ namespace DotNetTestNSpec.DesignTime
             throw new NotImplementedException();
         }
 
-        public void TestFound(DiscoveredExample example)
+        public void TestFound(Test test)
         {
             throw new NotImplementedException();
         }

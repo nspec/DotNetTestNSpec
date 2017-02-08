@@ -1,4 +1,4 @@
-﻿using DotNetTestNSpec.Proxy;
+﻿using Microsoft.Extensions.Testing.Abstractions;
 
 namespace DotNetTestNSpec.DesignTime
 {
@@ -6,7 +6,7 @@ namespace DotNetTestNSpec.DesignTime
     {
         void Connect();
 
-        void TestFound(DiscoveredExample example);
+        void TestFound(Test test);
 
         void Disconnect();
     }

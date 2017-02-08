@@ -12,6 +12,7 @@
   },
 
   "dependencies": {
+    "Microsoft.Extensions.Testing.Abstractions": "1.0.0-preview2-003121",
     "Newtonsoft.Json": "9.0.1",
   },
 

@@ -35,7 +35,7 @@ namespace DotNetTestNSpec
             }
             else if (commandLineOptions.DotNet.List)
             {
-                runner = new DiscoveryRunner(testAssemblyPath, controllerProxy, new DiscoveryAdapter());
+                runner = new DiscoveryRunner(testAssemblyPath, new DiscoveryAdapter(), controllerProxy);
             }
             else if (commandLineOptions.DotNet.WaitCommand)
             {
