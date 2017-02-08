@@ -30,6 +30,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                 "--formatterOptions:optName1=optValue1",
                 "--formatterOptions:optName2",
                 "--formatterOptions:optName3=optValue3",
+                "--debugChannel",
             };
 
             var parser = new NSpecArgumentParser();
@@ -52,6 +53,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                     { "optName2", "optName2" },
                     { "optName3", "optValue3" },
                 },
+                DebugChannel = true,
                 UnknownArgs = new string[0],
             };
 
@@ -72,6 +74,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                 "--formatterOptions:optName1=optValue1",
                 "--formatterOptions:optName2",
                 "--formatterOptions:optName3=optValue3",
+                "--debugChannel",
             };
 
             var parser = new NSpecArgumentParser();
@@ -94,6 +97,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                     { "optName2", "optName2" },
                     { "optName3", "optValue3" },
                 },
+                DebugChannel = true,
                 UnknownArgs = new string[0],
             };
 
@@ -114,6 +118,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                 "--formatterOptions:optName1=optValue1",
                 "--formatterOptions:optName2",
                 "--formatterOptions:optName3=optValue3",
+                "--debugChannel",
             };
 
             var parser = new NSpecArgumentParser();
@@ -136,6 +141,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                     { "optName2", "optName2" },
                     { "optName3", "optValue3" },
                 },
+                DebugChannel = true,
                 UnknownArgs = new string[0],
             };
 
@@ -156,6 +162,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                 "--formatterOptions:optName1=optValue1",
                 "--formatterOptions:optName2",
                 "--formatterOptions:optName3=optValue3",
+                "--debugChannel",
             };
 
             var parser = new NSpecArgumentParser();
@@ -178,6 +185,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                     { "optName2", "optName2" },
                     { "optName3", "optValue3" },
                 },
+                DebugChannel = true,
                 UnknownArgs = new string[0],
             };
 
@@ -198,6 +206,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                 "--formatterOptions:optName1=optValue1",
                 "--formatterOptions:optName2",
                 "--formatterOptions:optName3=optValue3",
+                "--debugChannel",
             };
 
             var parser = new NSpecArgumentParser();
@@ -220,6 +229,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                     { "optName2", "optName2" },
                     { "optName3", "optValue3" },
                 },
+                DebugChannel = true,
                 UnknownArgs = new string[0],
             };
 
@@ -238,6 +248,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                 "--tag", someTags,
                 "--failfast",
                 "--formatter=" + someFormatterName,
+                "--debugChannel",
             };
 
             var parser = new NSpecArgumentParser();
@@ -255,6 +266,51 @@ namespace DotNetTestNSpec.Tests.Parsing
                 FailFast = true,
                 FormatterName = someFormatterName,
                 FormatterOptions = new Dictionary<string, string>(),
+                DebugChannel = true,
+                UnknownArgs = new string[0],
+            };
+
+            actual.ShouldBeEquivalentTo(expected);
+        }
+    }
+
+    public class when_debug_channel_arg_missing : describe_NSpecArgumentParser
+    {
+        [SetUp]
+        public void setup()
+        {
+            string[] args =
+            {
+                someClassName,
+                "--tag", someTags,
+                "--failfast",
+                "--formatter=" + someFormatterName,
+                "--formatterOptions:optName1=optValue1",
+                "--formatterOptions:optName2",
+                "--formatterOptions:optName3=optValue3",
+            };
+
+            var parser = new NSpecArgumentParser();
+
+            actual = parser.Parse(args);
+        }
+
+        [Test]
+        public void it_should_return_args_with_debug_channel_false()
+        {
+            var expected = new NSpecCommandLineOptions()
+            {
+                ClassName = someClassName,
+                Tags = someTags,
+                FailFast = true,
+                FormatterName = someFormatterName,
+                FormatterOptions = new Dictionary<string, string>()
+                {
+                    { "optName1", "optValue1" },
+                    { "optName2", "optName2" },
+                    { "optName3", "optValue3" },
+                },
+                DebugChannel = false,
                 UnknownArgs = new string[0],
             };
 
@@ -278,6 +334,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                 "--formatterOptions:optName1=optValue1",
                 "--formatterOptions:optName2",
                 "--formatterOptions:optName3=optValue3",
+                "--debugChannel",
                 "unknown3",
             };
 
@@ -301,6 +358,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                     { "optName2", "optName2" },
                     { "optName3", "optValue3" },
                 },
+                DebugChannel = true,
                 UnknownArgs = new string[]
                 {
                     "unknown1",

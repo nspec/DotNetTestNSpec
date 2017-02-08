@@ -59,6 +59,9 @@ namespace DotNetTestNSpec.Parsing
             remainingArgs = SetTextForOptionalPrefix(remainingArgs,
                 formatterPrefix, value => options.FormatterName = value);
 
+            remainingArgs = SetOptionalFlag(remainingArgs,
+                debugChannelKey, value => options.DebugChannel = value);
+
             int lastCount;
 
             do
@@ -124,5 +127,6 @@ namespace DotNetTestNSpec.Parsing
         const string failFastKey = "--failfast";
         const string formatterPrefix = "--formatter=";
         const string formatterOptionsPrefix = "--formatterOptions:";
+        const string debugChannelKey = "--debugChannel";
     }
 }

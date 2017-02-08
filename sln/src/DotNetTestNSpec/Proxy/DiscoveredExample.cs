@@ -18,14 +18,15 @@ namespace DotNetTestNSpec.Proxy
         {
             string tagsText = String.Join(", ", Tags);
 
-            return String.Join(", ", new[]
+            return EnumerableUtils.ToObjectString(new string[]
             {
                 $"{nameof(FullName)}: {FullName}",
                 $"{nameof(SourceFilePath)}: {SourceFilePath}",
                 $"{nameof(SourceLineNumber)}: {SourceLineNumber}",
                 $"{nameof(SourceAssembly)}: {SourceAssembly}",
                 $"{nameof(Tags)}: [{tagsText}]",
-            });
+
+            }, true);
         }
     }
 }

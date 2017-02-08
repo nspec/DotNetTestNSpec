@@ -16,7 +16,7 @@ namespace DotNetTestNSpec.Parsing
 
         public DotNetCommandLineOptions Parse(string[] args)
         {
-            IEnumerable<string> dotNetTestArgs = args.TakeWhile(arg => arg != "--");
+            IEnumerable<string> dotNetTestArgs = args.TakeWhile(arg => arg != nspecArgDivider);
             IEnumerable<string> nspecArgs = args.Skip(dotNetTestArgs.Count() + 1);
 
             var options = new DotNetCommandLineOptions();
@@ -61,5 +61,6 @@ namespace DotNetTestNSpec.Parsing
         const string listArgKey = "--list";
         const string parentProcessArgKey = "--parentProcessId";
         const string portArgKey = "--port";
+        const string nspecArgDivider = "--";
     }
 }

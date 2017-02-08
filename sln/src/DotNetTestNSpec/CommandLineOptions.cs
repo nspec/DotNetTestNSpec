@@ -86,6 +86,7 @@ namespace DotNetTestNSpec
                 FailFast = source.FailFast;
                 FormatterName = source.FormatterName;
                 FormatterOptions = source.FormatterOptions;
+                DebugChannel = source.DebugChannel;
             }
 
             public string ClassName { get; set; }
@@ -98,6 +99,8 @@ namespace DotNetTestNSpec
 
             public Dictionary<string, string> FormatterOptions { get; set; }
 
+            public bool DebugChannel { get; set; }
+
             public override string ToString()
             {
                 return EnumerableUtils.ToObjectString(new string[]
@@ -107,6 +110,7 @@ namespace DotNetTestNSpec
                 $"{nameof(FailFast)}: {FailFast}",
                 $"{nameof(FormatterName)}: {FormatterName}",
                 $"{nameof(FormatterOptions)}: {DictionaryUtils.ToArrayString(FormatterOptions)}",
+                $"{nameof(DebugChannel)}: {DebugChannel}",
                 }, true);
             }
         }

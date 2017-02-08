@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DotNetTestNSpec
+﻿namespace DotNetTestNSpec
 {
     public class NSpecCommandLineOptions : CommandLineOptions.NSpecPart
     {
@@ -15,7 +13,9 @@ namespace DotNetTestNSpec
                 $"{nameof(FailFast)}: {FailFast}",
                 $"{nameof(FormatterName)}: {FormatterName}",
                 $"{nameof(FormatterOptions)}: {DictionaryUtils.ToArrayString(FormatterOptions)}",
+                $"{nameof(DebugChannel)}: {DebugChannel}",
                 $"{nameof(UnknownArgs)}: {EnumerableUtils.ToArrayString(UnknownArgs)}",
+
             }, true);
         }
     }
