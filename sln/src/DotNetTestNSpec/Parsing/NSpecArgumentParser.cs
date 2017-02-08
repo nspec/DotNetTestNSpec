@@ -53,13 +53,13 @@ namespace DotNetTestNSpec.Parsing
             remainingArgs = ParsingUtils.SetTextForOptionalArg(remainingArgs,
                 tagsKey, value => options.Tags = value);
 
-            remainingArgs = SetOptionalFlag(remainingArgs,
+            remainingArgs = ParsingUtils.SetBoolForSwitchArg(remainingArgs,
                 failFastKey, value => options.FailFast = value);
 
-            remainingArgs = SetTextForOptionalPrefix(remainingArgs,
+            remainingArgs = ParsingUtils.SetTextForOptionalArgPrefix(remainingArgs,
                 formatterPrefix, value => options.FormatterName = value);
 
-            remainingArgs = SetOptionalFlag(remainingArgs,
+            remainingArgs = ParsingUtils.SetBoolForSwitchArg(remainingArgs,
                 debugChannelKey, value => options.DebugChannel = value);
 
             int lastCount;
@@ -68,7 +68,7 @@ namespace DotNetTestNSpec.Parsing
             {
                 lastCount = remainingArgs.Count();
 
-                remainingArgs = SetTextForOptionalPrefix(remainingArgs,
+                remainingArgs = ParsingUtils.SetTextForOptionalArgPrefix(remainingArgs,
                     formatterOptionsPrefix, text =>
                     {
                         string[] tokens = text.Split('=');
@@ -90,35 +90,6 @@ namespace DotNetTestNSpec.Parsing
             options.UnknownArgs = remainingArgs.ToArray();
 
             return options;
-        }
-
-        static IEnumerable<string> SetOptionalFlag(IEnumerable<string> args, string argKey, Action<bool> setValue)
-        {
-            bool hasKey = args.Contains(argKey);
-
-            setValue(hasKey);
-
-            return hasKey
-                ? args.Where(arg => arg != argKey)
-                : args;
-        }
-
-        static IEnumerable<string> SetTextForOptionalPrefix(IEnumerable<string> args, string argPrefix, Action<string> setValue)
-        {
-            string foundArg = args.FirstOrDefault(arg => arg.StartsWith(argPrefix, StringComparison.Ordinal));
-
-            if (foundArg == null)
-            {
-                return args;
-            }
-
-            string[] tokens = foundArg.Split(new[] { argPrefix }, StringSplitOptions.RemoveEmptyEntries);
-
-            string value = tokens.First();
-
-            setValue(value);
-
-            return args.Where(arg => arg != foundArg);
         }
 
         string[] knownArgPrefixes;

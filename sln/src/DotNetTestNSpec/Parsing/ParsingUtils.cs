@@ -38,15 +38,38 @@ namespace DotNetTestNSpec.Parsing
             });
         }
 
-        public static IEnumerable<string> SetBoolForSwitchArg(
-            IEnumerable<string> args, string argKey, Action setTrue)
+        public static IEnumerable<string> SetTextForOptionalArgPrefix(
+            IEnumerable<string> args, string argPrefix, Action<string> setValue)
         {
-            return ProcessArgument(args, argKey, argTail =>
-            {
-                setTrue();
+            string foundArg = args
+                .FirstOrDefault(arg => arg.StartsWith(argPrefix, StringComparison.Ordinal));
 
-                return argTail;
-            });
+            if (foundArg == null)
+            {
+                return args;
+            }
+
+            string[] tokens = foundArg.Split(new[] { argPrefix }, StringSplitOptions.RemoveEmptyEntries);
+
+            string value = tokens.First();
+
+            setValue(value);
+
+            return args.Where(arg => arg != foundArg);
+        }
+
+        public static IEnumerable<string> SetBoolForSwitchArg(
+            IEnumerable<string> args, string argKey, Action<bool> setValue)
+        {
+            bool hasKey = args.Contains(argKey);
+
+            setValue(hasKey);
+
+            var unusedArgs = hasKey
+                ? args.Where(arg => arg != argKey)
+                : args;
+
+            return unusedArgs;
         }
 
         static IEnumerable<string> ProcessArgument(

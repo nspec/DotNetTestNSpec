@@ -43,10 +43,10 @@ namespace DotNetTestNSpec.Parsing
                 portArgKey, value => options.Port = value);
 
             remainingArgs = ParsingUtils.SetBoolForSwitchArg(remainingArgs,
-                designTimeArgKey, () => options.DesignTime = true);
+                designTimeArgKey, value => options.DesignTime = value);
 
             remainingArgs = ParsingUtils.SetBoolForSwitchArg(remainingArgs,
-                listArgKey, () => options.List = true);
+                listArgKey, value => options.List = value);
 
             options.NSpecArgs = nspecArgs.ToArray();
 
