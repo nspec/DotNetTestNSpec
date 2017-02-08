@@ -1,5 +1,6 @@
 ﻿using DotNetTestNSpec.ConsoleTime;
 using DotNetTestNSpec.DesignTime;
+using DotNetTestNSpec.Network;
 using DotNetTestNSpec.Parsing;
 using DotNetTestNSpec.Proxy;
 using System;
@@ -27,15 +28,24 @@ namespace DotNetTestNSpec
 
             var controllerProxy = proxyFactory.Create(testAssemblyPath);
 
-            ITestRunner runner;
-
             if (!commandLineOptions.DotNet.DesignTime)
             {
-                runner = new ConsoleRunner(testAssemblyPath, commandLineOptions.NSpec, controllerProxy);
+                return new ConsoleRunner(testAssemblyPath, commandLineOptions.NSpec, controllerProxy);
             }
-            else if (commandLineOptions.DotNet.List)
+
+            if (!commandLineOptions.DotNet.Port.HasValue)
             {
-                runner = new DiscoveryRunner(testAssemblyPath, new DiscoveryAdapter(), controllerProxy);
+                throw new DotNetTestNSpecException("Design-time command line arguments must include TCP port to connect to");
+            }
+
+            ITestRunner runner;
+
+            if (commandLineOptions.DotNet.List)
+            {
+                var channel = new NetworkChannel(commandLineOptions.DotNet.Port.Value);
+                var adapter = new DiscoveryAdapter(channel);
+
+                runner = new DiscoveryRunner(testAssemblyPath, adapter, controllerProxy);
             }
             else if (commandLineOptions.DotNet.WaitCommand)
             {
@@ -44,7 +54,7 @@ namespace DotNetTestNSpec
             else
             {
                 throw new ArgumentOutOfRangeException(nameof(args), args,
-                    $"Unknown command line argument combination: cannot figure out which test runner should run");
+                    "Unknown command line argument combination: cannot figure out which test runner should run");
             }
 
             return runner;

@@ -78,6 +78,7 @@ namespace DotNetTestNSpec.Tests
         public when_at_design_time()
         {
             opts.DotNet.DesignTime = true;
+            opts.DotNet.Port = 123;
         }
     }
 
