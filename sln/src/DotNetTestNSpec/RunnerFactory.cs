@@ -57,8 +57,7 @@ namespace DotNetTestNSpec
             }
             else
             {
-                throw new ArgumentOutOfRangeException(nameof(args), args,
-                    "Unknown command line argument combination: cannot figure out which test runner should run");
+                throw new DotNetTestNSpecException("Design-time command line argument must include either list or wait command options");
             }
 
             return runner;
