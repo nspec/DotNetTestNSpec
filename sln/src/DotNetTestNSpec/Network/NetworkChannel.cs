@@ -31,19 +31,19 @@ namespace DotNetTestNSpec.Network
         public void Close()
         {
             binaryStream.Flush();
-#if NET452
+#if NET451
             binaryStream.Close();
 #endif
             binaryStream.Dispose();
 
             networkStream.Flush();
-#if NET452
+#if NET451
             networkStream.Close();
 #endif
             networkStream.Dispose();
 
             socket.Shutdown(SocketShutdown.Both);
-#if NET452
+#if NET451
             socket.Close();
 #endif
             socket.Dispose();
