@@ -8,7 +8,6 @@
       ]
     },
     "emitEntryPoint": true,
-    "preserveCompilationContext": true,
     "outputName": "dotnet-test-nspec"
   },
 
@@ -19,6 +18,9 @@
 
   "frameworks": {
     "netcoreapp1.0": {
+      "imports": [
+        "portable-net45+win8"
+      ],
       "dependencies": {
         "Microsoft.NETCore.App": {
           "type": "platform",
@@ -28,9 +30,7 @@
     },
     "net451": {
       "dependencies": {
-        "Microsoft.NETCore.Platforms": "1.1.0",
-        "Microsoft.NETCore.Targets": "1.1.0",
-        "NETStandard.Library": "1.6.0"
+        "Microsoft.NETCore.Platforms": "1.0.1"
       }
     }
   }
