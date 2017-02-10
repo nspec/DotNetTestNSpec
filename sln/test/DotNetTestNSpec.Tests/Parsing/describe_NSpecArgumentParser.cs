@@ -1,7 +1,9 @@
 ﻿using DotNetTestNSpec.Parsing;
 using FluentAssertions;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DotNetTestNSpec.Tests.Parsing
 {
@@ -11,19 +13,19 @@ namespace DotNetTestNSpec.Tests.Parsing
     {
         protected NSpecCommandLineOptions actual = null;
 
+        protected string[] allArguments;
+        protected NSpecCommandLineOptions allOptions;
+
         protected const string someClassName = @"someClassName";
         protected const string someTags = "tag1,tag2,tag3";
         protected const string someFormatterName = @"someFormatterName";
-    }
 
-    public class when_only_nspec_args_found : describe_NSpecArgumentParser
-    {
         [SetUp]
-        public void setup()
+        public virtual void setup()
         {
-            string[] args =
+            allArguments = new[]
             {
-                someClassName,
+                    someClassName,
                 "--tag", someTags,
                 "--failfast",
                 "--formatter=" + someFormatterName,
@@ -32,6 +34,32 @@ namespace DotNetTestNSpec.Tests.Parsing
                 "--formatterOptions:optName3=optValue3",
                 "--debugChannel",
             };
+
+            allOptions = new NSpecCommandLineOptions()
+            {
+                ClassName = someClassName,
+                Tags = someTags,
+                FailFast = true,
+                FormatterName = someFormatterName,
+                FormatterOptions = new Dictionary<string, string>()
+                {
+                    { "optName1", "optValue1" },
+                    { "optName2", "optName2" },
+                    { "optName3", "optValue3" },
+                },
+                DebugChannel = true,
+                UnknownArgs = new string[0],
+            };
+        }
+    }
+
+    public class when_only_nspec_args_found : describe_NSpecArgumentParser
+    {
+        public override void setup()
+        {
+            base.setup();
+
+            string[] args = allArguments;
 
             var parser = new NSpecArgumentParser();
 
@@ -41,21 +69,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_nspec_args_only()
         {
-            var expected = new NSpecCommandLineOptions()
-            {
-                ClassName = someClassName,
-                Tags = someTags,
-                FailFast = true,
-                FormatterName = someFormatterName,
-                FormatterOptions = new Dictionary<string, string>()
-                {
-                    { "optName1", "optValue1" },
-                    { "optName2", "optName2" },
-                    { "optName3", "optValue3" },
-                },
-                DebugChannel = true,
-                UnknownArgs = new string[0],
-            };
+            var expected = allOptions;
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -63,19 +77,13 @@ namespace DotNetTestNSpec.Tests.Parsing
 
     public class when_class_name_arg_missing : describe_NSpecArgumentParser
     {
-        [SetUp]
-        public void setup()
+        public override void setup()
         {
-            string[] args =
-            {
-                "--tag", someTags,
-                "--failfast",
-                "--formatter=" + someFormatterName,
-                "--formatterOptions:optName1=optValue1",
-                "--formatterOptions:optName2",
-                "--formatterOptions:optName3=optValue3",
-                "--debugChannel",
-            };
+            base.setup();
+
+            string[] args = allArguments
+                .Where(arg => arg != someClassName)
+                .ToArray();
 
             var parser = new NSpecArgumentParser();
 
@@ -85,21 +93,9 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_args_with_null_class_name()
         {
-            var expected = new NSpecCommandLineOptions()
-            {
-                ClassName = null,
-                Tags = someTags,
-                FailFast = true,
-                FormatterName = someFormatterName,
-                FormatterOptions = new Dictionary<string, string>()
-                {
-                    { "optName1", "optValue1" },
-                    { "optName2", "optName2" },
-                    { "optName3", "optValue3" },
-                },
-                DebugChannel = true,
-                UnknownArgs = new string[0],
-            };
+            allOptions.ClassName = null;
+
+            var expected = allOptions;
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -107,19 +103,13 @@ namespace DotNetTestNSpec.Tests.Parsing
 
     public class when_tags_arg_missing : describe_NSpecArgumentParser
     {
-        [SetUp]
-        public void setup()
+        public override void setup()
         {
-            string[] args =
-            {
-                someClassName,
-                "--failfast",
-                "--formatter=" + someFormatterName,
-                "--formatterOptions:optName1=optValue1",
-                "--formatterOptions:optName2",
-                "--formatterOptions:optName3=optValue3",
-                "--debugChannel",
-            };
+            base.setup();
+
+            string[] args = allArguments
+                .Where(arg => arg != "--tag" && arg != someTags)
+                .ToArray();
 
             var parser = new NSpecArgumentParser();
 
@@ -127,23 +117,11 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_args_with_empty_tags()
+        public void it_should_return_args_with_null_tags()
         {
-            var expected = new NSpecCommandLineOptions()
-            {
-                ClassName = someClassName,
-                Tags = null,
-                FailFast = true,
-                FormatterName = someFormatterName,
-                FormatterOptions = new Dictionary<string, string>()
-                {
-                    { "optName1", "optValue1" },
-                    { "optName2", "optName2" },
-                    { "optName3", "optValue3" },
-                },
-                DebugChannel = true,
-                UnknownArgs = new string[0],
-            };
+            allOptions.Tags = null;
+
+            var expected = allOptions;
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -151,19 +129,13 @@ namespace DotNetTestNSpec.Tests.Parsing
 
     public class when_failfast_arg_missing : describe_NSpecArgumentParser
     {
-        [SetUp]
-        public void setup()
+        public override void setup()
         {
-            string[] args =
-            {
-                someClassName,
-                "--tag", someTags,
-                "--formatter=" + someFormatterName,
-                "--formatterOptions:optName1=optValue1",
-                "--formatterOptions:optName2",
-                "--formatterOptions:optName3=optValue3",
-                "--debugChannel",
-            };
+            base.setup();
+
+            string[] args = allArguments
+                .Where(arg => arg != "--failfast")
+                .ToArray();
 
             var parser = new NSpecArgumentParser();
 
@@ -173,21 +145,9 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_args_with_failfast_false()
         {
-            var expected = new NSpecCommandLineOptions()
-            {
-                ClassName = someClassName,
-                Tags = someTags,
-                FailFast = false,
-                FormatterName = someFormatterName,
-                FormatterOptions = new Dictionary<string, string>()
-                {
-                    { "optName1", "optValue1" },
-                    { "optName2", "optName2" },
-                    { "optName3", "optValue3" },
-                },
-                DebugChannel = true,
-                UnknownArgs = new string[0],
-            };
+            allOptions.FailFast = false;
+
+            var expected = allOptions;
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -195,19 +155,13 @@ namespace DotNetTestNSpec.Tests.Parsing
 
     public class when_formatter_arg_missing : describe_NSpecArgumentParser
     {
-        [SetUp]
-        public void setup()
+        public override void setup()
         {
-            string[] args =
-            {
-                someClassName,
-                "--tag", someTags,
-                "--failfast",
-                "--formatterOptions:optName1=optValue1",
-                "--formatterOptions:optName2",
-                "--formatterOptions:optName3=optValue3",
-                "--debugChannel",
-            };
+            base.setup();
+
+            string[] args = allArguments
+                .Where(arg => !arg.StartsWith("--formatter=", StringComparison.Ordinal))
+                .ToArray();
 
             var parser = new NSpecArgumentParser();
 
@@ -217,21 +171,9 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_args_with_null_formatter()
         {
-            var expected = new NSpecCommandLineOptions()
-            {
-                ClassName = someClassName,
-                Tags = someTags,
-                FailFast = true,
-                FormatterName = null,
-                FormatterOptions = new Dictionary<string, string>()
-                {
-                    { "optName1", "optValue1" },
-                    { "optName2", "optName2" },
-                    { "optName3", "optValue3" },
-                },
-                DebugChannel = true,
-                UnknownArgs = new string[0],
-            };
+            allOptions.FormatterName = null;
+
+            var expected = allOptions;
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -239,17 +181,13 @@ namespace DotNetTestNSpec.Tests.Parsing
 
     public class when_formatter_options_arg_missing : describe_NSpecArgumentParser
     {
-        [SetUp]
-        public void setup()
+        public override void setup()
         {
-            string[] args =
-            {
-                someClassName,
-                "--tag", someTags,
-                "--failfast",
-                "--formatter=" + someFormatterName,
-                "--debugChannel",
-            };
+            base.setup();
+
+            string[] args = allArguments
+                .Where(arg => !arg.StartsWith("--formatterOptions:", StringComparison.Ordinal))
+                .ToArray();
 
             var parser = new NSpecArgumentParser();
 
@@ -259,16 +197,9 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_args_with_empty_formatter_options()
         {
-            var expected = new NSpecCommandLineOptions()
-            {
-                ClassName = someClassName,
-                Tags = someTags,
-                FailFast = true,
-                FormatterName = someFormatterName,
-                FormatterOptions = new Dictionary<string, string>(),
-                DebugChannel = true,
-                UnknownArgs = new string[0],
-            };
+            allOptions.FormatterOptions = new Dictionary<string, string>();
+
+            var expected = allOptions;
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -276,19 +207,13 @@ namespace DotNetTestNSpec.Tests.Parsing
 
     public class when_debug_channel_arg_missing : describe_NSpecArgumentParser
     {
-        [SetUp]
-        public void setup()
+        public override void setup()
         {
-            string[] args =
-            {
-                someClassName,
-                "--tag", someTags,
-                "--failfast",
-                "--formatter=" + someFormatterName,
-                "--formatterOptions:optName1=optValue1",
-                "--formatterOptions:optName2",
-                "--formatterOptions:optName3=optValue3",
-            };
+            base.setup();
+
+            string[] args = allArguments
+                .Where(arg => arg != "--debugChannel")
+                .ToArray();
 
             var parser = new NSpecArgumentParser();
 
@@ -298,21 +223,9 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_args_with_debug_channel_false()
         {
-            var expected = new NSpecCommandLineOptions()
-            {
-                ClassName = someClassName,
-                Tags = someTags,
-                FailFast = true,
-                FormatterName = someFormatterName,
-                FormatterOptions = new Dictionary<string, string>()
-                {
-                    { "optName1", "optValue1" },
-                    { "optName2", "optName2" },
-                    { "optName3", "optValue3" },
-                },
-                DebugChannel = false,
-                UnknownArgs = new string[0],
-            };
+            allOptions.DebugChannel = false;
+
+            var expected = allOptions;
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -320,9 +233,10 @@ namespace DotNetTestNSpec.Tests.Parsing
 
     public class when_unknown_args_found_after_classname : describe_NSpecArgumentParser
     {
-        [SetUp]
-        public void setup()
+        public override void setup()
         {
+            base.setup();
+
             string[] args =
             {
                 someClassName,
