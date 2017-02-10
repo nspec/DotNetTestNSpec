@@ -112,6 +112,31 @@ namespace DotNetTestNSpec.Tests
         }
     }
 
+    public class when_no_list_nor_wait_command_set : describe_RunnerFactory
+    {
+        public when_no_list_nor_wait_command_set()
+        {
+            opts = new CommandLineOptions()
+            {
+                DotNet = new CommandLineOptions.DotNetPart()
+                {
+                    Project = testAssemblyPath,
+                    DesignTime = true,
+                    Port = 123,
+                },
+                NSpec = new CommandLineOptions.NSpecPart(),
+            };
+        }
+
+        [Test]
+        public void it_should_throw()
+        {
+            Action act = () => factory.Create(args);
+
+            act.ShouldThrow<DotNetTestNSpecException>();
+        }
+    }
+
     public class when_project_null : describe_RunnerFactory
     {
         public when_project_null()
@@ -122,6 +147,7 @@ namespace DotNetTestNSpec.Tests
                 {
                     Project = null,
                 },
+                NSpec = new CommandLineOptions.NSpecPart(),
             };
         }
 

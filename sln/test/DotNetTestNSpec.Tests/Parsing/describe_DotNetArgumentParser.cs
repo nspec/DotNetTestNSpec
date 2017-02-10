@@ -24,6 +24,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                 projectValue,
                 "--designtime",
                 "--list",
+                "--wait-command",
                 "--parentProcessId", "123",
                 "--port", "456",
             };
@@ -41,6 +42,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                 Project = projectValue,
                 DesignTime = true,
                 List = true,
+                WaitCommand = true,
                 ParentProcessId = 123,
                 Port = 456,
                 NSpecArgs = new string[0],
@@ -58,6 +60,9 @@ namespace DotNetTestNSpec.Tests.Parsing
         {
             string[] args =
             {
+                "--designtime",
+                "--list",
+                "--wait-command",
                 "--parentProcessId", "123",
                 "--port", "456",
             };
@@ -73,6 +78,9 @@ namespace DotNetTestNSpec.Tests.Parsing
             var expected = new DotNetCommandLineOptions()
             {
                 Project = null,
+                DesignTime = true,
+                List = true,
+                WaitCommand = true,
                 ParentProcessId = 123,
                 Port = 456,
                 NSpecArgs = new string[0],
@@ -91,6 +99,8 @@ namespace DotNetTestNSpec.Tests.Parsing
             string[] args =
             {
                 projectValue,
+                "--list",
+                "--wait-command",
                 "--parentProcessId", "123",
                 "--port", "456",
             };
@@ -101,12 +111,14 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_args_with_null_project()
+        public void it_should_return_args_with_design_time_false()
         {
             var expected = new DotNetCommandLineOptions()
             {
                 Project = projectValue,
                 DesignTime = false,
+                List = true,
+                WaitCommand = true,
                 ParentProcessId = 123,
                 Port = 456,
                 NSpecArgs = new string[0],
