@@ -13,7 +13,18 @@ namespace DotNetTestNSpec.Tests.Parsing
     {
         protected NSpecCommandLineOptions actual = null;
 
-        protected string[] allArguments;
+        protected string[] allArguments =
+        {
+            someClassName,
+            "--tag", someTags,
+            "--failfast",
+            "--formatter=" + someFormatterName,
+            "--formatterOptions:optName1=optValue1",
+            "--formatterOptions:optName2",
+            "--formatterOptions:optName3=optValue3",
+            "--debugChannel",
+        };
+
         protected NSpecCommandLineOptions allOptions;
 
         protected const string someClassName = @"someClassName";
@@ -23,18 +34,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         [SetUp]
         public virtual void setup()
         {
-            allArguments = new[]
-            {
-                    someClassName,
-                "--tag", someTags,
-                "--failfast",
-                "--formatter=" + someFormatterName,
-                "--formatterOptions:optName1=optValue1",
-                "--formatterOptions:optName2",
-                "--formatterOptions:optName3=optValue3",
-                "--debugChannel",
-            };
-
             allOptions = new NSpecCommandLineOptions()
             {
                 ClassName = someClassName,
@@ -69,32 +68,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_nspec_args_only()
         {
-            var expected = allOptions;
-
-            actual.ShouldBeEquivalentTo(expected);
-        }
-    }
-
-    public class when_class_name_arg_missing : describe_NSpecArgumentParser
-    {
-        public override void setup()
-        {
-            base.setup();
-
-            string[] args = allArguments
-                .Where(arg => arg != someClassName)
-                .ToArray();
-
-            var parser = new NSpecArgumentParser();
-
-            actual = parser.Parse(args);
-        }
-
-        [Test]
-        public void it_should_return_args_with_null_class_name()
-        {
-            allOptions.ClassName = null;
-
             var expected = allOptions;
 
             actual.ShouldBeEquivalentTo(expected);
@@ -231,26 +204,19 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
     }
 
-    public class when_unknown_args_found_after_classname : describe_NSpecArgumentParser
+    public class when_unknown_args_found_after_class_name : describe_NSpecArgumentParser
     {
         public override void setup()
         {
             base.setup();
 
-            string[] args =
-            {
-                someClassName,
-                "unknown1",
-                "--tag", someTags,
-                "--failfast",
-                "unknown2",
-                "--formatter=" + someFormatterName,
-                "--formatterOptions:optName1=optValue1",
-                "--formatterOptions:optName2",
-                "--formatterOptions:optName3=optValue3",
-                "--debugChannel",
-                "unknown3",
-            };
+            var argList = allArguments.ToList();
+
+            argList.Insert(1, "unknown1");
+            argList.Insert(5, "unknown2");
+            argList.Add("unknown3");
+
+            string[] args = argList.ToArray();
 
             var parser = new NSpecArgumentParser();
 
@@ -282,6 +248,55 @@ namespace DotNetTestNSpec.Tests.Parsing
             };
 
             actual.ShouldBeEquivalentTo(expected);
+        }
+    }
+
+    public class when_class_name_arg_missing : describe_NSpecArgumentParser
+    {
+        readonly string[] valuedArguments =
+        {
+            "--tag",
+        };
+
+        [DatapointSource]
+        public IEnumerable<string[]> ArgumentRotations
+        {
+            get
+            {
+                var queue = new Queue<string>(allArguments.Skip(1));
+
+                for (int i = 0; i < queue.Count; i++)
+                {
+                    if (SequenceIsAllowed(queue))
+                    {
+                        yield return queue.ToArray();
+                    }
+
+                    queue.Enqueue(queue.Dequeue());
+                }
+            }
+        }
+
+        [Theory]
+        public void it_should_return_args_with_null_class_name(string[] args)
+        {
+            var parser = new NSpecArgumentParser();
+
+            actual = parser.Parse(args);
+
+            allOptions.ClassName = null;
+
+            var expected = allOptions;
+
+            actual.ShouldBeEquivalentTo(expected);
+        }
+
+        bool SequenceIsAllowed(Queue<string> queue)
+        {
+            bool lastArgumentNeedsValue =
+                valuedArguments.Contains(queue.Last());
+
+            return !lastArgumentNeedsValue;
         }
     }
 }

@@ -28,7 +28,7 @@ namespace DotNetTestNSpec.Parsing
 
             string firstArg = dotNetTestArgs.FirstOrDefault();
 
-            if (!knownArgKeys.Contains(firstArg))
+            if (IsUnknownArgument(firstArg))
             {
                 options.Project = firstArg;
 
@@ -61,7 +61,12 @@ namespace DotNetTestNSpec.Parsing
             return options;
         }
 
-        string[] knownArgKeys;
+        bool IsUnknownArgument(string arg)
+        {
+            return !knownArgKeys.Contains(arg);
+        }
+
+        readonly string[] knownArgKeys;
 
         const string designTimeArgKey = "--designtime";
         const string listArgKey = "--list";

@@ -8,13 +8,17 @@ namespace DotNetTestNSpec.Parsing
     {
         public NSpecArgumentParser()
         {
-            knownArgPrefixes = new[]
+            knownArgKeys = new[]
             {
                 tagsKey,
                 failFastKey,
+                debugChannelKey,
+            };
+
+            knownArgPrefixes = new[]
+            {
                 formatterPrefix,
                 formatterOptionsPrefix,
-                debugChannelKey,
             };
         }
 
@@ -39,7 +43,7 @@ namespace DotNetTestNSpec.Parsing
 
             string firstArg = args.FirstOrDefault();
 
-            if (!knownArgPrefixes.Contains(firstArg))
+            if (IsUnknownArgument(firstArg))
             {
                 options.ClassName = firstArg;
 
@@ -94,7 +98,19 @@ namespace DotNetTestNSpec.Parsing
             return options;
         }
 
-        string[] knownArgPrefixes;
+        bool IsUnknownArgument(string arg)
+        {
+            if (knownArgKeys.Contains(arg)) return false;
+
+            bool isKnownPrefix = knownArgPrefixes
+                .Where(pfx => arg.StartsWith(pfx, StringComparison.Ordinal))
+                .Any();
+
+            return !isKnownPrefix;
+        }
+
+        readonly string[] knownArgKeys;
+        readonly string[] knownArgPrefixes;
 
         const string tagsKey = "--tag";
         const string failFastKey = "--failfast";
