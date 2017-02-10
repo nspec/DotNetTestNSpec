@@ -2,6 +2,7 @@
 using FluentAssertions;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DotNetTestNSpec.Tests.Parsing
@@ -12,7 +13,16 @@ namespace DotNetTestNSpec.Tests.Parsing
     {
         protected DotNetCommandLineOptions actual = null;
 
-        protected string[] allArguments;
+        protected readonly string[] allArguments =
+        {
+            someProjectPath,
+            "--designtime",
+            "--list",
+            "--wait-command",
+            "--parentProcessId", "123",
+            "--port", "456",
+        };
+
         protected DotNetCommandLineOptions allOptions;
 
         protected const string someProjectPath = @"Path\To\Some\Project";
@@ -20,16 +30,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         [SetUp]
         public virtual void setup()
         {
-            allArguments = new string[]
-            {
-                someProjectPath,
-                "--designtime",
-                "--list",
-                "--wait-command",
-                "--parentProcessId", "123",
-                "--port", "456",
-            };
-
             allOptions = new DotNetCommandLineOptions()
             {
                 Project = someProjectPath,
@@ -60,32 +60,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_dotnet_test_args_only()
         {
-            var expected = allOptions;
-
-            actual.ShouldBeEquivalentTo(expected);
-        }
-    }
-
-    public class when_dotnet_test_project_arg_missing : describe_DotNetArgumentParser
-    {
-        public override void setup()
-        {
-            base.setup();
-
-            string[] args = allArguments
-                .Where(arg => arg != someProjectPath)
-                .ToArray();
-
-            var parser = new DotNetArgumentParser();
-
-            actual = parser.Parse(args);
-        }
-
-        [Test]
-        public void it_should_return_args_with_null_project()
-        {
-            allOptions.Project = null;
-
             var expected = allOptions;
 
             actual.ShouldBeEquivalentTo(expected);
@@ -282,6 +256,56 @@ namespace DotNetTestNSpec.Tests.Parsing
             };
 
             actual.ShouldBeEquivalentTo(expected);
+        }
+    }
+
+    public class when_dotnet_test_project_arg_missing : describe_DotNetArgumentParser
+    {
+        readonly string[] valuedArguments =
+        {
+            "--parentProcessId",
+            "--port",
+        };
+
+        [DatapointSource]
+        public IEnumerable<string[]> ArgumentRotations
+        {
+            get
+            {
+                var queue = new Queue<string>(allArguments.Skip(1));
+
+                for (int i = 0; i < queue.Count; i++)
+                {
+                    if (SequenceIsAllowed(queue))
+                    {
+                        yield return queue.ToArray();
+                    }
+
+                    queue.Enqueue(queue.Dequeue());
+                }
+            }
+        }
+
+        [Theory]
+        public void it_should_return_args_with_null_project(string[] args)
+        {
+            var parser = new DotNetArgumentParser();
+
+            actual = parser.Parse(args);
+
+            allOptions.Project = null;
+
+            var expected = allOptions;
+
+            actual.ShouldBeEquivalentTo(expected);
+        }
+
+        bool SequenceIsAllowed(Queue<string> queue)
+        {
+            bool lastArgumentNeedsValue =
+                valuedArguments.Contains(queue.Last());
+
+            return !lastArgumentNeedsValue;
         }
     }
 }

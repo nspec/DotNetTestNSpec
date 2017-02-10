@@ -10,6 +10,8 @@ namespace DotNetTestNSpec.Parsing
             knownArgKeys = new[]
             {
                 designTimeArgKey,
+                listArgKey,
+                waitCommandArgKey,
                 parentProcessArgKey,
                 portArgKey,
             };
