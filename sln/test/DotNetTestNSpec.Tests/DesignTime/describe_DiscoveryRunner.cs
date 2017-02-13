@@ -29,16 +29,22 @@ namespace DotNetTestNSpec.Tests.DesignTime
 
             runner = new DiscoveryRunner(testAssemblyPath, adapter.Object, controllerProxy.Object);
         }
+
+        protected string BuildFullName(int i)
+        {
+            return $"nspec. A class. A context. Some Example-{i}";
+        }
     }
 
-    public class when_started : describe_DiscoveryRunner
+    public class when_discovery_started : describe_DiscoveryRunner
     {
-        List<Test> foundTests;
+        List<Test> actualFoundTests;
 
-        readonly IEnumerable<DiscoveredExample> discoveredExamples;
         readonly IEnumerable<Test> expectedTests;
 
-        public when_started()
+        readonly IEnumerable<DiscoveredExample> discoveredExamples;
+
+        public when_discovery_started()
         {
             var indexes = Enumerable.Range(1, 3);
 
@@ -46,7 +52,7 @@ namespace DotNetTestNSpec.Tests.DesignTime
                 from i in indexes
                 select new DiscoveredExample()
                 {
-                    FullName = $"nspec. A class. A context. Some Example-{i}",
+                    FullName = BuildFullName(i),
                     SourceFilePath = $@"some\path\to\code-{i}",
                     SourceLineNumber = 10 * i,
                     SourceAssembly = codeAssemblyPath,
@@ -57,7 +63,7 @@ namespace DotNetTestNSpec.Tests.DesignTime
                 from i in indexes
                 select new Test()
                 {
-                    FullyQualifiedName = $"nspec. A class. A context. Some Example-{i}",
+                    FullyQualifiedName = BuildFullName(i),
                     DisplayName = $"A class › A context › Some Example-{i}",
                     CodeFilePath = $@"some\path\to\code-{i}",
                     LineNumber = 10 * i,
@@ -72,10 +78,10 @@ namespace DotNetTestNSpec.Tests.DesignTime
 
             adapter.Setup(a => a.TestFound(It.IsAny<Test>())).Callback((Test test) =>
             {
-                foundTests.Add(test);
+                actualFoundTests.Add(test);
             });
 
-            foundTests = new List<Test>();
+            actualFoundTests = new List<Test>();
 
             runner.Start();
         }
@@ -89,7 +95,7 @@ namespace DotNetTestNSpec.Tests.DesignTime
         [Test]
         public void it_should_notify_each_discovered_test()
         {
-            foundTests.ShouldBeEquivalentTo(expectedTests);
+            actualFoundTests.ShouldBeEquivalentTo(expectedTests);
         }
 
         [Test]

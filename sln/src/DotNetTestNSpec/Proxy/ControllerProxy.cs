@@ -49,6 +49,15 @@ namespace DotNetTestNSpec.Proxy
             return examples;
         }
 
+        public void Run(
+            string testAssemblyPath,
+            IEnumerable<string> exampleFullNames,
+            IRunSink sink)
+        {
+            // TODO
+            throw new NotImplementedException();
+        }
+
         static object CreateController(Assembly nspecLibraryAssembly)
         {
             try

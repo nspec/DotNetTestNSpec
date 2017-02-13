@@ -12,5 +12,10 @@ namespace DotNetTestNSpec.Proxy
             bool failFast);
 
         IEnumerable<DiscoveredExample> List(string testAssemblyPath);
+
+        void Run(
+            string testAssemblyPath,
+            IEnumerable<string> exampleFullNames,
+            IRunSink sink);
     }
 }

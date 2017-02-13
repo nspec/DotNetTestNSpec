@@ -53,7 +53,9 @@ namespace DotNetTestNSpec
             }
             else if (commandLineOptions.DotNet.WaitCommand)
             {
-                runner = new ExecutionRunner(testAssemblyPath, controllerProxy);
+                var adapter = new ExecutionAdapter(channel);
+
+                runner = new ExecutionRunner(testAssemblyPath, adapter, controllerProxy);
             }
             else
             {
