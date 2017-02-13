@@ -13,9 +13,9 @@ namespace DotNetTestNSpec.Proxy
 
         IEnumerable<DiscoveredExample> List(string testAssemblyPath);
 
-        void Run(
+        void Execute(
             string testAssemblyPath,
             IEnumerable<string> exampleFullNames,
-            IRunSink sink);
+            IExecutionSink sink);
     }
 }

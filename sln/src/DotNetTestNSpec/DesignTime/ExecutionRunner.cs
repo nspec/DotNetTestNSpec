@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace DotNetTestNSpec.DesignTime
 {
-    public class ExecutionRunner : ITestRunner, IRunSink
+    public class ExecutionRunner : ITestRunner, IExecutionSink
     {
         public ExecutionRunner(string testAssemblyPath, IExecutionAdapter adapter,
             IControllerProxy controllerProxy)
@@ -25,7 +25,7 @@ namespace DotNetTestNSpec.DesignTime
 
             var requestedTestFullNames = adapter.Connect();
 
-            controllerProxy.Run(testAssemblyPath, requestedTestFullNames, this);
+            controllerProxy.Execute(testAssemblyPath, requestedTestFullNames, this);
 
             adapter.Disconnect();
 

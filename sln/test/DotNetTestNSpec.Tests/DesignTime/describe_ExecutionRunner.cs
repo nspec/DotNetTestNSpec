@@ -116,8 +116,8 @@ namespace DotNetTestNSpec.Tests.DesignTime
             base.setup();
 
             controllerProxy
-                .Setup(c => c.Run(testAssemblyPath, requestedTestFullNames, It.IsAny<IRunSink>()))
-                .Callback((string _, IEnumerable<string> __, IRunSink runSink) =>
+                .Setup(c => c.Execute(testAssemblyPath, requestedTestFullNames, It.IsAny<IExecutionSink>()))
+                .Callback((string _, IEnumerable<string> __, IExecutionSink runSink) =>
                 {
                     foreach (var fullName in requestedTestFullNames)
                     {

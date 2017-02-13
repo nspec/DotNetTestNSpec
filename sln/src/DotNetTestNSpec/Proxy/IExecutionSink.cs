@@ -1,6 +1,6 @@
 ﻿namespace DotNetTestNSpec.Proxy
 {
-    public interface IRunSink
+    public interface IExecutionSink
     {
         void ExampleStarted(DiscoveredExample example);
 

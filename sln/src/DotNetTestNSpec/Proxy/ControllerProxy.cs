@@ -20,7 +20,7 @@ namespace DotNetTestNSpec.Proxy
             IDictionary<string, string> formatterOptions,
             bool failFast)
         {
-            object methodResult = ExecuteMethod(controller, runMethodName,
+            object methodResult = InvokeMethod(controller, runMethodName,
                 testAssemblyPath, tags, formatterClassName, formatterOptions, failFast);
 
             int nrOfFailures = (int)methodResult;
@@ -30,7 +30,7 @@ namespace DotNetTestNSpec.Proxy
 
         public IEnumerable<DiscoveredExample> List(string testAssemblyPath)
         {
-            object methodResult = ExecuteMethod(controller, listMethodName,
+            object methodResult = InvokeMethod(controller, listMethodName,
                 testAssemblyPath);
 
             string jsonResult = (string)methodResult;
@@ -49,19 +49,19 @@ namespace DotNetTestNSpec.Proxy
             return examples;
         }
 
-        public void Run(
+        public void Execute(
             string testAssemblyPath,
             IEnumerable<string> exampleFullNames,
-            IRunSink sink)
+            IExecutionSink sink)
         {
             Action<string> onExampleStarted = jsonArg => OnExampleStarted(sink, jsonArg);
             Action<string> onExampleCompleted = jsonArg => OnExampleCompleted(sink, jsonArg);
 
-            ExecuteMethod(controller, runMethodName,
+            InvokeMethod(controller, executeMethodName,
                 testAssemblyPath, exampleFullNames, onExampleStarted, onExampleCompleted);
         }
 
-        static void OnExampleStarted(IRunSink sink, string jsonArg)
+        static void OnExampleStarted(IExecutionSink sink, string jsonArg)
         {
             DiscoveredExample example;
 
@@ -72,13 +72,13 @@ namespace DotNetTestNSpec.Proxy
             catch (Exception ex)
             {
                 throw new DotNetTestNSpecException(unknownArgumentErrorMessage
-                    .With(runMethodName + ": " + nameof(OnExampleStarted), jsonArg), ex);
+                    .With(executeMethodName + ": " + nameof(OnExampleStarted), jsonArg), ex);
             }
 
             sink.ExampleStarted(example);
         }
 
-        static void OnExampleCompleted(IRunSink sink, string jsonArg)
+        static void OnExampleCompleted(IExecutionSink sink, string jsonArg)
         {
             ExecutedExample example;
 
@@ -89,7 +89,7 @@ namespace DotNetTestNSpec.Proxy
             catch (Exception ex)
             {
                 throw new DotNetTestNSpecException(unknownArgumentErrorMessage
-                    .With(runMethodName + ": " + nameof(OnExampleCompleted), jsonArg), ex);
+                    .With(executeMethodName + ": " + nameof(OnExampleCompleted), jsonArg), ex);
             }
 
             sink.ExampleCompleted(example);
@@ -111,7 +111,7 @@ namespace DotNetTestNSpec.Proxy
             }
         }
 
-        static object ExecuteMethod(object controller, string methodName, params object[] args)
+        static object InvokeMethod(object controller, string methodName, params object[] args)
         {
             var controllerType = controller.GetType();
 
@@ -133,6 +133,7 @@ namespace DotNetTestNSpec.Proxy
 
         const string runMethodName = "Run";
         const string listMethodName = "List";
+        const string executeMethodName = "Execute";
 
         const string unknownDriverErrorMessage =
             "Could not find known driver ({0}) in referenced NSpec assembly: " +
