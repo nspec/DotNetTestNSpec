@@ -54,8 +54,45 @@ namespace DotNetTestNSpec.Proxy
             IEnumerable<string> exampleFullNames,
             IRunSink sink)
         {
-            // TODO
-            throw new NotImplementedException();
+            Action<string> onExampleStarted = jsonArg => OnExampleStarted(sink, jsonArg);
+            Action<string> onExampleCompleted = jsonArg => OnExampleCompleted(sink, jsonArg);
+
+            ExecuteMethod(controller, runMethodName,
+                testAssemblyPath, exampleFullNames, onExampleStarted, onExampleCompleted);
+        }
+
+        static void OnExampleStarted(IRunSink sink, string jsonArg)
+        {
+            DiscoveredExample example;
+
+            try
+            {
+                example = JsonConvert.DeserializeObject<DiscoveredExample>(jsonArg);
+            }
+            catch (Exception ex)
+            {
+                throw new DotNetTestNSpecException(unknownArgumentErrorMessage
+                    .With(runMethodName + ": " + nameof(OnExampleStarted), jsonArg), ex);
+            }
+
+            sink.ExampleStarted(example);
+        }
+
+        static void OnExampleCompleted(IRunSink sink, string jsonArg)
+        {
+            ExecutedExample example;
+
+            try
+            {
+                example = JsonConvert.DeserializeObject<ExecutedExample>(jsonArg);
+            }
+            catch (Exception ex)
+            {
+                throw new DotNetTestNSpecException(unknownArgumentErrorMessage
+                    .With(runMethodName + ": " + nameof(OnExampleCompleted), jsonArg), ex);
+            }
+
+            sink.ExampleCompleted(example);
         }
 
         static object CreateController(Assembly nspecLibraryAssembly)
@@ -107,5 +144,9 @@ namespace DotNetTestNSpec.Proxy
             "Could not convert serialized result from known method ({0}) in referenced NSpec assembly: " +
             "please double check version compatibility between this runner and referenced NSpec library." +
             "Result: {1}.";
+        const string unknownArgumentErrorMessage =
+            "Could not convert serialized argument from known callback ({0}) in referenced NSpec assembly: " +
+            "please double check version compatibility between this runner and referenced NSpec library." +
+            "Argument: {1}.";
     }
 }
