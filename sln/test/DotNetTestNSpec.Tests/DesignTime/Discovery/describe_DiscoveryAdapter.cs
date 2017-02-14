@@ -69,7 +69,7 @@ namespace DotNetTestNSpec.Tests.DesignTime.Discovery
         }
 
         [TestCase]
-        public void it_should_send_test_found_payload()
+        public void it_should_send_test_found_message()
         {
             string expected = JsonConvert.SerializeObject(new Message()
             {
@@ -91,7 +91,7 @@ namespace DotNetTestNSpec.Tests.DesignTime.Discovery
         }
 
         [TestCase]
-        public void it_should_send_test_completed_payload()
+        public void it_should_send_test_completed_message()
         {
             string expected = JsonConvert.SerializeObject(new Message()
             {

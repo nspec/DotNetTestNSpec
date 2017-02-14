@@ -28,6 +28,12 @@ namespace DotNetTestNSpec.Network
             binaryStream.Write(message);
         }
 
+        public string Receive()
+        {
+            // TODO
+            throw new System.NotImplementedException();
+        }
+
         public void Close()
         {
             binaryStream.Flush();

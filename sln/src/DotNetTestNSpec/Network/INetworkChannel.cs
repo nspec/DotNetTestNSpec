@@ -6,6 +6,8 @@
 
         void Send(string message);
 
+        string Receive();
+
         void Close();
     }
 }

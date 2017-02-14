@@ -34,6 +34,12 @@ namespace DotNetTestNSpec.Dev.Network
             Console.WriteLine("--- END ---");
         }
 
+        public string Receive()
+        {
+            // TODO
+            throw new NotImplementedException();
+        }
+
         public void Close()
         {
             Console.WriteLine(nameof(Close));

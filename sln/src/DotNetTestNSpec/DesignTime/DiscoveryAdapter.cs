@@ -19,29 +19,28 @@ namespace DotNetTestNSpec.DesignTime
 
         public void TestFound(Test test)
         {
-            var message = new Message()
+            SendMessage(new Message()
             {
                 MessageType = testFoundMessageType,
                 Payload = JToken.FromObject(test),
-            };
-
-            string serialized = JsonConvert.SerializeObject(message);
-
-            channel.Send(serialized);
+            });
         }
 
         public void Disconnect()
         {
-            var message = new Message()
+            SendMessage(new Message()
             {
                 MessageType = testCompletedMessageType,
-            };
+            });
 
+            channel.Close();
+        }
+
+        void SendMessage(Message message)
+        {
             string serialized = JsonConvert.SerializeObject(message);
 
             channel.Send(serialized);
-
-            channel.Close();
         }
 
         readonly INetworkChannel channel;
