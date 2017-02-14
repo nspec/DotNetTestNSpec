@@ -20,34 +20,56 @@ namespace DotNetTestNSpec.Network
 
             networkStream = new NetworkStream(socket);
 
-            binaryStream = new BinaryWriter(networkStream);
+            binaryWriter = new BinaryWriter(networkStream);
+            binaryReader = new BinaryReader(networkStream);
         }
 
         public void Send(string message)
         {
-            binaryStream.Write(message);
+            binaryWriter.Write(message);
         }
 
         public string Receive()
         {
-            // TODO
-            throw new System.NotImplementedException();
+            return binaryReader.ReadString();
         }
 
         public void Close()
         {
-            binaryStream.Flush();
-#if NET451
-            binaryStream.Close();
-#endif
-            binaryStream.Dispose();
+            DisposeReader();
+            DisposeWriter();
+            DisposeNetwork();
+            DisposeSocket();
+        }
 
+        void DisposeReader()
+        {
+#if NET451
+            binaryReader.Close();
+#endif
+            binaryReader.Dispose();
+        }
+
+        void DisposeWriter()
+        {
+            binaryWriter.Flush();
+#if NET451
+            binaryWriter.Close();
+#endif
+            binaryWriter.Dispose();
+        }
+
+        private void DisposeNetwork()
+        {
             networkStream.Flush();
 #if NET451
             networkStream.Close();
 #endif
             networkStream.Dispose();
+        }
 
+        private void DisposeSocket()
+        {
             socket.Shutdown(SocketShutdown.Both);
 #if NET451
             socket.Close();
@@ -57,7 +79,8 @@ namespace DotNetTestNSpec.Network
 
         Socket socket;
         NetworkStream networkStream;
-        BinaryWriter binaryStream;
+        BinaryWriter binaryWriter;
+        BinaryReader binaryReader;
 
         readonly int port;
     }
