@@ -7,7 +7,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DotNetTestNSpec.Tests.DesignTime
+namespace DotNetTestNSpec.Tests.DesignTime.Execution
 {
     [TestFixture]
     [Category("ExecutionRunner")]
@@ -36,7 +36,7 @@ namespace DotNetTestNSpec.Tests.DesignTime
         }
     }
 
-    public class when_execution_started : describe_ExecutionRunner
+    public class when_started : describe_ExecutionRunner
     {
         List<Test> actualStartedTests;
         List<TestResult> actualCompletedResults;
@@ -51,7 +51,7 @@ namespace DotNetTestNSpec.Tests.DesignTime
         const string someErrorMessage = "Some error message";
         const string someErrorStackTrace = "Some stack trace";
 
-        public when_execution_started()
+        public when_started()
         {
             var indexes = Enumerable.Range(1, 3);
 

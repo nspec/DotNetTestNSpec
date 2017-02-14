@@ -7,7 +7,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DotNetTestNSpec.Tests.DesignTime
+namespace DotNetTestNSpec.Tests.DesignTime.Discovery
 {
     [TestFixture]
     [Category("DiscoveryRunner")]
@@ -36,7 +36,7 @@ namespace DotNetTestNSpec.Tests.DesignTime
         }
     }
 
-    public class when_discovery_started : describe_DiscoveryRunner
+    public class when_started : describe_DiscoveryRunner
     {
         List<Test> actualFoundTests;
 
@@ -44,7 +44,7 @@ namespace DotNetTestNSpec.Tests.DesignTime
 
         readonly IEnumerable<DiscoveredExample> discoveredExamples;
 
-        public when_discovery_started()
+        public when_started()
         {
             var indexes = Enumerable.Range(1, 3);
 

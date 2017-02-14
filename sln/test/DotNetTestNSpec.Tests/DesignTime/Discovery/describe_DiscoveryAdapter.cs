@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using System.Collections.Generic;
 
-namespace DotNetTestNSpec.Tests.DesignTime
+namespace DotNetTestNSpec.Tests.DesignTime.Discovery
 {
     [TestFixture]
     [Category("DiscoveryAdapter")]
