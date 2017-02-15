@@ -17,14 +17,15 @@ namespace DotNetTestNSpec
 #if true
             // TODO remove when feature is implemented
 
-            Console.WriteLine("Input arguments: begin");
+            Console.WriteLine("-- BEGIN --");
+            Console.WriteLine("Input arguments:");
 
             foreach (string arg in args)
             {
                 Console.WriteLine(arg);
             }
 
-            Console.WriteLine("Input arguments: end.");
+            Console.WriteLine("--- END ---");
 #endif
 
             var argumentParser = new ArgumentParser();

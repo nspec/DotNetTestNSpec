@@ -35,8 +35,8 @@ namespace DotNetTestNSpec.Dev.Network
                 loggedMessage = message;
             }
 
-            Console.WriteLine($"{nameof(Send)}");
             Console.WriteLine("-- BEGIN --");
+            Console.WriteLine("Debug Channel, Send:");
             Console.WriteLine(loggedMessage);
             Console.WriteLine("--- END ---");
         }
@@ -58,8 +58,8 @@ namespace DotNetTestNSpec.Dev.Network
 
             string loggedMessage = JsonConvert.SerializeObject(message, jsonSettings);
 
-            Console.WriteLine($"{nameof(Receive)}");
             Console.WriteLine("-- BEGIN --");
+            Console.WriteLine("Debug Channel, Receive:");
             Console.WriteLine(loggedMessage);
             Console.WriteLine("--- END ---");
 
