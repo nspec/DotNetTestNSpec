@@ -282,14 +282,12 @@ namespace DotNetTestNSpec.Tests.Parsing
         {
             base.setup();
 
-            string[] args =
-            {
-                Data.DotNet.someProjectPath,
-                "unknown1",
-                "--parentProcessId", Data.DotNet.someProcessIdArg,
-                "--port", Data.DotNet.somePortArg,
-                "unknown2",
-            };
+            var argList = allArguments.ToList();
+
+            argList.Insert(1, "unknown1");
+            argList.Add("unknown2");
+
+            string[] args = argList.ToArray();
 
             actual = parser.Parse(args);
         }
@@ -297,12 +295,8 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_dotnet_test_opts_with_unknown_args()
         {
-            var expected = new DotNetCommandLineOptions()
+            var expected = new DotNetCommandLineOptions(Data.DotNet.allOptions)
             {
-                Project = Data.DotNet.someProjectPath,
-                ParentProcessId = Data.DotNet.someProcessId,
-                Port = Data.DotNet.somePort,
-                NSpecArgs = new string[0],
                 UnknownArgs = new string[]
                 {
                     "unknown1",
