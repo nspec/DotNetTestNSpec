@@ -11,6 +11,8 @@ namespace DotNetTestNSpec.Tests.Parsing
     [Category("DotNetArgumentParser")]
     public abstract class describe_DotNetArgumentParser
     {
+        protected DotNetArgumentParser parser;
+
         protected DotNetCommandLineOptions actual = null;
 
         protected readonly string[] allArguments =
@@ -41,6 +43,8 @@ namespace DotNetTestNSpec.Tests.Parsing
                 NSpecArgs = new string[0],
                 UnknownArgs = new string[0],
             };
+
+            parser = new DotNetArgumentParser();
         }
     }
 
@@ -51,8 +55,6 @@ namespace DotNetTestNSpec.Tests.Parsing
             base.setup();
 
             string[] args = allArguments;
-
-            var parser = new DotNetArgumentParser();
 
             actual = parser.Parse(args);
         }
@@ -76,8 +78,6 @@ namespace DotNetTestNSpec.Tests.Parsing
                 .Where(arg => arg != "--designtime")
                 .ToArray();
 
-            var parser = new DotNetArgumentParser();
-
             actual = parser.Parse(args);
         }
 
@@ -92,56 +92,133 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
     }
 
-    public class when_some_dotnet_test_arg_missing : describe_DotNetArgumentParser
+    public class when_dotnet_test_list_arg_missing : describe_DotNetArgumentParser
     {
         public override void setup()
         {
             base.setup();
 
-            string[] args =
-            {
-                someProjectPath,
-                "--parentProcessId", "123",
-            };
-
-            var parser = new DotNetArgumentParser();
+            string[] args = allArguments
+                .Where(arg => arg != "--list")
+                .ToArray();
 
             actual = parser.Parse(args);
         }
 
         [Test]
-        public void it_should_return_found_args_only()
+        public void it_should_return_args_with_list_false()
         {
-            var expected = new DotNetCommandLineOptions()
-            {
-                Project = someProjectPath,
-                ParentProcessId = 123,
-                Port = null,
-                NSpecArgs = new string[0],
-                UnknownArgs = new string[0],
-            };
+            allOptions.List = false;
+
+            var expected = allOptions;
 
             actual.ShouldBeEquivalentTo(expected);
         }
     }
 
-    public class when_dotnet_test_arg_value_missing : describe_DotNetArgumentParser
+    public class when_dotnet_test_wait_command_arg_missing : describe_DotNetArgumentParser
     {
-        DotNetArgumentParser parser = null;
+        public override void setup()
+        {
+            base.setup();
+
+            string[] args = allArguments
+                .Where(arg => arg != "--wait-command")
+                .ToArray();
+
+            actual = parser.Parse(args);
+        }
+
+        [Test]
+        public void it_should_return_args_with_wait_command_false()
+        {
+            allOptions.WaitCommand = false;
+
+            var expected = allOptions;
+
+            actual.ShouldBeEquivalentTo(expected);
+        }
+    }
+
+    public class when_dotnet_test_parent_process_id_arg_missing : describe_DotNetArgumentParser
+    {
+        public override void setup()
+        {
+            base.setup();
+
+            string[] args = allArguments
+                .Where(arg => arg != "--parentProcessId" && arg != "123")
+                .ToArray();
+
+            actual = parser.Parse(args);
+        }
+
+        [Test]
+        public void it_should_return_args_with_parent_process_id_null()
+        {
+            allOptions.ParentProcessId = null;
+
+            var expected = allOptions;
+
+            actual.ShouldBeEquivalentTo(expected);
+        }
+    }
+
+    public class when_dotnet_test_parent_process_id_arg_incomplete : describe_DotNetArgumentParser
+    {
         string[] args = null;
 
         public override void setup()
         {
             base.setup();
 
-            args = new string[]
-            {
-                someProjectPath,
-                "--parentProcessId", "123",
-                "--port",
-            };
+            args = allArguments
+                .Where(arg => arg != "123")
+                .ToArray();
+        }
 
-            parser = new DotNetArgumentParser();
+        [Test]
+        public void it_should_throw()
+        {
+            Assert.Throws<ArgumentException>(() => parser.Parse(args));
+        }
+    }
+
+    public class when_dotnet_test_port_arg_missing : describe_DotNetArgumentParser
+    {
+        public override void setup()
+        {
+            base.setup();
+
+            string[] args = allArguments
+                .Where(arg => arg != "--port" && arg != "456")
+                .ToArray();
+
+            actual = parser.Parse(args);
+        }
+
+        [Test]
+        public void it_should_return_args_with_port_null()
+        {
+            allOptions.Port = null;
+
+            var expected = allOptions;
+
+            actual.ShouldBeEquivalentTo(expected);
+        }
+    }
+
+    public class when_dotnet_test_port_arg_incomplete : describe_DotNetArgumentParser
+    {
+        string[] args = null;
+
+        public override void setup()
+        {
+            base.setup();
+
+            args = allArguments
+                .Where(arg => arg != "456")
+                .ToArray();
         }
 
         [Test]
@@ -168,8 +245,6 @@ namespace DotNetTestNSpec.Tests.Parsing
             string[] args = allArguments
                 .Concat(furtherArgs)
                 .ToArray();
-
-            var parser = new DotNetArgumentParser();
 
             actual = parser.Parse(args);
         }
@@ -205,8 +280,6 @@ namespace DotNetTestNSpec.Tests.Parsing
                 .Concat(furtherArgs)
                 .ToArray();
 
-            var parser = new DotNetArgumentParser();
-
             actual = parser.Parse(args);
         }
 
@@ -233,8 +306,6 @@ namespace DotNetTestNSpec.Tests.Parsing
                 "--port", "456",
                 "unknown2",
             };
-
-            var parser = new DotNetArgumentParser();
 
             actual = parser.Parse(args);
         }
@@ -289,8 +360,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Theory]
         public void it_should_return_args_with_project_null(string[] args)
         {
-            var parser = new DotNetArgumentParser();
-
             actual = parser.Parse(args);
 
             allOptions.Project = null;

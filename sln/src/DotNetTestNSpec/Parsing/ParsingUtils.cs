@@ -7,31 +7,32 @@ namespace DotNetTestNSpec.Parsing
     public static class ParsingUtils
     {
         public static IEnumerable<string> SetTextForOptionalArg(
-            IEnumerable<string> args, string argKey, Action<string> setValue)
+            IEnumerable<string> args, string argKey, IEnumerable<string> knownTokens, Action<string> setValue)
         {
-            return ProcessArgument(args, argKey, argTail =>
+            return SetValueForOptionalArg(args, argKey, text =>
             {
-                string text = argTail.FirstOrDefault();
+                bool argValueMissing = (text == null) || knownTokens.Any(key => text.StartsWith(key, StringComparison.Ordinal));
+
+                if (argValueMissing)
+                {
+                    throw new ArgumentException($"Argument '{argKey}' must be followed by its value, instead found: '{text}'.");
+                }
 
                 setValue(text);
-
-                argTail = argTail.Skip(1);  // skip value, if any
-
-                return argTail;
             });
         }
 
         public static IEnumerable<string> SetIntForOptionalArg(
             IEnumerable<string> args, string argKey, Action<int> setValue)
         {
-            return SetTextForOptionalArg(args, argKey, text =>
+            return SetValueForOptionalArg(args, argKey, text =>
             {
                 int value;
                 bool argValueFound = Int32.TryParse(text, out value);
 
                 if (!argValueFound)
                 {
-                    throw new ArgumentException($"Argument '{argKey}' must be followed by its value");
+                    throw new ArgumentException($"Argument '{argKey}' must be followed by its value, instead found: '{text}'.");
                 }
 
                 setValue(value);
@@ -70,6 +71,21 @@ namespace DotNetTestNSpec.Parsing
                 : args;
 
             return unusedArgs;
+        }
+
+        static IEnumerable<string> SetValueForOptionalArg(
+            IEnumerable<string> args, string argKey, Action<string> setValue)
+        {
+            return ProcessArgument(args, argKey, argTail =>
+            {
+                string textValue = argTail.FirstOrDefault();
+
+                argTail = argTail.Skip(1);  // skip value, if any
+
+                setValue(textValue);
+
+                return argTail;
+            });
         }
 
         static IEnumerable<string> ProcessArgument(

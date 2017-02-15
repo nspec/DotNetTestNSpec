@@ -11,6 +11,8 @@ namespace DotNetTestNSpec.Tests.Parsing
     [Category("NSpecArgumentParser")]
     public abstract class describe_NSpecArgumentParser
     {
+        protected NSpecArgumentParser parser;
+
         protected NSpecCommandLineOptions actual = null;
 
         protected string[] allArguments =
@@ -59,6 +61,8 @@ namespace DotNetTestNSpec.Tests.Parsing
                 DebugTests = someTestNames,
                 UnknownArgs = new string[0],
             };
+
+            parser = new NSpecArgumentParser();
         }
     }
 
@@ -69,8 +73,6 @@ namespace DotNetTestNSpec.Tests.Parsing
             base.setup();
 
             string[] args = allArguments;
-
-            var parser = new NSpecArgumentParser();
 
             actual = parser.Parse(args);
         }
@@ -94,8 +96,6 @@ namespace DotNetTestNSpec.Tests.Parsing
                 .Where(arg => arg != "--tag" && arg != someTags)
                 .ToArray();
 
-            var parser = new NSpecArgumentParser();
-
             actual = parser.Parse(args);
         }
 
@@ -110,7 +110,25 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
     }
 
-    // TODO test when tags arg incomplete
+    public class when_tags_arg_incomplete : describe_NSpecArgumentParser
+    {
+        string[] args = null;
+
+        public override void setup()
+        {
+            base.setup();
+
+            args = allArguments
+                .Where(arg => arg != someTags)
+                .ToArray();
+        }
+
+        [Test]
+        public void it_should_throw()
+        {
+            Assert.Throws<ArgumentException>(() => parser.Parse(args));
+        }
+    }
 
     public class when_failfast_arg_missing : describe_NSpecArgumentParser
     {
@@ -121,8 +139,6 @@ namespace DotNetTestNSpec.Tests.Parsing
             string[] args = allArguments
                 .Where(arg => arg != "--failfast")
                 .ToArray();
-
-            var parser = new NSpecArgumentParser();
 
             actual = parser.Parse(args);
         }
@@ -148,8 +164,6 @@ namespace DotNetTestNSpec.Tests.Parsing
                 .Where(arg => !arg.StartsWith("--formatter=", StringComparison.Ordinal))
                 .ToArray();
 
-            var parser = new NSpecArgumentParser();
-
             actual = parser.Parse(args);
         }
 
@@ -173,8 +187,6 @@ namespace DotNetTestNSpec.Tests.Parsing
             string[] args = allArguments
                 .Where(arg => !arg.StartsWith("--formatterOptions:", StringComparison.Ordinal))
                 .ToArray();
-
-            var parser = new NSpecArgumentParser();
 
             actual = parser.Parse(args);
         }
@@ -200,8 +212,6 @@ namespace DotNetTestNSpec.Tests.Parsing
                 .Where(arg => arg != "--debugChannel")
                 .ToArray();
 
-            var parser = new NSpecArgumentParser();
-
             actual = parser.Parse(args);
         }
 
@@ -225,8 +235,6 @@ namespace DotNetTestNSpec.Tests.Parsing
             string[] args = allArguments
                 .Where(arg => arg != "--debugTests" && arg != someTestNamesArg)
                 .ToArray();
-
-            var parser = new NSpecArgumentParser();
 
             actual = parser.Parse(args);
         }
@@ -257,8 +265,6 @@ namespace DotNetTestNSpec.Tests.Parsing
             argList.Add("unknown3");
 
             string[] args = argList.ToArray();
-
-            var parser = new NSpecArgumentParser();
 
             actual = parser.Parse(args);
         }
@@ -309,8 +315,6 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Theory]
         public void it_should_return_args_with_null_class_name(string[] args)
         {
-            var parser = new NSpecArgumentParser();
-
             actual = parser.Parse(args);
 
             allOptions.ClassName = null;

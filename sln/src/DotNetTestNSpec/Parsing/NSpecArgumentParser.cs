@@ -21,6 +21,10 @@ namespace DotNetTestNSpec.Parsing
                 formatterPrefix,
                 formatterOptionsPrefix,
             };
+
+            allKnownTokens = knownArgKeys
+                .Concat(knownArgPrefixes)
+                .ToArray();
         }
 
         public NSpecCommandLineOptions Parse(string[] args)
@@ -58,7 +62,7 @@ namespace DotNetTestNSpec.Parsing
             // check for remaining named options
 
             remainingArgs = ParsingUtils.SetTextForOptionalArg(remainingArgs,
-                tagsKey, value => options.Tags = value);
+                tagsKey, allKnownTokens, value => options.Tags = value);
 
             remainingArgs = ParsingUtils.SetBoolForSwitchArg(remainingArgs,
                 failFastKey, value => options.FailFast = value);
@@ -70,7 +74,7 @@ namespace DotNetTestNSpec.Parsing
                 debugChannelKey, value => options.DebugChannel = value);
 
             remainingArgs = ParsingUtils.SetTextForOptionalArg(remainingArgs,
-                debugTestsKey, value =>
+                debugTestsKey, allKnownTokens, value =>
                 {
                     options.DebugTests = value.Split(',')
                         .Select(token => token.Trim())
@@ -120,6 +124,7 @@ namespace DotNetTestNSpec.Parsing
 
         readonly string[] knownArgKeys;
         readonly string[] knownArgPrefixes;
+        readonly string[] allKnownTokens;
 
         const string tagsKey = "--tag";
         const string failFastKey = "--failfast";
