@@ -113,6 +113,8 @@ namespace DotNetTestNSpec.Parsing
 
         bool IsUnknownArgument(string arg)
         {
+            if (arg == null) return false;
+
             if (knownArgKeys.Contains(arg)) return false;
 
             bool isKnownPrefix = knownArgPrefixes

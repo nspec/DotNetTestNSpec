@@ -60,7 +60,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_dotnet_test_args_only()
+        public void it_should_return_dotnet_test_opts_only()
         {
             var expected = allOptions;
 
@@ -82,7 +82,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_args_with_design_time_false()
+        public void it_should_return_opts_with_design_time_false()
         {
             allOptions.DesignTime = false;
 
@@ -106,7 +106,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_args_with_list_false()
+        public void it_should_return_opts_with_list_false()
         {
             allOptions.List = false;
 
@@ -130,7 +130,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_args_with_wait_command_false()
+        public void it_should_return_opts_with_wait_command_false()
         {
             allOptions.WaitCommand = false;
 
@@ -154,7 +154,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_args_with_parent_process_id_null()
+        public void it_should_return_opts_with_parent_process_id_null()
         {
             allOptions.ParentProcessId = null;
 
@@ -198,7 +198,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_args_with_port_null()
+        public void it_should_return_opts_with_port_null()
         {
             allOptions.Port = null;
 
@@ -250,7 +250,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_dotnet_test_and_nspec_args()
+        public void it_should_return_dotnet_test_opts_with_nspec_args()
         {
             allOptions.NSpecArgs = new string[]
             {
@@ -284,7 +284,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_dotnet_test_args_only()
+        public void it_should_return_dotnet_test_opts_only()
         {
             var expected = allOptions;
 
@@ -311,7 +311,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_dotnet_test_and_unknown_args()
+        public void it_should_return_dotnet_test_opts_with_unknown_args()
         {
             var expected = new DotNetCommandLineOptions()
             {
@@ -358,7 +358,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Theory]
-        public void it_should_return_args_with_project_null(string[] args)
+        public void it_should_return_opts_with_project_null(string[] args)
         {
             actual = parser.Parse(args);
 
@@ -375,6 +375,57 @@ namespace DotNetTestNSpec.Tests.Parsing
                 valuedArguments.Contains(queue.Last());
 
             return !lastArgumentNeedsValue;
+        }
+    }
+
+    public class when_dotnet_parser_args_empty : describe_DotNetArgumentParser
+    {
+        public override void setup()
+        {
+            base.setup();
+
+            string[] args = new string[0];
+
+            actual = parser.Parse(args);
+        }
+
+        [Test]
+        public void it_should_return_dotnet_test_opts_empty()
+        {
+            var expected = new DotNetCommandLineOptions()
+            {
+                NSpecArgs = new string[0],
+                UnknownArgs = new string[0],
+            };
+
+            actual.ShouldBeEquivalentTo(expected);
+        }
+    }
+
+    public class when_only_separator_arg_found : describe_DotNetArgumentParser
+    {
+        public override void setup()
+        {
+            base.setup();
+
+            string[] args =
+            {
+                "--",
+            };
+
+            actual = parser.Parse(args);
+        }
+
+        [Test]
+        public void it_should_return_dotnet_test_opts_empty()
+        {
+            var expected = new DotNetCommandLineOptions()
+            {
+                NSpecArgs = new string[0],
+                UnknownArgs = new string[0],
+            };
+
+            actual.ShouldBeEquivalentTo(expected);
         }
     }
 }

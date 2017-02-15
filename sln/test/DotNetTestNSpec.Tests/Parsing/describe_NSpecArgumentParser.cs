@@ -78,7 +78,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_nspec_args_only()
+        public void it_should_return_nspec_opts_only()
         {
             var expected = allOptions;
 
@@ -100,7 +100,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_args_with_tags_null()
+        public void it_should_return_opts_with_tags_null()
         {
             allOptions.Tags = null;
 
@@ -144,7 +144,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_args_with_failfast_false()
+        public void it_should_return_opts_with_failfast_false()
         {
             allOptions.FailFast = false;
 
@@ -168,7 +168,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_args_with_formatter_null()
+        public void it_should_return_opts_with_formatter_null()
         {
             allOptions.FormatterName = null;
 
@@ -192,7 +192,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_args_with_formatter_options_empty()
+        public void it_should_return_opts_with_formatter_options_empty()
         {
             allOptions.FormatterOptions = new Dictionary<string, string>();
 
@@ -216,7 +216,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_args_with_debug_channel_false()
+        public void it_should_return_opts_with_debug_channel_false()
         {
             allOptions.DebugChannel = false;
 
@@ -240,7 +240,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_args_with_debug_tests_null()
+        public void it_should_return_opts_with_debug_tests_null()
         {
             allOptions.DebugTests = null;
 
@@ -250,7 +250,25 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
     }
 
-    // TODO test when debug_tests arg incomplete
+    public class when_debug_tests_arg_incomplete : describe_NSpecArgumentParser
+    {
+        string[] args = null;
+
+        public override void setup()
+        {
+            base.setup();
+
+            args = allArguments
+                .Where(arg => arg != someTestNamesArg)
+                .ToArray();
+        }
+
+        [Test]
+        public void it_should_throw()
+        {
+            Assert.Throws<ArgumentException>(() => parser.Parse(args));
+        }
+    }
 
     public class when_unknown_args_found_after_class_name : describe_NSpecArgumentParser
     {
@@ -270,7 +288,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_nspec_and_unknown_args()
+        public void it_should_return_nspec_opts_with_unknown_args()
         {
             allOptions.UnknownArgs = new string[]
             {
@@ -313,7 +331,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Theory]
-        public void it_should_return_args_with_null_class_name(string[] args)
+        public void it_should_return_opts_with_null_class_name(string[] args)
         {
             actual = parser.Parse(args);
 
@@ -330,6 +348,30 @@ namespace DotNetTestNSpec.Tests.Parsing
                 keysWithFurtherArgs.Contains(queue.Last());
 
             return !lastArgumentNeedsFurtherOnes;
+        }
+    }
+
+    public class when_nspec_parser_args_empty : describe_NSpecArgumentParser
+    {
+        public override void setup()
+        {
+            base.setup();
+
+            string[] args = new string[0];
+
+            actual = parser.Parse(args);
+        }
+
+        [Test]
+        public void it_should_return_nspec_opts_empty()
+        {
+            var expected = new NSpecCommandLineOptions()
+            {
+                FormatterOptions = new Dictionary<string, string>(),
+                UnknownArgs = new string[0],
+            };
+
+            actual.ShouldBeEquivalentTo(expected);
         }
     }
 }
