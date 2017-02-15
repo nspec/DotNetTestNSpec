@@ -101,6 +101,8 @@ namespace DotNetTestNSpec
 
             public bool DebugChannel { get; set; }
 
+            public string[] DebugTests { get; set; }
+
             public override string ToString()
             {
                 return EnumerableUtils.ToObjectString(new string[]
@@ -111,6 +113,7 @@ namespace DotNetTestNSpec
                 $"{nameof(FormatterName)}: {FormatterName}",
                 $"{nameof(FormatterOptions)}: {DictionaryUtils.ToArrayString(FormatterOptions)}",
                 $"{nameof(DebugChannel)}: {DebugChannel}",
+                $"{nameof(DebugTests)}: {EnumerableUtils.ToArrayString(DebugTests)}",
                 }, true);
             }
         }

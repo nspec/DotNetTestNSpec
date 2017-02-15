@@ -14,6 +14,7 @@
                 $"{nameof(FormatterName)}: {FormatterName}",
                 $"{nameof(FormatterOptions)}: {DictionaryUtils.ToArrayString(FormatterOptions)}",
                 $"{nameof(DebugChannel)}: {DebugChannel}",
+                $"{nameof(DebugTests)}: {EnumerableUtils.ToArrayString(DebugTests)}",
                 $"{nameof(UnknownArgs)}: {EnumerableUtils.ToArrayString(UnknownArgs)}",
 
             }, true);

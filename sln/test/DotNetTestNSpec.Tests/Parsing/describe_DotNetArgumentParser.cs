@@ -287,7 +287,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Theory]
-        public void it_should_return_args_with_null_project(string[] args)
+        public void it_should_return_args_with_project_null(string[] args)
         {
             var parser = new DotNetArgumentParser();
 

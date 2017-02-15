@@ -23,13 +23,22 @@ namespace DotNetTestNSpec.Tests.Parsing
             "--formatterOptions:optName2",
             "--formatterOptions:optName3=optValue3",
             "--debugChannel",
+            "--debugTests", someTestNamesArg,
         };
 
         protected NSpecCommandLineOptions allOptions;
 
-        protected const string someClassName = @"someClassName";
+        protected readonly string[] someTestNames =
+        {
+            "test Name 1",
+            "test Name 2",
+            "test Name 3",
+        };
+
+        protected const string someClassName = "someClassName";
         protected const string someTags = "tag1,tag2,tag3";
-        protected const string someFormatterName = @"someFormatterName";
+        protected const string someFormatterName = "someFormatterName";
+        protected const string someTestNamesArg = "test Name 1, test Name 2, test Name 3";
 
         [SetUp]
         public virtual void setup()
@@ -47,6 +56,7 @@ namespace DotNetTestNSpec.Tests.Parsing
                     { "optName3", "optValue3" },
                 },
                 DebugChannel = true,
+                DebugTests = someTestNames,
                 UnknownArgs = new string[0],
             };
         }
@@ -90,7 +100,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_args_with_null_tags()
+        public void it_should_return_args_with_tags_null()
         {
             allOptions.Tags = null;
 
@@ -142,7 +152,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_args_with_null_formatter()
+        public void it_should_return_args_with_formatter_null()
         {
             allOptions.FormatterName = null;
 
@@ -168,7 +178,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_args_with_empty_formatter_options()
+        public void it_should_return_args_with_formatter_options_empty()
         {
             allOptions.FormatterOptions = new Dictionary<string, string>();
 
@@ -204,6 +214,32 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
     }
 
+    public class when_debug_tests_arg_missing : describe_NSpecArgumentParser
+    {
+        public override void setup()
+        {
+            base.setup();
+
+            string[] args = allArguments
+                .Where(arg => arg != "--debugTests" && arg != someTestNamesArg)
+                .ToArray();
+
+            var parser = new NSpecArgumentParser();
+
+            actual = parser.Parse(args);
+        }
+
+        [Test]
+        public void it_should_return_args_with_debug_tests_null()
+        {
+            allOptions.DebugTests = null;
+
+            var expected = allOptions;
+
+            actual.ShouldBeEquivalentTo(expected);
+        }
+    }
+
     public class when_unknown_args_found_after_class_name : describe_NSpecArgumentParser
     {
         public override void setup()
@@ -226,26 +262,14 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_nspec_and_unknown_args()
         {
-            var expected = new NSpecCommandLineOptions()
+            allOptions.UnknownArgs = new string[]
             {
-                ClassName = someClassName,
-                Tags = someTags,
-                FailFast = true,
-                FormatterName = someFormatterName,
-                FormatterOptions = new Dictionary<string, string>()
-                {
-                    { "optName1", "optValue1" },
-                    { "optName2", "optName2" },
-                    { "optName3", "optValue3" },
-                },
-                DebugChannel = true,
-                UnknownArgs = new string[]
-                {
-                    "unknown1",
-                    "unknown2",
-                    "unknown3",
-                },
+                "unknown1",
+                "unknown2",
+                "unknown3",
             };
+
+            var expected = allOptions;
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -253,9 +277,10 @@ namespace DotNetTestNSpec.Tests.Parsing
 
     public class when_class_name_arg_missing : describe_NSpecArgumentParser
     {
-        readonly string[] valuedArguments =
+        readonly string[] keysWithFurtherArgs =
         {
             "--tag",
+            "--debugTests",
         };
 
         [DatapointSource]
@@ -293,10 +318,10 @@ namespace DotNetTestNSpec.Tests.Parsing
 
         bool SequenceIsAllowed(Queue<string> queue)
         {
-            bool lastArgumentNeedsValue =
-                valuedArguments.Contains(queue.Last());
+            bool lastArgumentNeedsFurtherOnes =
+                keysWithFurtherArgs.Contains(queue.Last());
 
-            return !lastArgumentNeedsValue;
+            return !lastArgumentNeedsFurtherOnes;
         }
     }
 }

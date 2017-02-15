@@ -13,6 +13,7 @@ namespace DotNetTestNSpec.Parsing
                 tagsKey,
                 failFastKey,
                 debugChannelKey,
+                debugTestsKey,
             };
 
             knownArgPrefixes = new[]
@@ -68,6 +69,14 @@ namespace DotNetTestNSpec.Parsing
             remainingArgs = ParsingUtils.SetBoolForSwitchArg(remainingArgs,
                 debugChannelKey, value => options.DebugChannel = value);
 
+            remainingArgs = ParsingUtils.SetTextForOptionalArg(remainingArgs,
+                debugTestsKey, value =>
+                {
+                    options.DebugTests = value.Split(',')
+                        .Select(item => item.Trim())
+                        .ToArray();
+                });
+
             int lastCount;
 
             do
@@ -117,5 +126,6 @@ namespace DotNetTestNSpec.Parsing
         const string formatterPrefix = "--formatter=";
         const string formatterOptionsPrefix = "--formatterOptions:";
         const string debugChannelKey = "--debugChannel";
+        const string debugTestsKey = "--debugTests";
     }
 }
