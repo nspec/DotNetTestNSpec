@@ -27,12 +27,16 @@ namespace DotNetTestNSpec
             Console.WriteLine("Input arguments: end.");
 #endif
 
-            var runnerFactory = new RunnerFactory(new ArgumentParser(), new ProxyFactory());
+            var argumentParser = new ArgumentParser();
 
-            var runner = runnerFactory.Create(args);
+            var runnerFactory = new RunnerFactory(new ProxyFactory());
 
             try
             {
+                var commandLineOptions = argumentParser.Parse(args);
+
+                var runner = runnerFactory.Create(commandLineOptions);
+
                 runner.Start();
 
                 return ReturnCodes.Ok;

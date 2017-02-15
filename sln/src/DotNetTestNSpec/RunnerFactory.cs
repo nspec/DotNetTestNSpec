@@ -4,22 +4,18 @@ using DotNetTestNSpec.Dev.Network;
 using DotNetTestNSpec.Network;
 using DotNetTestNSpec.Parsing;
 using DotNetTestNSpec.Proxy;
-using System;
 
 namespace DotNetTestNSpec
 {
     public class RunnerFactory
     {
-        public RunnerFactory(IArgumentParser argumentParser, IProxyFactory proxyFactory)
+        public RunnerFactory(IProxyFactory proxyFactory)
         {
-            this.argumentParser = argumentParser;
             this.proxyFactory = proxyFactory;
         }
 
-        public ITestRunner Create(string[] args)
+        public ITestRunner Create(CommandLineOptions commandLineOptions)
         {
-            var commandLineOptions = argumentParser.Parse(args);
-
             string testAssemblyPath = commandLineOptions.DotNet.Project;
 
             if (testAssemblyPath == null)

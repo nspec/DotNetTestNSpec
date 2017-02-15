@@ -18,23 +18,17 @@ namespace DotNetTestNSpec.Tests
         protected ITestRunner actual;
         protected CommandLineOptions opts;
 
-        protected readonly string[] args = { "one", "two", "three" };
-
         protected const string testAssemblyPath = @"some\path\to\assembly";
 
         [SetUp]
         public virtual void setup()
         {
-            var argumentParser = new Mock<IArgumentParser>();
-
-            argumentParser.Setup(p => p.Parse(args)).Returns(opts);
-
             var proxyFactory = new Mock<IProxyFactory>();
             var controller = new Mock<IControllerProxy>();
 
             proxyFactory.Setup(f => f.Create(testAssemblyPath)).Returns(controller.Object);
 
-            factory = new RunnerFactory(argumentParser.Object, proxyFactory.Object);
+            factory = new RunnerFactory(proxyFactory.Object);
         }
     }
 
@@ -55,7 +49,7 @@ namespace DotNetTestNSpec.Tests
         {
             base.setup();
 
-            actual = factory.Create(args);
+            actual = factory.Create(opts);
         }
     }
 
@@ -131,7 +125,7 @@ namespace DotNetTestNSpec.Tests
         [Test]
         public void it_should_throw()
         {
-            Action act = () => factory.Create(args);
+            Action act = () => factory.Create(opts);
 
             act.ShouldThrow<DotNetTestNSpecException>();
         }
@@ -154,7 +148,7 @@ namespace DotNetTestNSpec.Tests
         [Test]
         public void it_should_throw()
         {
-            Action act = () => factory.Create(args);
+            Action act = () => factory.Create(opts);
 
             act.ShouldThrow<DotNetTestNSpecException>();
         }
