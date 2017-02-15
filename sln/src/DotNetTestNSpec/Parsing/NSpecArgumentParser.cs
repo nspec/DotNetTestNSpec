@@ -35,13 +35,8 @@ namespace DotNetTestNSpec.Parsing
 
             var options = new NSpecCommandLineOptions()
             {
-                ClassName = null,
-                Tags = null,
-                FailFast = false,
-                FormatterName = null,
                 FormatterOptions = new Dictionary<string, string>(),
-                DebugChannel = false,
-                UnknownArgs = new string[0],
+                DebugTests = new string[0],
             };
 
             // check for first argument (the class name), before remaining named options

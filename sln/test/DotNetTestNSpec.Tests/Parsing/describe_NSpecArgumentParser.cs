@@ -240,9 +240,9 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Test]
-        public void it_should_return_opts_with_debug_tests_null()
+        public void it_should_return_opts_with_debug_tests_empty()
         {
-            allOptions.DebugTests = null;
+            allOptions.DebugTests = new string[0];
 
             var expected = allOptions;
 
@@ -331,7 +331,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
 
         [Theory]
-        public void it_should_return_opts_with_null_class_name(string[] args)
+        public void it_should_return_opts_with_class_name_null(string[] args)
         {
             actual = parser.Parse(args);
 
@@ -368,6 +368,7 @@ namespace DotNetTestNSpec.Tests.Parsing
             var expected = new NSpecCommandLineOptions()
             {
                 FormatterOptions = new Dictionary<string, string>(),
+                DebugTests = new string[0],
                 UnknownArgs = new string[0],
             };
 
