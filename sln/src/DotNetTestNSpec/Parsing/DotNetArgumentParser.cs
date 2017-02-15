@@ -17,7 +17,7 @@ namespace DotNetTestNSpec.Parsing
             };
         }
 
-        public DotNetCommandLineOptions Parse(string[] args)
+        public DotNetCommandLineOptions Parse(IEnumerable<string> args)
         {
             IEnumerable<string> dotNetTestArgs = args.TakeWhile(arg => arg != nspecArgDivider);
             IEnumerable<string> nspecArgs = args.Skip(dotNetTestArgs.Count() + 1);

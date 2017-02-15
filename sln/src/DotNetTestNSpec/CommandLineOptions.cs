@@ -10,7 +10,7 @@ namespace DotNetTestNSpec
         public CommandLineOptions(
             DotNetCommandLineOptions dotNetOptions,
             NSpecCommandLineOptions nspecOptions,
-            string[] unknownArgs)
+            IEnumerable<string> unknownArgs)
         {
             DotNet = new DotNetPart(dotNetOptions);
             NSpec = new NSpecPart(nspecOptions);
@@ -21,7 +21,7 @@ namespace DotNetTestNSpec
 
         public NSpecPart NSpec { get; set; }
 
-        public string[] UnknownArgs { get; set; }
+        public IEnumerable<string> UnknownArgs { get; set; }
 
         public override string ToString()
         {
@@ -87,6 +87,7 @@ namespace DotNetTestNSpec
                 FormatterName = source.FormatterName;
                 FormatterOptions = source.FormatterOptions;
                 DebugChannel = source.DebugChannel;
+                DebugTests = source.DebugTests;
             }
 
             public string ClassName { get; set; }

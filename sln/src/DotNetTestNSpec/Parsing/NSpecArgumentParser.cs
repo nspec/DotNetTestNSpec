@@ -27,7 +27,7 @@ namespace DotNetTestNSpec.Parsing
                 .ToArray();
         }
 
-        public NSpecCommandLineOptions Parse(string[] args)
+        public NSpecCommandLineOptions Parse(IEnumerable<string> args)
         {
             IEnumerable<string> remainingArgs;
 

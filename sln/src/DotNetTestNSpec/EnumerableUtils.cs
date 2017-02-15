@@ -25,7 +25,9 @@ namespace DotNetTestNSpec
                 ? ", \n"
                 : ", ";
 
-            return String.Concat(opening, " ", start, String.Join(separator, items), " ", closing);
+            var joiningItems = items ?? new T[0];
+
+            return String.Concat(opening, " ", start, String.Join(separator, joiningItems), " ", closing);
         }
     }
 }

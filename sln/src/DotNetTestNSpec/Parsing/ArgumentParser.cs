@@ -1,4 +1,6 @@
-﻿namespace DotNetTestNSpec.Parsing
+﻿using System.Linq;
+
+namespace DotNetTestNSpec.Parsing
 {
     public class ArgumentParser : IArgumentParser
     {
@@ -12,7 +14,10 @@
 
             NSpecCommandLineOptions nspecOptions = nspecArgumentParser.Parse(dotNetOptions.NSpecArgs);
 
-            var options = new CommandLineOptions(dotNetOptions, nspecOptions, nspecOptions.UnknownArgs);
+            var allUnknownArgs = dotNetOptions.UnknownArgs
+                .Concat(nspecOptions.UnknownArgs);
+
+            var options = new CommandLineOptions(dotNetOptions, nspecOptions, allUnknownArgs);
 
             return options;
         }
