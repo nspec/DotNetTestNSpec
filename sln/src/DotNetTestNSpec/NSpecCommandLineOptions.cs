@@ -2,6 +2,15 @@
 {
     public class NSpecCommandLineOptions : CommandLineOptions.NSpecPart
     {
+        public NSpecCommandLineOptions()
+        { }
+
+        public NSpecCommandLineOptions(NSpecCommandLineOptions source)
+            : base(source)
+        {
+            UnknownArgs = source.UnknownArgs;
+        }
+
         public string[] UnknownArgs { get; set; }
 
         public override string ToString()

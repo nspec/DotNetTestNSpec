@@ -17,33 +17,17 @@ namespace DotNetTestNSpec.Tests.Parsing
 
         protected readonly string[] allArguments =
         {
-            someProjectPath,
+            Data.DotNet.someProjectPath,
             "--designtime",
             "--list",
             "--wait-command",
-            "--parentProcessId", "123",
-            "--port", "456",
+            "--parentProcessId", Data.DotNet.someProcessIdArg,
+            "--port", Data.DotNet.somePortArg,
         };
-
-        protected DotNetCommandLineOptions allOptions;
-
-        protected const string someProjectPath = @"Path\To\Some\Project";
 
         [SetUp]
         public virtual void setup()
         {
-            allOptions = new DotNetCommandLineOptions()
-            {
-                Project = someProjectPath,
-                DesignTime = true,
-                List = true,
-                WaitCommand = true,
-                ParentProcessId = 123,
-                Port = 456,
-                NSpecArgs = new string[0],
-                UnknownArgs = new string[0],
-            };
-
             parser = new DotNetArgumentParser();
         }
     }
@@ -62,7 +46,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_dotnet_test_opts_only()
         {
-            var expected = allOptions;
+            var expected = new DotNetCommandLineOptions(Data.DotNet.allOptions);
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -84,9 +68,9 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_opts_with_design_time_false()
         {
-            allOptions.DesignTime = false;
+            var expected = new DotNetCommandLineOptions(Data.DotNet.allOptions);
 
-            var expected = allOptions;
+            expected.DesignTime = false;
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -108,9 +92,9 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_opts_with_list_false()
         {
-            allOptions.List = false;
+            var expected = new DotNetCommandLineOptions(Data.DotNet.allOptions);
 
-            var expected = allOptions;
+            expected.List = false;
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -132,9 +116,9 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_opts_with_wait_command_false()
         {
-            allOptions.WaitCommand = false;
+            var expected = new DotNetCommandLineOptions(Data.DotNet.allOptions);
 
-            var expected = allOptions;
+            expected.WaitCommand = false;
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -147,7 +131,7 @@ namespace DotNetTestNSpec.Tests.Parsing
             base.setup();
 
             string[] args = allArguments
-                .Where(arg => arg != "--parentProcessId" && arg != "123")
+                .Where(arg => arg != "--parentProcessId" && arg != Data.DotNet.someProcessIdArg)
                 .ToArray();
 
             actual = parser.Parse(args);
@@ -156,9 +140,9 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_opts_with_parent_process_id_null()
         {
-            allOptions.ParentProcessId = null;
+            var expected = new DotNetCommandLineOptions(Data.DotNet.allOptions);
 
-            var expected = allOptions;
+            expected.ParentProcessId = null;
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -173,7 +157,7 @@ namespace DotNetTestNSpec.Tests.Parsing
             base.setup();
 
             args = allArguments
-                .Where(arg => arg != "123")
+                .Where(arg => arg != Data.DotNet.someProcessIdArg)
                 .ToArray();
         }
 
@@ -191,7 +175,7 @@ namespace DotNetTestNSpec.Tests.Parsing
             base.setup();
 
             string[] args = allArguments
-                .Where(arg => arg != "--port" && arg != "456")
+                .Where(arg => arg != "--port" && arg != Data.DotNet.somePortArg)
                 .ToArray();
 
             actual = parser.Parse(args);
@@ -200,9 +184,9 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_opts_with_port_null()
         {
-            allOptions.Port = null;
+            var expected = new DotNetCommandLineOptions(Data.DotNet.allOptions);
 
-            var expected = allOptions;
+            expected.Port = null;
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -217,7 +201,7 @@ namespace DotNetTestNSpec.Tests.Parsing
             base.setup();
 
             args = allArguments
-                .Where(arg => arg != "456")
+                .Where(arg => arg != Data.DotNet.somePortArg)
                 .ToArray();
         }
 
@@ -252,14 +236,14 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_dotnet_test_opts_with_nspec_args()
         {
-            allOptions.NSpecArgs = new string[]
+            var expected = new DotNetCommandLineOptions(Data.DotNet.allOptions);
+
+            expected.NSpecArgs = new string[]
             {
                 "SomeClassName",
                 "--tag",
                 "tag1,tag2,tag3",
             };
-
-            var expected = allOptions;
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -286,7 +270,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_dotnet_test_opts_only()
         {
-            var expected = allOptions;
+            var expected = new DotNetCommandLineOptions(Data.DotNet.allOptions);
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -300,10 +284,10 @@ namespace DotNetTestNSpec.Tests.Parsing
 
             string[] args =
             {
-                someProjectPath,
+                Data.DotNet.someProjectPath,
                 "unknown1",
-                "--parentProcessId", "123",
-                "--port", "456",
+                "--parentProcessId", Data.DotNet.someProcessIdArg,
+                "--port", Data.DotNet.somePortArg,
                 "unknown2",
             };
 
@@ -315,9 +299,9 @@ namespace DotNetTestNSpec.Tests.Parsing
         {
             var expected = new DotNetCommandLineOptions()
             {
-                Project = someProjectPath,
-                ParentProcessId = 123,
-                Port = 456,
+                Project = Data.DotNet.someProjectPath,
+                ParentProcessId = Data.DotNet.someProcessId,
+                Port = Data.DotNet.somePort,
                 NSpecArgs = new string[0],
                 UnknownArgs = new string[]
                 {
@@ -360,11 +344,11 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Theory]
         public void it_should_return_opts_with_project_null(string[] args)
         {
+            var expected = new DotNetCommandLineOptions(Data.DotNet.allOptions);
+
+            expected.Project = null;
+
             actual = parser.Parse(args);
-
-            allOptions.Project = null;
-
-            var expected = allOptions;
 
             actual.ShouldBeEquivalentTo(expected);
         }

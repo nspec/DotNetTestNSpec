@@ -2,6 +2,16 @@
 {
     public class DotNetCommandLineOptions : CommandLineOptions.DotNetPart
     {
+        public DotNetCommandLineOptions()
+        { }
+
+        public DotNetCommandLineOptions(DotNetCommandLineOptions source)
+            : base(source)
+        {
+            NSpecArgs = source.NSpecArgs;
+            UnknownArgs = source.UnknownArgs;
+        }
+
         public string[] NSpecArgs { get; set; }
 
         public string[] UnknownArgs { get; set; }

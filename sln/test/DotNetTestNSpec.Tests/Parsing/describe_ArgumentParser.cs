@@ -21,35 +21,28 @@ namespace DotNetTestNSpec.Tests.Parsing
 
         protected readonly string[] allArguments =
         {
-            someProjectPath,
+            Data.DotNet.someProjectPath,
             "--designtime",
             "--list",
             "unknown-dotnet-1",
             "--wait-command",
-            "--parentProcessId", "123",
-            "--port", "456",
+            "--parentProcessId", Data.DotNet.someProcessIdArg,
+            "--port", Data.DotNet.somePortArg,
             "unknown-dotnet-2",
 
             "--",
 
-            someClassName,
-            "--tag", someTags,
+            Data.NSpec.someClassName,
+            "--tag", Data.NSpec.someTags,
             "--failfast",
-            "--formatter=" + someFormatterName,
+            "--formatter=" + Data.NSpec.someFormatterName,
             "unknown-nspec-1",
             "--formatterOptions:optName1=optValue1",
             "--formatterOptions:optName2",
             "--formatterOptions:optName3=optValue3",
             "--debugChannel",
-            "--debugTests", someTestNamesArg,
+            "--debugTests", Data.NSpec.someTestNamesArg,
             "unknown-nspec-2",
-        };
-
-        protected readonly string[] someTestNames =
-        {
-            "test Name 1",
-            "test Name 2",
-            "test Name 3",
         };
 
         protected readonly string[] someUnknownArgs =
@@ -60,43 +53,12 @@ namespace DotNetTestNSpec.Tests.Parsing
             "unknown-nspec-2",
         };
 
-        protected const string someProjectPath = @"Path\To\Some\Project";
-        protected const string someClassName = "someClassName";
-        protected const string someTags = "tag1,tag2,tag3";
-        protected const string someFormatterName = "someFormatterName";
-        protected const string someTestNamesArg = "test Name 1, test Name 2, test Name 3";
-
         [SetUp]
         public void setup()
         {
-            var allDotNetOptions = new DotNetCommandLineOptions()
-            {
-                Project = someProjectPath,
-                DesignTime = true,
-                List = true,
-                WaitCommand = true,
-                ParentProcessId = 123,
-                Port = 456,
-                NSpecArgs = new string[0],
-                UnknownArgs = new string[0],
-            };
+            var allDotNetOptions = new DotNetCommandLineOptions(Data.DotNet.allOptions);
 
-            var allNSpecOptions = new NSpecCommandLineOptions()
-            {
-                ClassName = someClassName,
-                Tags = someTags,
-                FailFast = true,
-                FormatterName = someFormatterName,
-                FormatterOptions = new Dictionary<string, string>()
-                {
-                    { "optName1", "optValue1" },
-                    { "optName2", "optName2" },
-                    { "optName3", "optValue3" },
-                },
-                DebugChannel = true,
-                DebugTests = someTestNames,
-                UnknownArgs = new string[0],
-            };
+            var allNSpecOptions = new NSpecCommandLineOptions(Data.NSpec.allOptions);
 
             allOptions = new CommandLineOptions()
             {

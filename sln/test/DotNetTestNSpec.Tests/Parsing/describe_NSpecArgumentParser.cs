@@ -17,51 +17,20 @@ namespace DotNetTestNSpec.Tests.Parsing
 
         protected string[] allArguments =
         {
-            someClassName,
-            "--tag", someTags,
+            Data.NSpec.someClassName,
+            "--tag", Data.NSpec.someTags,
             "--failfast",
-            "--formatter=" + someFormatterName,
+            "--formatter=" + Data.NSpec.someFormatterName,
             "--formatterOptions:optName1=optValue1",
             "--formatterOptions:optName2",
             "--formatterOptions:optName3=optValue3",
             "--debugChannel",
-            "--debugTests", someTestNamesArg,
+            "--debugTests", Data.NSpec.someTestNamesArg,
         };
-
-        protected NSpecCommandLineOptions allOptions;
-
-        protected readonly string[] someTestNames =
-        {
-            "test Name 1",
-            "test Name 2",
-            "test Name 3",
-        };
-
-        protected const string someClassName = "someClassName";
-        protected const string someTags = "tag1,tag2,tag3";
-        protected const string someFormatterName = "someFormatterName";
-        protected const string someTestNamesArg = "test Name 1, test Name 2, test Name 3";
 
         [SetUp]
         public virtual void setup()
         {
-            allOptions = new NSpecCommandLineOptions()
-            {
-                ClassName = someClassName,
-                Tags = someTags,
-                FailFast = true,
-                FormatterName = someFormatterName,
-                FormatterOptions = new Dictionary<string, string>()
-                {
-                    { "optName1", "optValue1" },
-                    { "optName2", "optName2" },
-                    { "optName3", "optValue3" },
-                },
-                DebugChannel = true,
-                DebugTests = someTestNames,
-                UnknownArgs = new string[0],
-            };
-
             parser = new NSpecArgumentParser();
         }
     }
@@ -80,7 +49,7 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_nspec_opts_only()
         {
-            var expected = allOptions;
+            var expected = new NSpecCommandLineOptions(Data.NSpec.allOptions);
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -93,7 +62,7 @@ namespace DotNetTestNSpec.Tests.Parsing
             base.setup();
 
             string[] args = allArguments
-                .Where(arg => arg != "--tag" && arg != someTags)
+                .Where(arg => arg != "--tag" && arg != Data.NSpec.someTags)
                 .ToArray();
 
             actual = parser.Parse(args);
@@ -102,9 +71,9 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_opts_with_tags_null()
         {
-            allOptions.Tags = null;
+            var expected = new NSpecCommandLineOptions(Data.NSpec.allOptions);
 
-            var expected = allOptions;
+            expected.Tags = null;
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -119,7 +88,7 @@ namespace DotNetTestNSpec.Tests.Parsing
             base.setup();
 
             args = allArguments
-                .Where(arg => arg != someTags)
+                .Where(arg => arg != Data.NSpec.someTags)
                 .ToArray();
         }
 
@@ -146,9 +115,9 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_opts_with_failfast_false()
         {
-            allOptions.FailFast = false;
+            var expected = new NSpecCommandLineOptions(Data.NSpec.allOptions);
 
-            var expected = allOptions;
+            expected.FailFast = false;
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -170,9 +139,9 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_opts_with_formatter_null()
         {
-            allOptions.FormatterName = null;
+            var expected = new NSpecCommandLineOptions(Data.NSpec.allOptions);
 
-            var expected = allOptions;
+            expected.FormatterName = null;
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -194,9 +163,9 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_opts_with_formatter_options_empty()
         {
-            allOptions.FormatterOptions = new Dictionary<string, string>();
+            var expected = new NSpecCommandLineOptions(Data.NSpec.allOptions);
 
-            var expected = allOptions;
+            expected.FormatterOptions = new Dictionary<string, string>();
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -218,9 +187,9 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_opts_with_debug_channel_false()
         {
-            allOptions.DebugChannel = false;
+            var expected = new NSpecCommandLineOptions(Data.NSpec.allOptions);
 
-            var expected = allOptions;
+            expected.DebugChannel = false;
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -233,7 +202,7 @@ namespace DotNetTestNSpec.Tests.Parsing
             base.setup();
 
             string[] args = allArguments
-                .Where(arg => arg != "--debugTests" && arg != someTestNamesArg)
+                .Where(arg => arg != "--debugTests" && arg != Data.NSpec.someTestNamesArg)
                 .ToArray();
 
             actual = parser.Parse(args);
@@ -242,9 +211,9 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_opts_with_debug_tests_empty()
         {
-            allOptions.DebugTests = new string[0];
+            var expected = new NSpecCommandLineOptions(Data.NSpec.allOptions);
 
-            var expected = allOptions;
+            expected.DebugTests = new string[0];
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -259,7 +228,7 @@ namespace DotNetTestNSpec.Tests.Parsing
             base.setup();
 
             args = allArguments
-                .Where(arg => arg != someTestNamesArg)
+                .Where(arg => arg != Data.NSpec.someTestNamesArg)
                 .ToArray();
         }
 
@@ -290,14 +259,14 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Test]
         public void it_should_return_nspec_opts_with_unknown_args()
         {
-            allOptions.UnknownArgs = new string[]
+            var expected = new NSpecCommandLineOptions(Data.NSpec.allOptions);
+
+            expected.UnknownArgs = new string[]
             {
                 "unknown1",
                 "unknown2",
                 "unknown3",
             };
-
-            var expected = allOptions;
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -333,11 +302,11 @@ namespace DotNetTestNSpec.Tests.Parsing
         [Theory]
         public void it_should_return_opts_with_class_name_null(string[] args)
         {
+            var expected = new NSpecCommandLineOptions(Data.NSpec.allOptions);
+
+            expected.ClassName = null;
+
             actual = parser.Parse(args);
-
-            allOptions.ClassName = null;
-
-            var expected = allOptions;
 
             actual.ShouldBeEquivalentTo(expected);
         }
