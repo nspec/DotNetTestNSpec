@@ -40,7 +40,7 @@ namespace DotNetTestNSpec
             }
 
             var channel = commandLineOptions.NSpec.DebugChannel
-                ? new ConsoleDebugChannel() as INetworkChannel
+                ? new ConsoleDebugChannel(commandLineOptions.NSpec.DebugTests) as INetworkChannel
                 : new NetworkChannel(commandLineOptions.DotNet.Port.Value);
 
             ITestRunner runner;

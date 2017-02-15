@@ -2,12 +2,19 @@
 using Microsoft.Extensions.Testing.Abstractions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 
 namespace DotNetTestNSpec.Dev.Network
 {
     public class ConsoleDebugChannel : INetworkChannel
     {
+        public ConsoleDebugChannel(IEnumerable<string> debugTests)
+        {
+            this.debugTests = debugTests;
+        }
+
         public void Open()
         {
             Console.WriteLine(nameof(Open));
@@ -36,8 +43,27 @@ namespace DotNetTestNSpec.Dev.Network
 
         public string Receive()
         {
-            // TODO
-            throw new NotImplementedException();
+            var runTestsMessage = new RunTestsMessage()
+            {
+                Tests = new List<string>(debugTests),
+            };
+
+            var message = new Message()
+            {
+                MessageType = "TestRunner.Execute",
+                Payload = JToken.FromObject(runTestsMessage),
+            };
+
+            string receivedMessage = JsonConvert.SerializeObject(message);
+
+            string loggedMessage = JsonConvert.SerializeObject(message, jsonSettings);
+
+            Console.WriteLine($"{nameof(Receive)}");
+            Console.WriteLine("-- BEGIN --");
+            Console.WriteLine(loggedMessage);
+            Console.WriteLine("--- END ---");
+
+            return receivedMessage;
         }
 
         public void Close()
@@ -50,5 +76,7 @@ namespace DotNetTestNSpec.Dev.Network
             Formatting = Formatting.Indented,
             Converters = new[] { new StringEnumConverter() },
         };
+
+        readonly IEnumerable<string> debugTests;
     }
 }

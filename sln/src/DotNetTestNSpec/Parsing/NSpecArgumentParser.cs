@@ -73,7 +73,7 @@ namespace DotNetTestNSpec.Parsing
                 debugTestsKey, value =>
                 {
                     options.DebugTests = value.Split(',')
-                        .Select(item => item.Trim())
+                        .Select(token => token.Trim())
                         .ToArray();
                 });
 

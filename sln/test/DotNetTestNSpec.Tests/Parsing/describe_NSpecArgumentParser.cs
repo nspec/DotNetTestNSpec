@@ -110,6 +110,8 @@ namespace DotNetTestNSpec.Tests.Parsing
         }
     }
 
+    // TODO test when tags arg incomplete
+
     public class when_failfast_arg_missing : describe_NSpecArgumentParser
     {
         public override void setup()
@@ -239,6 +241,8 @@ namespace DotNetTestNSpec.Tests.Parsing
             actual.ShouldBeEquivalentTo(expected);
         }
     }
+
+    // TODO test when debug_tests arg incomplete
 
     public class when_unknown_args_found_after_class_name : describe_NSpecArgumentParser
     {
