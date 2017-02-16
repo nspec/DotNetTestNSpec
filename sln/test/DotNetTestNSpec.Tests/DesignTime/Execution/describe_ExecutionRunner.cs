@@ -27,7 +27,7 @@ namespace DotNetTestNSpec.Tests.DesignTime.Execution
             controllerProxy = new Mock<IControllerProxy>();
             adapter = new Mock<IExecutionAdapter>();
 
-            runner = new ExecutionRunner(testAssemblyPath, adapter.Object, controllerProxy.Object);
+            runner = new ExecutionRunner(testAssemblyPath, controllerProxy.Object, adapter.Object);
         }
 
         protected string BuildFullName(int i)

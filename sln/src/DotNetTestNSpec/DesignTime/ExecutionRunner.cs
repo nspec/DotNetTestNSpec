@@ -6,8 +6,8 @@ namespace DotNetTestNSpec.DesignTime
 {
     public class ExecutionRunner : ITestRunner, IExecutionSink
     {
-        public ExecutionRunner(string testAssemblyPath, IExecutionAdapter adapter,
-            IControllerProxy controllerProxy)
+        public ExecutionRunner(string testAssemblyPath, IControllerProxy controllerProxy,
+            IExecutionAdapter adapter)
         {
             this.testAssemblyPath = testAssemblyPath;
             this.controllerProxy = controllerProxy;

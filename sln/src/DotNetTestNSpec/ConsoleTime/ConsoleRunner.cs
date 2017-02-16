@@ -4,12 +4,12 @@ namespace DotNetTestNSpec.ConsoleTime
 {
     public class ConsoleRunner : ITestRunner
     {
-        public ConsoleRunner(string testAssemblyPath, CommandLineOptions.NSpecPart nspecOptions,
-            IControllerProxy controllerProxy)
+        public ConsoleRunner(string testAssemblyPath, IControllerProxy controllerProxy,
+            CommandLineOptions.NSpecPart nspecOptions)
         {
             this.testAssemblyPath = testAssemblyPath;
-            this.nspecOptions = nspecOptions;
             this.controllerProxy = controllerProxy;
+            this.nspecOptions = nspecOptions;
         }
 
         public int Start()
@@ -25,7 +25,7 @@ namespace DotNetTestNSpec.ConsoleTime
         }
 
         readonly string testAssemblyPath;
-        readonly CommandLineOptions.NSpecPart nspecOptions;
         readonly IControllerProxy controllerProxy;
+        readonly CommandLineOptions.NSpecPart nspecOptions;
     }
 }

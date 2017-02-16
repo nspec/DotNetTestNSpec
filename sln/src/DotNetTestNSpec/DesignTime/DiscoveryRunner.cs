@@ -4,8 +4,8 @@ namespace DotNetTestNSpec.DesignTime
 {
     public class DiscoveryRunner : ITestRunner
     {
-        public DiscoveryRunner(string testAssemblyPath, IDiscoveryAdapter adapter,
-            IControllerProxy controllerProxy)
+        public DiscoveryRunner(string testAssemblyPath, IControllerProxy controllerProxy,
+            IDiscoveryAdapter adapter)
         {
             this.testAssemblyPath = testAssemblyPath;
             this.controllerProxy = controllerProxy;

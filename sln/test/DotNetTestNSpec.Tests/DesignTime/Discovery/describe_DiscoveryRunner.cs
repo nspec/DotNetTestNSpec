@@ -27,7 +27,7 @@ namespace DotNetTestNSpec.Tests.DesignTime.Discovery
             controllerProxy = new Mock<IControllerProxy>();
             adapter = new Mock<IDiscoveryAdapter>();
 
-            runner = new DiscoveryRunner(testAssemblyPath, adapter.Object, controllerProxy.Object);
+            runner = new DiscoveryRunner(testAssemblyPath, controllerProxy.Object, adapter.Object);
         }
 
         protected string BuildFullName(int i)

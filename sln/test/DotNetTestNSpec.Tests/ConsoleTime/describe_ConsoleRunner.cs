@@ -35,7 +35,7 @@ namespace DotNetTestNSpec.Tests.ConsoleTime
         {
             controllerProxy = new Mock<IControllerProxy>();
 
-            runner = new ConsoleRunner(testAssemblyPath, nspecOptions, controllerProxy.Object);
+            runner = new ConsoleRunner(testAssemblyPath, controllerProxy.Object, nspecOptions);
         }
     }
 

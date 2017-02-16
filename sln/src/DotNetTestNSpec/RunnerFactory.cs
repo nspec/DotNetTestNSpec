@@ -26,7 +26,7 @@ namespace DotNetTestNSpec
 
             if (!commandLineOptions.DotNet.Port.HasValue)
             {
-                return new ConsoleRunner(testAssemblyPath, commandLineOptions.NSpec, controllerProxy);
+                return new ConsoleRunner(testAssemblyPath, controllerProxy, commandLineOptions.NSpec);
             }
 
             var channel = commandLineOptions.NSpec.DebugChannel
@@ -39,13 +39,13 @@ namespace DotNetTestNSpec
             {
                 var adapter = new DiscoveryAdapter(channel);
 
-                runner = new DiscoveryRunner(testAssemblyPath, adapter, controllerProxy);
+                runner = new DiscoveryRunner(testAssemblyPath, controllerProxy, adapter);
             }
             else if (commandLineOptions.DotNet.WaitCommand)
             {
                 var adapter = new ExecutionAdapter(channel);
 
-                runner = new ExecutionRunner(testAssemblyPath, adapter, controllerProxy);
+                runner = new ExecutionRunner(testAssemblyPath, controllerProxy, adapter);
             }
             else
             {
