@@ -61,7 +61,6 @@ namespace DotNetTestNSpec
             return runner;
         }
 
-        readonly IArgumentParser argumentParser;
         readonly IProxyFactory proxyFactory;
     }
 }

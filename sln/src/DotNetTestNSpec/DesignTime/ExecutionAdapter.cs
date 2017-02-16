@@ -97,7 +97,7 @@ namespace DotNetTestNSpec.DesignTime
 
         readonly INetworkChannel channel;
 
-        const string waitCommandMessageType = "TestRunner.WaitCommand";
+        const string waitCommandMessageType = "TestRunner.WaitingCommand";
         const string testStarteMessageType = "TestExecution.TestStarted";
         const string testResultMessageType = "TestExecution.TestResult";
         const string testCompletedMessageType = "TestRunner.TestCompleted";

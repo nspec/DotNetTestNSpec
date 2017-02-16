@@ -93,7 +93,7 @@ namespace DotNetTestNSpec.Tests.DesignTime.Execution
         {
             string expected = JsonConvert.SerializeObject(new Message()
             {
-                MessageType = "TestRunner.WaitCommand",
+                MessageType = "TestRunner.WaitingCommand",
                 Payload = null,
             });
 
