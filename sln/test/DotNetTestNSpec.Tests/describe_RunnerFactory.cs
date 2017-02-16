@@ -1,6 +1,5 @@
 ﻿using DotNetTestNSpec.ConsoleTime;
 using DotNetTestNSpec.DesignTime;
-using DotNetTestNSpec.Parsing;
 using DotNetTestNSpec.Proxy;
 using FluentAssertions;
 using Moq;
@@ -53,11 +52,11 @@ namespace DotNetTestNSpec.Tests
         }
     }
 
-    public class when_not_at_design_time : when_project_set
+    public class when_port_not_set : when_project_set
     {
-        public when_not_at_design_time()
+        public when_port_not_set()
         {
-            opts.DotNet.DesignTime = false;
+            opts.DotNet.Port = null;
         }
 
         [Test]
@@ -67,18 +66,17 @@ namespace DotNetTestNSpec.Tests
         }
     }
 
-    public abstract class when_at_design_time : when_project_set
+    public abstract class when_port_set : when_project_set
     {
-        public when_at_design_time()
+        public when_port_set()
         {
-            opts.DotNet.DesignTime = true;
             opts.DotNet.Port = 123;
 
             opts.NSpec = new CommandLineOptions.NSpecPart();
         }
     }
 
-    public class when_list_set : when_at_design_time
+    public class when_list_set : when_port_set
     {
         public when_list_set()
         {
@@ -92,7 +90,7 @@ namespace DotNetTestNSpec.Tests
         }
     }
 
-    public class when_wait_command_set : when_at_design_time
+    public class when_wait_command_set : when_port_set
     {
         public when_wait_command_set()
         {

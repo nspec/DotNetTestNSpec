@@ -2,7 +2,6 @@
 using DotNetTestNSpec.DesignTime;
 using DotNetTestNSpec.Dev.Network;
 using DotNetTestNSpec.Network;
-using DotNetTestNSpec.Parsing;
 using DotNetTestNSpec.Proxy;
 
 namespace DotNetTestNSpec
@@ -25,14 +24,9 @@ namespace DotNetTestNSpec
 
             var controllerProxy = proxyFactory.Create(testAssemblyPath);
 
-            if (!commandLineOptions.DotNet.DesignTime)
-            {
-                return new ConsoleRunner(testAssemblyPath, commandLineOptions.NSpec, controllerProxy);
-            }
-
             if (!commandLineOptions.DotNet.Port.HasValue)
             {
-                throw new DotNetTestNSpecException("Design-time command line arguments must include TCP port to connect to");
+                return new ConsoleRunner(testAssemblyPath, commandLineOptions.NSpec, controllerProxy);
             }
 
             var channel = commandLineOptions.NSpec.DebugChannel
