@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>dotnet-test-nspec</id>
-    <version>0.1.0.0</version>
+    <version>0.1.1.0</version>
     <title>NSpec dotnet test runner</title>
     <summary>NSpec runner for .NET Core command line interface.</summary>
     <description>
