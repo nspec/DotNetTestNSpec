@@ -4,6 +4,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Testing.Abstractions;
 using Moq;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -99,6 +100,7 @@ namespace DotNetTestNSpec.Tests.DesignTime.Execution
                 select new TestResult(test)
                 {
                     DisplayName = test.DisplayName,
+                    ComputerName = Environment.MachineName,
                 })
                 .ToList();
 
