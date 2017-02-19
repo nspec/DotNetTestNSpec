@@ -1,4 +1,6 @@
-﻿namespace DotNetTestNSpec.Proxy
+﻿using System;
+
+namespace DotNetTestNSpec.Proxy
 {
     public class ExecutedExample
     {
@@ -11,5 +13,7 @@
         public string ExceptionMessage { get; set; }
 
         public string ExceptionStackTrace { get; set; }
+
+        public TimeSpan Duration { get; set; }
     }
 }

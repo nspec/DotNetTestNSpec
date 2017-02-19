@@ -26,6 +26,7 @@ namespace DotNetTestNSpec.DesignTime
                 DisplayName = BeautifyForDisplay(example.FullName),
                 ErrorMessage = example.ExceptionMessage,
                 ErrorStackTrace = example.ExceptionStackTrace,
+                Duration = example.Duration,
                 ComputerName = Environment.MachineName,
             };
 

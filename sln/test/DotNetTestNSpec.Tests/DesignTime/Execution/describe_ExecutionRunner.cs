@@ -54,14 +54,14 @@ namespace DotNetTestNSpec.Tests.DesignTime.Execution
 
         public when_started()
         {
-            var indexes = Enumerable.Range(1, 3);
+            var positions = Enumerable.Range(1, 3);
 
             requestedTestFullNames =
-                from i in indexes
+                from i in positions
                 select BuildFullName(i);
 
             discoveredExamples =
-                from i in indexes
+                from i in positions
                 select new DiscoveredExample()
                 {
                     FullName = BuildFullName(i),
@@ -72,10 +72,11 @@ namespace DotNetTestNSpec.Tests.DesignTime.Execution
                 };
 
             executedExamples = (
-                from i in indexes
+                from i in positions
                 select new ExecutedExample()
                 {
                     FullName = BuildFullName(i),
+                    Duration = TimeSpan.FromMinutes(i),
                 })
                 .ToList();
 
@@ -86,7 +87,7 @@ namespace DotNetTestNSpec.Tests.DesignTime.Execution
             executedExamples[2].ExceptionStackTrace = someErrorStackTrace;
 
             expectedStartedTests =
-                from i in indexes
+                from i in positions
                 select new Test()
                 {
                     FullyQualifiedName = BuildFullName(i),
@@ -95,11 +96,11 @@ namespace DotNetTestNSpec.Tests.DesignTime.Execution
                     LineNumber = 10 * i,
                 };
 
-            expectedResults = (
-                from test in expectedStartedTests
-                select new TestResult(test)
+            expectedResults = positions
+                .Zip(expectedStartedTests, (i, test) => new TestResult(test)
                 {
                     DisplayName = test.DisplayName,
+                    Duration = TimeSpan.FromMinutes(i),
                     ComputerName = Environment.MachineName,
                 })
                 .ToList();
