@@ -17,6 +17,7 @@ namespace DotNetTestNSpec.Tests.Domain.DesignTime.Execution
         protected ExecutionRunner runner;
 
         protected Mock<IControllerProxy> controllerProxy;
+        protected Mock<IExecutionConnection> connection;
         protected Mock<IExecutionAdapter> adapter;
 
         protected const string testAssemblyPath = @"some\path\to\assembly";
@@ -26,7 +27,11 @@ namespace DotNetTestNSpec.Tests.Domain.DesignTime.Execution
         public virtual void setup()
         {
             controllerProxy = new Mock<IControllerProxy>();
+
+            connection = new Mock<IExecutionConnection>();
+
             adapter = new Mock<IExecutionAdapter>();
+            adapter.Setup(a => a.Connect()).Returns(connection.Object);
 
             runner = new ExecutionRunner(testAssemblyPath, controllerProxy.Object, adapter.Object);
         }
@@ -138,16 +143,16 @@ namespace DotNetTestNSpec.Tests.Domain.DesignTime.Execution
                     }
                 });
 
-            adapter.Setup(a => a.Connect()).Returns(requestedTestFullNames);
+            connection.Setup(c => c.GetTests()).Returns(requestedTestFullNames);
 
-            adapter.Setup(a => a.TestStarted(It.IsAny<Test>())).Callback((Test test) =>
+            connection.Setup(c => c.TestStarted(It.IsAny<Test>())).Callback((Test test) =>
             {
                 actualStartedTests.Add(test);
             });
 
             actualStartedTests = new List<Test>();
 
-            adapter.Setup(a => a.TestFinished(It.IsAny<TestResult>())).Callback((TestResult result) =>
+            connection.Setup(c => c.TestFinished(It.IsAny<TestResult>())).Callback((TestResult result) =>
             {
                 actualCompletedResults.Add(result);
             });
@@ -176,9 +181,9 @@ namespace DotNetTestNSpec.Tests.Domain.DesignTime.Execution
         }
 
         [Test]
-        public void it_should_disconnect_adapter()
+        public void it_should_dispose_connection()
         {
-            adapter.Verify(a => a.Disconnect(), Times.Once);
+            connection.Verify(a => a.Dispose(), Times.Once);
         }
     }
 }

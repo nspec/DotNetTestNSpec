@@ -39,9 +39,7 @@ namespace DotNetTestNSpec.Domain
             }
             else if (options.DotNet.WaitCommand)
             {
-                var channel = channelFactory.Create();
-
-                var adapter = new ExecutionAdapter(channel);
+                var adapter = new ExecutionAdapter(channelFactory);
 
                 runner = new ExecutionRunner(testAssemblyPath, controllerProxy, adapter);
             }

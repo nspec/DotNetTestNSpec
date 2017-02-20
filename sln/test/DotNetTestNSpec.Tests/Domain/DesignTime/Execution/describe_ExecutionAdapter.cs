@@ -40,11 +40,31 @@ namespace DotNetTestNSpec.Tests.Domain.DesignTime.Execution
 
             sentMessages = new List<string>();
 
-            adapter = new ExecutionAdapter(channel.Object);
+            var channelFactory = new Mock<IChannelFactory>();
+
+            channelFactory.Setup(f => f.Create()).Returns(channel.Object);
+
+            adapter = new ExecutionAdapter(channelFactory.Object);
         }
     }
 
     public class when_connected : describe_ExecutionAdapter
+    {
+        public override void setup()
+        {
+            base.setup();
+
+            adapter.Connect();
+        }
+
+        [TestCase]
+        public void it_should_open_channel()
+        {
+            channel.Verify(ch => ch.Open(), Times.Once);
+        }
+    }
+
+    public class when_test_requested : describe_ExecutionAdapter
     {
         IEnumerable<string> actuals;
 
@@ -57,7 +77,7 @@ namespace DotNetTestNSpec.Tests.Domain.DesignTime.Execution
 
         readonly string receivedMessage;
 
-        public when_connected()
+        public when_test_requested()
         {
             var runTestsMessage = new RunTestsMessage()
             {
@@ -79,13 +99,9 @@ namespace DotNetTestNSpec.Tests.Domain.DesignTime.Execution
 
             channel.Setup(ch => ch.Receive()).Returns(receivedMessage);
 
-            actuals = adapter.Connect();
-        }
+            var connection = adapter.Connect();
 
-        [TestCase]
-        public void it_should_open_channel()
-        {
-            channel.Verify(ch => ch.Open(), Times.Once);
+            actuals = connection.GetTests();
         }
 
         [TestCase]
@@ -113,7 +129,9 @@ namespace DotNetTestNSpec.Tests.Domain.DesignTime.Execution
         {
             base.setup();
 
-            adapter.TestStarted(someTest);
+            var connection = adapter.Connect();
+
+            connection.TestStarted(someTest);
         }
 
         [TestCase]
@@ -151,7 +169,9 @@ namespace DotNetTestNSpec.Tests.Domain.DesignTime.Execution
         {
             base.setup();
 
-            adapter.TestFinished(someTestResult);
+            var connection = adapter.Connect();
+
+            connection.TestFinished(someTestResult);
         }
 
         [TestCase]
@@ -167,13 +187,15 @@ namespace DotNetTestNSpec.Tests.Domain.DesignTime.Execution
         }
     }
 
-    public class when_disconnected : describe_ExecutionAdapter
+    public class when_connection_disposed : describe_ExecutionAdapter
     {
         public override void setup()
         {
             base.setup();
 
-            adapter.Disconnect();
+            var connection = adapter.Connect();
+
+            connection.Dispose();
         }
 
         [TestCase]

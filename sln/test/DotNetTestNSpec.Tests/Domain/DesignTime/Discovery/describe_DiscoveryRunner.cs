@@ -81,7 +81,7 @@ namespace DotNetTestNSpec.Tests.Domain.DesignTime.Discovery
 
             controllerProxy.Setup(c => c.List(testAssemblyPath)).Returns(discoveredExamples);
 
-            connection.Setup(a => a.TestFound(It.IsAny<Test>())).Callback((Test test) =>
+            connection.Setup(c => c.TestFound(It.IsAny<Test>())).Callback((Test test) =>
             {
                 actualFoundTests.Add(test);
             });

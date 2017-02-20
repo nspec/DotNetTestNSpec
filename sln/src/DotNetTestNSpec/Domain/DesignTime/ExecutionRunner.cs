@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace DotNetTestNSpec.Domain.DesignTime
 {
-    public class ExecutionRunner : ITestRunner, IExecutionSink
+    public class ExecutionRunner : ITestRunner
     {
         public ExecutionRunner(string testAssemblyPath, IControllerProxy controllerProxy,
             IExecutionAdapter adapter)
@@ -12,55 +12,60 @@ namespace DotNetTestNSpec.Domain.DesignTime
             this.testAssemblyPath = testAssemblyPath;
             this.controllerProxy = controllerProxy;
             this.adapter = adapter;
-
-            exampleMapper = new ExampleMapper();
         }
 
         public int Start()
         {
-            if (startedTestMap != null)
+            using (var connection = adapter.Connect())
             {
-                startedTestMap.Clear();
+                var requestedTestFullNames = connection.GetTests();
+
+                var sink = new Sink(connection);
+
+                controllerProxy.Execute(testAssemblyPath, requestedTestFullNames, sink);
             }
-
-            startedTestMap = new Dictionary<string, Test>();
-
-            var requestedTestFullNames = adapter.Connect();
-
-            controllerProxy.Execute(testAssemblyPath, requestedTestFullNames, this);
-
-            adapter.Disconnect();
 
             return dontCare;
         }
 
-        // IRunSink
-
-        public void ExampleStarted(DiscoveredExample example)
-        {
-            var test = exampleMapper.MapToTest(example);
-
-            startedTestMap[example.FullName] = test;
-
-            adapter.TestStarted(test);
-        }
-
-        public void ExampleCompleted(ExecutedExample example)
-        {
-            var test = startedTestMap[example.FullName];
-
-            var testResult = exampleMapper.MapToTestResult(example, test);
-
-            adapter.TestFinished(testResult);
-        }
-
-        IDictionary<string, Test> startedTestMap;
-
         readonly string testAssemblyPath;
         readonly IControllerProxy controllerProxy;
         readonly IExecutionAdapter adapter;
-        readonly ExampleMapper exampleMapper;
 
         const int dontCare = -1;
+
+        public class Sink : IExecutionSink
+        {
+            public Sink(IExecutionConnection connection)
+            {
+                this.connection = connection;
+
+                exampleMapper = new ExampleMapper();
+
+                startedTestMap = new Dictionary<string, Test>();
+            }
+
+            public void ExampleStarted(DiscoveredExample example)
+            {
+                var test = exampleMapper.MapToTest(example);
+
+                startedTestMap[example.FullName] = test;
+
+                connection.TestStarted(test);
+            }
+
+            public void ExampleCompleted(ExecutedExample example)
+            {
+                var test = startedTestMap[example.FullName];
+
+                var testResult = exampleMapper.MapToTestResult(example, test);
+
+                connection.TestFinished(testResult);
+            }
+
+            readonly IExecutionConnection connection;
+            readonly ExampleMapper exampleMapper;
+            readonly IDictionary<string, Test> startedTestMap;
+        }
     }
 }
