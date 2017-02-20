@@ -1,6 +1,8 @@
-﻿using DotNetTestNSpec.Compatibility;
-using DotNetTestNSpec.Parsing;
-using DotNetTestNSpec.Proxy;
+﻿using DotNetTestNSpec.Domain;
+using DotNetTestNSpec.IO.CommandLineInput;
+using DotNetTestNSpec.IO.Library;
+using DotNetTestNSpec.IO.VisualStudio;
+using DotNetTestNSpec.Shared;
 using System;
 using System.Reflection;
 
@@ -14,23 +16,9 @@ namespace DotNetTestNSpec
 
             Console.WriteLine(testRunnerAssembly.GetPrintInfo());
 
-#if true
-            // TODO remove when feature is implemented
-
-            Console.WriteLine("-- BEGIN --");
-            Console.WriteLine("Input arguments:");
-
-            foreach (string arg in args)
-            {
-                Console.WriteLine(arg);
-            }
-
-            Console.WriteLine("--- END ---");
-#endif
-
             var argumentParser = new ArgumentParser();
 
-            var runnerFactory = new RunnerFactory(new ProxyFactory());
+            var runnerFactory = new RunnerFactory(new ProxyFactory(), new ChannelFactory());
 
             try
             {
