@@ -16,6 +16,7 @@ namespace DotNetTestNSpec.Tests.Domain.DesignTime.Discovery
         protected DiscoveryRunner runner;
 
         protected Mock<IControllerProxy> controllerProxy;
+        protected Mock<IDiscoveryConnection> connection;
         protected Mock<IDiscoveryAdapter> adapter;
 
         protected const string testAssemblyPath = @"some\path\to\assembly";
@@ -25,7 +26,11 @@ namespace DotNetTestNSpec.Tests.Domain.DesignTime.Discovery
         public virtual void setup()
         {
             controllerProxy = new Mock<IControllerProxy>();
+
+            connection = new Mock<IDiscoveryConnection>();
+
             adapter = new Mock<IDiscoveryAdapter>();
+            adapter.Setup(a => a.Connect()).Returns(connection.Object);
 
             runner = new DiscoveryRunner(testAssemblyPath, controllerProxy.Object, adapter.Object);
         }
@@ -76,7 +81,7 @@ namespace DotNetTestNSpec.Tests.Domain.DesignTime.Discovery
 
             controllerProxy.Setup(c => c.List(testAssemblyPath)).Returns(discoveredExamples);
 
-            adapter.Setup(a => a.TestFound(It.IsAny<Test>())).Callback((Test test) =>
+            connection.Setup(a => a.TestFound(It.IsAny<Test>())).Callback((Test test) =>
             {
                 actualFoundTests.Add(test);
             });
@@ -99,9 +104,9 @@ namespace DotNetTestNSpec.Tests.Domain.DesignTime.Discovery
         }
 
         [Test]
-        public void it_should_disconnect_adapter()
+        public void it_should_dispose_connection()
         {
-            adapter.Verify(a => a.Disconnect(), Times.Once);
+            connection.Verify(a => a.Dispose(), Times.Once);
         }
     }
 }

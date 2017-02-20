@@ -7,45 +7,59 @@ namespace DotNetTestNSpec.Domain.DesignTime
 {
     public class DiscoveryAdapter : IDiscoveryAdapter
     {
-        public DiscoveryAdapter(INetworkChannel channel)
+        public DiscoveryAdapter(IChannelFactory channelFactory)
         {
-            this.channel = channel;
+            this.channelFactory = channelFactory;
         }
 
-        public void Connect()
+        public IDiscoveryConnection Connect()
         {
-            channel.Open();
+            var channel = channelFactory.Create();
+
+            return new Connection(channel);
         }
 
-        public void TestFound(Test test)
+        readonly IChannelFactory channelFactory;
+
+        public class Connection : IDiscoveryConnection
         {
-            SendMessage(new Message()
+            public Connection(INetworkChannel channel)
             {
-                MessageType = testFoundMessageType,
-                Payload = JToken.FromObject(test),
-            });
-        }
+                this.channel = channel;
 
-        public void Disconnect()
-        {
-            SendMessage(new Message()
+                channel.Open();
+            }
+
+            public void Dispose()
             {
-                MessageType = testCompletedMessageType,
-            });
+                SendMessage(new Message()
+                {
+                    MessageType = testCompletedMessageType,
+                });
 
-            channel.Close();
+                channel.Close();
+            }
+
+            public void TestFound(Test test)
+            {
+                SendMessage(new Message()
+                {
+                    MessageType = testFoundMessageType,
+                    Payload = JToken.FromObject(test),
+                });
+            }
+
+            void SendMessage(Message message)
+            {
+                string serialized = JsonConvert.SerializeObject(message);
+
+                channel.Send(serialized);
+            }
+
+            readonly INetworkChannel channel;
+
+            const string testFoundMessageType = "TestDiscovery.TestFound";
+            const string testCompletedMessageType = "TestRunner.TestCompleted";
         }
-
-        void SendMessage(Message message)
-        {
-            string serialized = JsonConvert.SerializeObject(message);
-
-            channel.Send(serialized);
-        }
-
-        readonly INetworkChannel channel;
-
-        const string testFoundMessageType = "TestDiscovery.TestFound";
-        const string testCompletedMessageType = "TestRunner.TestCompleted";
     }
 }

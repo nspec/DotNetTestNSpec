@@ -2,6 +2,6 @@
 {
     public interface IChannelFactory
     {
-        INetworkChannel Create(LaunchOptions options);
+        INetworkChannel Create();
     }
 }

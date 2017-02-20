@@ -16,18 +16,17 @@ namespace DotNetTestNSpec.Domain.DesignTime
 
         public int Start()
         {
-            adapter.Connect();
-
-            var discoveredExamples = controllerProxy.List(testAssemblyPath);
-
-            foreach (var example in discoveredExamples)
+            using (var connection = adapter.Connect())
             {
-                var test = exampleMapper.MapToTest(example);
+                var discoveredExamples = controllerProxy.List(testAssemblyPath);
 
-                adapter.TestFound(test);
+                foreach (var example in discoveredExamples)
+                {
+                    var test = exampleMapper.MapToTest(example);
+
+                    connection.TestFound(test);
+                }
             }
-
-            adapter.Disconnect();
 
             return dontCare;
         }

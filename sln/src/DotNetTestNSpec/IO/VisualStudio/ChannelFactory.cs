@@ -6,7 +6,12 @@ namespace DotNetTestNSpec.IO.VisualStudio
 {
     public class ChannelFactory : IChannelFactory
     {
-        public INetworkChannel Create(LaunchOptions options)
+        public ChannelFactory(LaunchOptions options)
+        {
+            this.options = options;
+        }
+
+        public INetworkChannel Create()
         {
             var channel = options.NSpec.DebugChannel
                 ? new ConsoleDebugChannel(options.NSpec.DebugTests) as INetworkChannel
@@ -14,5 +19,7 @@ namespace DotNetTestNSpec.IO.VisualStudio
 
             return channel;
         }
+
+        readonly LaunchOptions options;
     }
 }

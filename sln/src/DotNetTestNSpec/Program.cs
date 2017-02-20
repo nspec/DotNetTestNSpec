@@ -18,13 +18,15 @@ namespace DotNetTestNSpec
 
             var argumentParser = new ArgumentParser();
 
-            var runnerFactory = new RunnerFactory(new ProxyFactory(), new ChannelFactory());
-
             try
             {
-                var commandLineOptions = argumentParser.Parse(args);
+                var options = argumentParser.Parse(args);
 
-                var runner = runnerFactory.Create(commandLineOptions);
+                var channelFactory = new ChannelFactory(options);
+
+                var runnerFactory = new RunnerFactory(new ProxyFactory(), channelFactory);
+
+                var runner = runnerFactory.Create(options);
 
                 runner.Start();
 

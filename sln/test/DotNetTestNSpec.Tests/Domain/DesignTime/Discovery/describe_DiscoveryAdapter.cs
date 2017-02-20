@@ -31,7 +31,11 @@ namespace DotNetTestNSpec.Tests.Domain.DesignTime.Discovery
 
             sentMessages = new List<string>();
 
-            adapter = new DiscoveryAdapter(channel.Object);
+            var channelFactory = new Mock<IChannelFactory>();
+
+            channelFactory.Setup(f => f.Create()).Returns(channel.Object);
+
+            adapter = new DiscoveryAdapter(channelFactory.Object);
         }
     }
 
@@ -65,7 +69,9 @@ namespace DotNetTestNSpec.Tests.Domain.DesignTime.Discovery
         {
             base.setup();
 
-            adapter.TestFound(someTest);
+            var connection = adapter.Connect();
+
+            connection.TestFound(someTest);
         }
 
         [TestCase]
@@ -81,13 +87,15 @@ namespace DotNetTestNSpec.Tests.Domain.DesignTime.Discovery
         }
     }
 
-    public class when_disconnected : describe_DiscoveryAdapter
+    public class when_connection_disposed : describe_DiscoveryAdapter
     {
         public override void setup()
         {
             base.setup();
 
-            adapter.Disconnect();
+            var connection = adapter.Connect();
+
+            connection.Dispose();
         }
 
         [TestCase]

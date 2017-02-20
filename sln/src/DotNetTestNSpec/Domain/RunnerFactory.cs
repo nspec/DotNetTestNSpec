@@ -29,18 +29,18 @@ namespace DotNetTestNSpec.Domain
                 return new ConsoleRunner(testAssemblyPath, controllerProxy, options.NSpec);
             }
 
-            var channel = channelFactory.Create(options);
-
             ITestRunner runner;
 
             if (options.DotNet.List)
             {
-                var adapter = new DiscoveryAdapter(channel);
+                var adapter = new DiscoveryAdapter(channelFactory);
 
                 runner = new DiscoveryRunner(testAssemblyPath, controllerProxy, adapter);
             }
             else if (options.DotNet.WaitCommand)
             {
+                var channel = channelFactory.Create();
+
                 var adapter = new ExecutionAdapter(channel);
 
                 runner = new ExecutionRunner(testAssemblyPath, controllerProxy, adapter);
