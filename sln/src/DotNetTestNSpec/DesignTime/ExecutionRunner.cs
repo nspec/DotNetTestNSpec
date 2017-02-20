@@ -12,6 +12,8 @@ namespace DotNetTestNSpec.DesignTime
             this.testAssemblyPath = testAssemblyPath;
             this.controllerProxy = controllerProxy;
             this.adapter = adapter;
+
+            exampleMapper = new ExampleMapper();
         }
 
         public int Start()
@@ -36,7 +38,7 @@ namespace DotNetTestNSpec.DesignTime
 
         public void ExampleStarted(DiscoveredExample example)
         {
-            var test = MappingUtils.MapToTest(example);
+            var test = exampleMapper.MapToTest(example);
 
             startedTestMap[example.FullName] = test;
 
@@ -47,7 +49,7 @@ namespace DotNetTestNSpec.DesignTime
         {
             var test = startedTestMap[example.FullName];
 
-            var testResult = MappingUtils.MapToTestResult(example, test);
+            var testResult = exampleMapper.MapToTestResult(example, test);
 
             adapter.TestFinished(testResult);
         }
@@ -57,6 +59,7 @@ namespace DotNetTestNSpec.DesignTime
         readonly string testAssemblyPath;
         readonly IControllerProxy controllerProxy;
         readonly IExecutionAdapter adapter;
+        readonly ExampleMapper exampleMapper;
 
         const int dontCare = -1;
     }

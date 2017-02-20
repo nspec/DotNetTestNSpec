@@ -1,12 +1,13 @@
 ﻿using DotNetTestNSpec.Proxy;
 using Microsoft.Extensions.Testing.Abstractions;
 using System;
+using System.Text.RegularExpressions;
 
 namespace DotNetTestNSpec.DesignTime
 {
-    public static class MappingUtils
+    public class ExampleMapper
     {
-        public static Test MapToTest(DiscoveredExample example)
+        public Test MapToTest(DiscoveredExample example)
         {
             var test = new Test()
             {
@@ -19,7 +20,7 @@ namespace DotNetTestNSpec.DesignTime
             return test;
         }
 
-        public static TestResult MapToTestResult(ExecutedExample example, Test test)
+        public TestResult MapToTestResult(ExecutedExample example, Test test)
         {
             var testResult = new TestResult(test)
             {
@@ -46,7 +47,7 @@ namespace DotNetTestNSpec.DesignTime
             return testResult;
         }
 
-        static string BeautifyForDisplay(string fullName)
+        string BeautifyForDisplay(string fullName)
         {
             // beautification idea taken from
             // https://github.com/osoftware/NSpecTestAdapter/blob/master/NSpec.TestAdapter/TestCaseDTO.cs
@@ -55,21 +56,19 @@ namespace DotNetTestNSpec.DesignTime
 
             // chop leading, redundant 'nspec. ' context, if any
 
-            const string nspecPrefix = @"nspec. ";
-            const int prefixLength = 7;
-
-            displayName = fullName.StartsWith(nspecPrefix, StringComparison.OrdinalIgnoreCase)
-                ? fullName.Substring(prefixLength)
-                : fullName;
+            displayName = prefixRegex.Replace(fullName, prefixReplacement);
 
             // replace context separator
 
-            const string originalSeparator = @". ";
-            const string displaySeparator = @" › ";
-
-            displayName = displayName.Replace(originalSeparator, displaySeparator);
+            displayName = separatorRegex.Replace(displayName, separatorReplacement);
 
             return displayName;
         }
+
+        readonly Regex prefixRegex = new Regex(@"^nspec\. ");
+        readonly Regex separatorRegex = new Regex(@"\. ");
+
+        const string prefixReplacement = "";
+        const string separatorReplacement = " › ";
     }
 }
