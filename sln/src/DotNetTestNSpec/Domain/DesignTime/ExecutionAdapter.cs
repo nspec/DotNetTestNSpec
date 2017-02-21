@@ -63,16 +63,14 @@ namespace DotNetTestNSpec.Domain.DesignTime
                         $"Could not deserialize received message as a 'Message' instance. Received message:\n${jsonReceived}\nException:");
                     Console.WriteLine(ex);
 
-                    receivedMessage = new Message();
+                    return new string[0];
                 }
 
-                IEnumerable<string> testNames;
+                RunTestsMessage runTestsMessage;
 
                 try
                 {
-                    var runTestsMessage = receivedMessage.Payload.ToObject<RunTestsMessage>();
-
-                    testNames = runTestsMessage.Tests;
+                    runTestsMessage = receivedMessage.Payload.ToObject<RunTestsMessage>();
                 }
                 catch (Exception ex)
                 {
@@ -80,10 +78,10 @@ namespace DotNetTestNSpec.Domain.DesignTime
                         $"Could not deserialize received payload as a 'RunTestsMessage' instance. Received payload:\n${receivedMessage.Payload}\nException:");
                     Console.WriteLine(ex);
 
-                    testNames = new string[0];
+                    return new string[0];
                 }
 
-                return testNames;
+                return runTestsMessage.Tests;
             }
 
             public void TestStarted(Test test)
