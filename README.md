@@ -8,7 +8,7 @@ It runs NSpec tests from console in .NET Core projects targeting both .NET Core 
 
 For more info on NSpec testing framework, please see [its project](https://github.com/nspec/NSpec) or [nspec.org](http://nspec.org/) website.
 
-DotNetTestNSpec is written by [BrainCrumbz](http://www.braincrumbz.com). It's shaped and benefited by hard work from our [contributors](https://github.com/nspec/NSpec/contributors).
+DotNetTestNSpec is written by [BrainCrumbz](http://www.braincrumbz.com). It's shaped and benefited by hard work from our [contributors](https://github.com/nspec/DotNetTestNSpec/contributors).
 
 ## Samples
 
