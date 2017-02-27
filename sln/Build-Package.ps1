@@ -75,7 +75,7 @@ function BuildVersioningOptions() {
 	"sln\src\DotNetTestNSpec", `
 	"sln\test\DotNetTestNSpec.Tests"
 
-) | ForEach-Object { Exec { & "dotnet" restore $_ } }
+) | ForEach-Object { Exec { & dotnet restore $_ } }
 
 
 # Build
@@ -83,14 +83,14 @@ function BuildVersioningOptions() {
 	"sln\src\DotNetTestNSpec", `
 	"sln\test\DotNetTestNSpec.Tests"
 
-) | ForEach-Object { Exec { & "dotnet" build -c Release $_ } }
+) | ForEach-Object { Exec { & dotnet build -c Release $_ } }
 
 
 # Test
 @(
 	"sln\test\DotNetTestNSpec.Tests"
 
-) | ForEach-Object { Exec { & "dotnet" test -c Release $_ } }
+) | ForEach-Object { Exec { & dotnet test -c Release $_ } }
 
 
 # Package
