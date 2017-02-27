@@ -4,7 +4,7 @@ namespace DotNetTestNSpec.Domain.Library
 {
     public interface IControllerProxy
     {
-        int Run(
+        int RunBatch(
             string testAssemblyPath,
             string tags,
             string formatterClassName,
@@ -13,7 +13,7 @@ namespace DotNetTestNSpec.Domain.Library
 
         IEnumerable<DiscoveredExample> List(string testAssemblyPath);
 
-        void Execute(
+        void RunInteractive(
             string testAssemblyPath,
             IEnumerable<string> exampleFullNames,
             IExecutionSink sink);

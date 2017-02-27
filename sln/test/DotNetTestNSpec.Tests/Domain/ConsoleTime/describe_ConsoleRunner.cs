@@ -48,7 +48,7 @@ namespace DotNetTestNSpec.Tests.Domain.ConsoleTime
         {
             base.setup();
 
-            controllerProxy.Setup(c => c.Run(
+            controllerProxy.Setup(c => c.RunBatch(
                 testAssemblyPath,
                 nspecOptions.Tags,
                 nspecOptions.FormatterName,

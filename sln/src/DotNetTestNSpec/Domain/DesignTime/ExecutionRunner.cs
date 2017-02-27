@@ -22,7 +22,7 @@ namespace DotNetTestNSpec.Domain.DesignTime
 
                 var sink = new Sink(connection);
 
-                controllerProxy.Execute(testAssemblyPath, requestedTestFullNames, sink);
+                controllerProxy.RunInteractive(testAssemblyPath, requestedTestFullNames, sink);
             }
 
             return dontCare;

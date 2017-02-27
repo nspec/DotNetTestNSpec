@@ -16,14 +16,14 @@ namespace DotNetTestNSpec.IO.Library
             controller = CreateController(nspecLibraryAssembly);
         }
 
-        public int Run(
+        public int RunBatch(
             string testAssemblyPath,
             string tags,
             string formatterClassName,
             IDictionary<string, string> formatterOptions,
             bool failFast)
         {
-            object methodResult = InvokeMethod(controller, runMethodName,
+            object methodResult = InvokeMethod(controller, runBatchMethodName,
                 testAssemblyPath, tags, formatterClassName, formatterOptions, failFast);
 
             int nrOfFailures = (int)methodResult;
@@ -52,7 +52,7 @@ namespace DotNetTestNSpec.IO.Library
             return examples;
         }
 
-        public void Execute(
+        public void RunInteractive(
             string testAssemblyPath,
             IEnumerable<string> exampleFullNames,
             IExecutionSink sink)
@@ -60,7 +60,7 @@ namespace DotNetTestNSpec.IO.Library
             Action<string> onExampleStarted = jsonArg => OnExampleStarted(sink, jsonArg);
             Action<string> onExampleCompleted = jsonArg => OnExampleCompleted(sink, jsonArg);
 
-            InvokeMethod(controller, executeMethodName,
+            InvokeMethod(controller, runInteractiveMethodName,
                 testAssemblyPath, exampleFullNames, onExampleStarted, onExampleCompleted);
         }
 
@@ -75,7 +75,7 @@ namespace DotNetTestNSpec.IO.Library
             catch (Exception ex)
             {
                 throw new DotNetTestNSpecException(unknownArgumentErrorMessage
-                    .With(executeMethodName + ": " + nameof(OnExampleStarted), jsonArg), ex);
+                    .With(runInteractiveMethodName + ": " + nameof(OnExampleStarted), jsonArg), ex);
             }
 
             sink.ExampleStarted(example);
@@ -92,7 +92,7 @@ namespace DotNetTestNSpec.IO.Library
             catch (Exception ex)
             {
                 throw new DotNetTestNSpecException(unknownArgumentErrorMessage
-                    .With(executeMethodName + ": " + nameof(OnExampleCompleted), jsonArg), ex);
+                    .With(runInteractiveMethodName + ": " + nameof(OnExampleCompleted), jsonArg), ex);
             }
 
             sink.ExampleCompleted(example);
@@ -134,9 +134,9 @@ namespace DotNetTestNSpec.IO.Library
 
         const string controllerTypeName = "NSpec.Api.Controller";
 
-        const string runMethodName = "Run";
+        const string runBatchMethodName = "RunBatch";
         const string listMethodName = "List";
-        const string executeMethodName = "Execute";
+        const string runInteractiveMethodName = "RunInteractive";
 
         const string unknownDriverErrorMessage =
             "Could not find known driver ({0}) in referenced NSpec assembly: " +
