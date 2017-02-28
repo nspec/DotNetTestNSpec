@@ -2,22 +2,30 @@
 
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/dotnet-test-nspec)](https://www.nuget.org/packages/dotnet-test-nspec) [![Build status](https://ci.appveyor.com/api/projects/status/avtd9ca8mcuj4u6x/branch/master?svg=true)](https://ci.appveyor.com/project/BrainCrumbz/dotnettestnspec/branch/master)
 
-DotNetTestNSpec is a NSpec runner for .NET Core command line interface.
+DotNetTestNSpec is a NSpec runner for .NET Core command line interface and Visual Studio
+IDE.
 
-It runs NSpec tests from console in .NET Core projects targeting both .NET Core and
-.NET Framework, taking advantage of *dotnet test* command line interface.
+It runs NSpec tests in .NET Core projects targeting both .NET Core and .NET Framework,
+both from console - taking advantage of *dotnet test* command line interface - as well as
+from Visual Studio Test Explorer window.
 
 For more info on NSpec testing framework, please see
 [its project](https://github.com/nspec/NSpec) or [nspec.org](http://nspec.org/) website.
 
+## Minimum requirements
+
+It currently supports projects based on .NET Core Tools Preview 2, the ones with 
+`project.json` and `.xproj` files, hence the only allowed Visual Studio IDE is 2015.
+
 ## Samples
 
-See [NSpec](https://github.com/nspec/NSpec) project, in
-[sln/test/Samples](https://github.com/nspec/NSpec/tree/master/sln/test/Samples):
+See at [NSpec](https://github.com/nspec/NSpec) project, in
+[sln/test/Samples/DotNetTestSample](https://github.com/nspec/NSpec/tree/master/sln/test/Samples/DotNetTestSample),
+an independent solution with following features:
 
-- [DotNetTestSample](https://github.com/nspec/NSpec/tree/master/sln/test/Samples/DotNetTestSample):
-an independent solution with code under test and test project, importing NSpec and
-showing how to run tests from *dotnet* command line interface
+  * separate main and test project, 
+  * import of NSpec and this runner as dependencies, 
+  * allows running tests from *dotnet* command line interface and Visual Studio IDE.
 
 ## Breaking changes
 
