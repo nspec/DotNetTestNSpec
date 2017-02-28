@@ -14,7 +14,7 @@ namespace DotNetTestNSpec.Domain.ConsoleTime
 
         public int Start()
         {
-            int nrOfFailures = controllerProxy.RunBatch(
+            int nrOfFailures = controllerProxy.Run(
                 testAssemblyPath: testAssemblyPath,
                 tags: nspecOptions.Tags,
                 formatterClassName: nspecOptions.FormatterName,

@@ -4,7 +4,7 @@ namespace DotNetTestNSpec.Domain.Library
 {
     public interface IControllerProxy
     {
-        int RunBatch(
+        int Run(
             string testAssemblyPath,
             string tags,
             string formatterClassName,

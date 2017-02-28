@@ -16,14 +16,14 @@ namespace DotNetTestNSpec.IO.Library
             controller = CreateController(nspecLibraryAssembly);
         }
 
-        public int RunBatch(
+        public int Run(
             string testAssemblyPath,
             string tags,
             string formatterClassName,
             IDictionary<string, string> formatterOptions,
             bool failFast)
         {
-            object methodResult = InvokeMethod(controller, runBatchMethodName,
+            object methodResult = InvokeMethod(controller, runMethodName,
                 testAssemblyPath, tags, formatterClassName, formatterOptions, failFast);
 
             int nrOfFailures = (int)methodResult;
@@ -134,7 +134,7 @@ namespace DotNetTestNSpec.IO.Library
 
         const string controllerTypeName = "NSpec.Api.Controller";
 
-        const string runBatchMethodName = "RunBatch";
+        const string runMethodName = "Run";
         const string listMethodName = "List";
         const string runInteractiveMethodName = "RunInteractive";
 
