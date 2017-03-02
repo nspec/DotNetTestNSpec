@@ -1,6 +1,7 @@
 # DotNetTestNSpec
 
-[![NuGet Version and Downloads count](https://buildstats.info/nuget/dotnet-test-nspec)](https://www.nuget.org/packages/dotnet-test-nspec) [![Build status](https://ci.appveyor.com/api/projects/status/avtd9ca8mcuj4u6x/branch/master?svg=true)](https://ci.appveyor.com/project/BrainCrumbz/dotnettestnspec/branch/master)
+[![NuGet Version and Downloads count](https://buildstats.info/nuget/dotnet-test-nspec)](https://www.nuget.org/packages/dotnet-test-nspec) 
+[![Build status](https://ci.appveyor.com/api/projects/status/avtd9ca8mcuj4u6x/branch/master?svg=true)](https://ci.appveyor.com/project/BrainCrumbz/dotnettestnspec/branch/master)
 
 DotNetTestNSpec is a NSpec runner for .NET Core command line interface and Visual Studio
 IDE.
@@ -17,11 +18,11 @@ For more info on NSpec testing framework, please see
 It currently supports projects based on .NET Core Tools Preview 2, the ones with 
 `project.json` and `.xproj` files, hence the only allowed Visual Studio IDE is 2015.
 
-## Samples
+## Examples
 
-See at [NSpec](https://github.com/nspec/NSpec) project, in
-[sln/test/Samples/DotNetTestSample](https://github.com/nspec/NSpec/tree/master/sln/test/Samples/DotNetTestSample),
-an independent solution with following features:
+See [NSpec](https://github.com/nspec/NSpec) project, at path
+[examples/DotNetTestSample](https://github.com/nspec/NSpec/tree/master/sln/test/Samples/DotNetTestSample),
+for a standalone solution with following features:
 
   * separate main and test project, 
   * import of NSpec and this runner as dependencies, 
