@@ -6,12 +6,9 @@
     <title>NSpec dotnet test runner</title>
     <summary>NSpec runner for .NET Core command line interface and VS 2015.</summary>
     <description>
-DotNetTestNSpec is a NSpec runner for .NET Core command line interface and Visual Studio
-IDE.
+DotNetTestNSpec is a NSpec runner for .NET Core command line interface and Visual Studio IDE.
 
-It runs NSpec tests in .NET Core projects targeting both .NET Core and .NET Framework,
-both from console - taking advantage of `dotnet test` command line interface - as well as
-from Visual Studio Test Explorer window.
+It runs NSpec tests in .NET Core projects targeting both .NET Core and .NET Framework, both from console - taking advantage of `dotnet test` command line interface - as well as from Visual Studio Test Explorer window.
     </description>
     <authors>BrainCrumbz</authors>
     <owners>BrainCrumbz</owners>
