@@ -5,6 +5,7 @@ branches:
   - master
 
 nuget:
+  project_feed: true
   disable_publish_on_pr: true
 
 skip_commits:
@@ -19,9 +20,6 @@ test: off
 artifacts:
 - path: sln\src\DotNetTestNSpec\publish\*.nupkg
   name: DotNetTestNSpec
-
-nuget:
-  project_feed: true
 
 deploy:
 - provider: NuGet
