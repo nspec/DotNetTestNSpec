@@ -20,7 +20,8 @@ artifacts:
 - path: sln\src\DotNetTestNSpec\publish\*.nupkg
   name: DotNetTestNSpec
 
-project_feed: true
+nuget:
+  project_feed: true
 
 deploy:
 - provider: NuGet
