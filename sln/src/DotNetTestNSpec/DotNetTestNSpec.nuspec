@@ -22,6 +22,14 @@ It runs NSpec tests in .NET Core projects targeting both .NET Core and .NET Fram
     <contentFiles>
       <files include="**" buildAction="Compile" copyToOutput="false" />
     </contentFiles>
+    <dependencies>
+      <group>
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
+      </group>
+      <group targetFramework="net">
+        <dependency id="Microsoft.NETCore.Platforms" version="1.0.1" />
+      </group>
+    </dependencies>
   </metadata>
   <files>
     <file src="bin\Release\**" exclude="**\*.pdb;**\*.deps.json;**\*.dev.json;**\win7-x64\*" target="lib"/>
