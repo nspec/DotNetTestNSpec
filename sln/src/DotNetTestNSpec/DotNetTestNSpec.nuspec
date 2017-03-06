@@ -26,7 +26,7 @@ It runs NSpec tests in .NET Core projects targeting both .NET Core and .NET Fram
       <group>
         <dependency id="Newtonsoft.Json" version="9.0.1" />
       </group>
-      <group targetFramework="net">
+      <group targetFramework="net451">
         <dependency id="Microsoft.NETCore.Platforms" version="1.0.1" />
       </group>
     </dependencies>
