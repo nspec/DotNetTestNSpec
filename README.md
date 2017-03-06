@@ -21,7 +21,7 @@ It currently supports projects based on .NET Core Tools Preview 2, the ones with
 ## Examples
 
 See [NSpec](https://github.com/nspec/NSpec) project, at path
-[examples/DotNetTestSample](https://github.com/nspec/NSpec/tree/master/sln/test/Samples/DotNetTestSample),
+[examples/DotNetTestSample](https://github.com/nspec/NSpec/tree/master/examples/DotNetTestSample),
 for a standalone solution with following features:
 
   * separate main and test project, 
