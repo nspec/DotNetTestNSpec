@@ -1,5 +1,13 @@
 # Contributing
 
+## Debugging
+
+As an alternative to downloading a *release* version, if you want to notify issues you found while running tests, you could try downloading the *debug* version, `NSpec.VsAdapter.Debug.vsix`, so that you can attach to process and debug its source code.
+
+Or else, you could go the full route and run adapter from its source code in an experimental instance of Visual Studio.
+
+## Changing code
+
 The DotNetTestNSpec test suite is written in NUnit. The test project is DotNetTestNSpec.Tests.
 
 To build and run tests from command line, use .NET Core `dotnet` command line interface
@@ -11,7 +19,7 @@ cd test\DotNetTestNSpec.Tests
 dotnet test
 ```
 
-Alternatively, to run tests, use your test runner of choice in Visual Studio TDD.Net, NCrunch, Resharper's Test Runner, et al)
+Alternatively, to run tests, use your test runner of choice in Visual Studio (TDD.Net, NCrunch, Resharper's Test Runner, et al)
 
 Fork the project, make your changes, and then send a Pull Request.
 
